@@ -1,0 +1,77 @@
+<html>
+	<head>
+        <% include ./../partials/head %>
+	</head>
+	<body>
+    	<% include ./../partials/header %>
+        <% include ./../partials/nav %>
+		<section>
+			<div class="container">
+				<div class="box b2 container ground border padding-5">
+					<h1 class="box b1 underline center">Painel do colaborador</h1>
+					<div class="mobile-box b2 container margin-top-5">
+						<div class="box b1 em06 bold">Nome</div>
+						<div class="box b1 border em09 padding-5 center"><%= user.name%></div>
+					</div>
+					<div class="mobile-box b4-10 container margin-top-5">
+						<div class="box b1 em06 bold">E-mail</div>
+						<div class="box b1 border em09 padding-5 center"><%= user.email%></div>
+					</div>
+					<div class="mobile-box b10 margin-top-15 center"><img class="icon size-20" src="/images/icon/edit.png" onclick="lib.displayDiv('user-edit-box', this)"></div>
+					
+					<div id="user-edit-box" class="box b1 container padding-5" style="display:none">
+						<div class="box b1 underline avant-garde center margin-top-5">Atualizar informações</div>
+						
+						<form id="user-edit-info-form" class="box b1 container border-explicit padding-5 margin-top-5">
+							<div class="mobile-box b8-9 container">
+								<div class="box b1 em06 bold">E-mail</div>
+								<input type="text" name="email" class="box b1 em09 border padding-5 center" value="<%= user.email %>" onblur="lib.validateEmail(this)" autocomplete="off">
+							</div>
+							<button name="submit" type="submit" class="mobile-box noborder center"><img src="/images/icon/save.png" class="icon size-20"></button>
+						</form>
+
+						<form id="user-edit-password-form" class="box b1 container border-explicit padding-5 margin-top-5">
+							<div class="mobile-box b4-9 container">
+								<div class="box b1 em06 bold">Senha</div>
+								<input type="password" name="password" class="box b1 border padding-5 center" value="" autocomplete="off">
+							</div>
+
+							<div class="mobile-box b4-9 container">
+								<div class="box b1 em06 bold">Confirmar senha</div>
+								<input type="password" name="password-confirm" class="box b1 border padding-5 center" value="" autocomplete="off">
+							</div>
+
+							<button name="submit" type="submit" class="mobile-box noborder center"><img src="/images/icon/save.png" class="icon size-20"></button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+        <% include ./../partials/loader %>
+	</body>
+	<footer>
+        <% include ./../partials/footer %>
+        <% include ./partial %>
+        <script>
+			lib.validateEmail = (element) => {
+				let field = element.value;
+				userAdress = field.substring(0, field.indexOf("@"));
+				domain = field.substring(field.indexOf("@")+ 1, field.length);
+				 
+				if ((userAdress.length >=1) &&
+				    (domain.length >=3) &&
+				    (userAdress.search("@")==-1) &&
+				    (domain.search("@")==-1) &&
+				    (userAdress.search(" ")==-1) &&
+				    (domain.search(" ")==-1) &&
+				    (domain.search(".")!=-1) &&
+				    (domain.indexOf(".") >=1)&&
+				    (domain.lastIndexOf(".") < domain.length - 1)) {
+				} else{
+					alert("E-mail inválido");
+					// element.value = "";
+				};
+			};
+		</script>
+	</footer>
+</html>

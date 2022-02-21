@@ -1,0 +1,44 @@
+{
+  "name": "comercial_model",
+  "version": "1.0.0",
+  "description": "A monolitic nodejs-ejs-mysql framework model for free lancers.",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.19.0",
+    "connect": "^3.7.0",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^8.1.0",
+    "ejs": "^2.7.1",
+    "express": "4.17.1",
+    "express-session": "^1.16.1",
+    "jarmlib": "^1.0.42",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.4",
+    "mysql": "^2.17.1",
+    "nodemailer": "^6.7.2",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "sharp": "^0.29.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hlyras/comercial_model.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hlyras/comercial_model/issues"
+  },
+  "homepage": "https://github.com/hlyras/comercial_model#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0"
+  }
+}

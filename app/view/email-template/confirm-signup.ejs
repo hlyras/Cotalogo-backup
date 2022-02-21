@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cotalogo</title>
+	<style type="text/css">
+		:root {
+			--ground: #fff;
+			--background: #f7f7f7;
+			--light: #cfcfcf;
+			--solid: #b1b1b1;
+			--disabled: #9e9e9e;
+			--strong: #515151;
+			--color: #222222;
+		}
+
+		html { scroll-behavior: smooth; }
+
+		* { margin: 0; padding: 0; font-family: ARIAL; }
+		body { background-color: var(--background); }
+
+		a { text-decoration: none; cursor: pointer; }
+
+		select:required:invalid { color: var(--disabled); }
+		.hide-disabled [value=""][disabled] { display: none; }
+
+		input, select, button { background-color: var(--ground) }
+
+		button:focus { outline: none; box-shadow: none; }
+
+		table { border-collapse: collapse; word-break: break-all; }
+		tr:hover { background-color: var(--light); }
+
+		pre { tab-size: 2; }
+
+		.scroll-y { overflow-y: scroll; }
+		.scroll-x { overflow-x: scroll; }
+		.scroll-hide { overflow-y: hidden; }
+
+		.pointer { cursor: pointer; }
+
+		.wrap { overflow-wrap: break-word; }
+		.nowrap { white-space: nowrap; }
+		.pre-wrap { white-space: pre-wrap; }
+		.wrapper { white-space: normal; }
+
+		.noselect {
+			user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+			-o-user-select: none;
+			-ms-user-select: none; /* Internet Explorer/Edge */
+			-moz-user-select: none; /* Old versions of Firefox */
+			-webkit-user-select: none; /* Safari */
+			-webkit-touch-callout: none; /* iOS Safari */
+			-khtml-user-select: none; /* Konqueror HTML */
+		}
+
+		.hide-in-web { display: none; }
+		.hide-in-mobile { display: initial; }
+
+		/*Visual*/
+		.transparent { background-color: transparent; }
+		.ground { background-color: var(--ground); }
+
+		.noborder { border: none; outline:none; }
+		.border { border: 1px var(--light) solid; }
+		.border-2 { border: 2px var(--light) solid; }
+
+		.border-st { border: 1px var(--strong) solid; }
+		.border-st-2 { border: 2px var(--strong) solid; }
+
+		.border-lg-st { border: 1px var(--light) solid; }
+		.border-lg-st:hover { border: 1px var(--strong) solid; }
+
+		.border-lg-st-2 { border: 2px var(--light) solid; }
+		.border-lg-st-2:hover { border: 2px var(--strong) solid; }
+
+		.underline {
+			margin: auto; border-bottom: 1px solid var(--light);
+			padding-bottom: 5px; margin-bottom: 7px;
+		}
+
+		.shadow { box-shadow:0px 0px 10px var(--light); }
+
+		.radius-5 { border-radius: 5px; }
+		.radius-10 { border-radius: 10px; }
+		.radius-15 { border-radius: 15px; }
+		.radius-20 { border-radius: 20px; }
+		.radius-25 { border-radius: 25px; }
+		.radius-30 { border-radius: 30px; }
+		.radius-35 { border-radius: 35px; }
+		.radius-40 { border-radius: 40px; }
+		.radius-45 { border-radius: 45px; }
+		.radius-50 { border-radius: 50px; }
+
+		.color-lg { color: var(--light); }
+		.color-st { color: var(--strong); }
+		.color-lg-st { color: var(--light); }
+		.color-lg-st:hover { color: var(--strong); }
+
+		/*boxes*/
+		.container { display: flex; flex-wrap: wrap; }
+		.box { box-sizing: border-box; align-self: flex-start; }
+		.mobile-box { box-sizing: border-box; align-self: flex-start; }
+
+		.a1 { width: 100%; }
+		.a2 { width: 50%; }
+		.a2-3 { width: 66.67%; }
+		.a3 { width: 33.33%; }
+		.a3-4 { width: 75%; }
+		.a4 { width: 25%; }
+		.a5 { width: 20%; }
+		.a2-5 { width: 40%; }
+		.a3-5 { width: 60%; }
+		.a4-5 { width: 80%; }
+		.a6 { width: 16.66%; }
+		.a5-6 { width: 83.34%; }
+
+		.b1 { width: 99%; margin-left: 0.5%; margin-right: 0.5%; }
+		.b2 { width: 49%; margin-left: 0.5%; margin-right: 0.5%; }
+		.b2-3 { width: 65.66%; margin-left: 0.5%; margin-right: 0.5%; }
+		.b3 { width: 32.33%; margin-left: 0.5%; margin-right: 0.5%; }
+		.b3-4 { width: 74%; margin-left: 0.5%; margin-right: 0.5%; }
+		.b4 { width: 24%; margin-left: 0.5%; margin-right: 0.5%; }
+		.b5 { width: 19%; margin-left: 0.5%; margin-right: 0.5%; }
+		.b2-5 { width: 39%; margin-left: 0.5%; margin-right: 0.5%; }
+		.b3-5 { width: 59%; margin-left: 0.5%; margin-right: 0.5%; }
+		.b4-5 { width: 79%; margin-left: 0.5%; margin-right: 0.5%; }
+		.b6 { width: 15.66%; margin-left: 0.5%; margin-right: 0.5%; }
+		.b5-6 { width: 82.33%; margin-left: 0.5%; margin-right: 0.5%; }
+
+		/*position*/
+		.v-center { margin: auto; }
+		.h-center { justify-content: center; }
+
+		.center { margin: auto; text-align: center; align-items: center; }
+		.top { top:0; }
+		.right { margin-left: auto; }
+
+		.margin-top-1 { margin-top: 1px; }
+		.margin-top-2 { margin-top: 2px; }
+		.margin-top-3 { margin-top: 3px; }
+		.margin-top-4 { margin-top: 4px; }
+		.margin-top-5 { margin-top: 5px; }
+		.margin-top-10 { margin-top: 10px; }
+		.margin-top-15 { margin-top: 15px; }
+		.margin-top-20 { margin-top: 20px; }
+		.margin-top-25 { margin-top: 25px; }
+		.margin-top-30 { margin-top: 30px; }
+		.margin-top-35 { margin-top: 35px; }
+		.margin-top-40 { margin-top: 40px; }
+		.margin-top-45 { margin-top: 45px; }
+		.margin-top-50 { margin-top: 50px; }
+
+		.padding-1 { padding: 1px; }
+		.padding-2 { padding: 2px; }
+		.padding-3 { padding: 3px; }
+		.padding-4 { padding: 4px; }
+		.padding-5 { padding: 5px; }
+		.padding-10 { padding: 10px; }
+		.padding-15 { padding: 15px; }
+		.padding-20 { padding: 20px; }
+		.padding-25 { padding: 25px; }
+		.padding-30 { padding: 30px; }
+		.padding-35 { padding: 35px; }
+		.padding-40 { padding: 40px; }
+		.padding-45 { padding: 45px; }
+		.padding-50 { padding: 50px; }
+
+		/*image*/
+		.image-fit {
+			width:100%;
+		    height:100%;
+		    object-fit:cover;
+		}
+
+		.bg {
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+
+		/*responsivity*/
+		@media (max-width: 380px) {
+			.box { width: 100%; }
+		}
+
+		@media (max-width: 440px) {
+			.box { width: 100%; }
+		}
+
+		@media (max-width: 780px) {
+			.box { width: 100%; }
+		}
+
+		@media (max-width: 800px) {
+			.hide-in-mobile { display: none; }
+			.box { width:100%; }
+		}
+
+		.em05 { font-size: 0.5em; }
+		.em06 { font-size: 0.6em; }
+		.em07 { font-size: 0.7em; }
+		.em08 { font-size: 0.8em; }
+		.em09 { font-size: 0.9em; }
+		.em10 { font-size: 1em; }
+		.em11 { font-size: 1.1em; }
+		.em12 { font-size: 1.2em; }
+		.em13 { font-size: 1.3em; }
+		.em14 { font-size: 1.4em; }
+		.em15 { font-size: 1.5em; }
+		.em16 { font-size: 1.6em; }
+		.em17 { font-size: 1.7em; }
+		.em18 { font-size: 1.8em; }
+		.em19 { font-size: 1.9em; }
+		.em20 { font-size: 2em; }
+		.em21 { font-size: 2.1em; }
+		.em22 { font-size: 2.2em; }
+		.em23 { font-size: 2.3em; }
+		.em24 { font-size: 2.4em; }
+		.em25 { font-size: 2.5em; }
+		.em26 { font-size: 2.6em; }
+		.em27 { font-size: 2.7em; }
+		.em28 { font-size: 2.8em; }
+		.em29 { font-size: 2.9em; }
+		.em30 { font-size: 3em; }
+		.em31 { font-size: 3.1em; }
+		.em32 { font-size: 3.2em; }
+		.em33 { font-size: 3.3em; }
+		.em34 { font-size: 3.4em; }
+		.em35 { font-size: 3.5em; }
+		.em36 { font-size: 3.6em; }
+		.em37 { font-size: 3.7em; }
+		.em38 { font-size: 3.8em; }
+		.em39 { font-size: 3.9em; }
+		.em40 { font-size: 4em; }
+
+		@media all and (min-width: 50px)   {  body  { font-size:0.7em;  } }
+		@media all and (min-width: 100px)  {  body  { font-size:0.7em;  } }
+		@media all and (min-width: 150px)  {  body  { font-size:0.7em;  } }
+		@media all and (min-width: 200px)  {  body  { font-size:0.7em;  } }
+		@media all and (min-width: 250px)  {  body  { font-size:0.7em;  } }
+		@media all and (min-width: 300px)  {  body  { font-size:0.7em;  } }
+		@media all and (min-width: 350px)  {  body  { font-size:0.7em;  } }
+		@media all and (min-width: 400px)  {  body  { font-size:0.8em;  } }
+		@media all and (min-width: 450px)  {  body  { font-size:0.9em;  } }
+		@media all and (min-width: 500px)  {  body  { font-size:1.0em;  } }
+
+		/*Fonts*/
+		.paladino { font-family: Palatino,Palatino Linotype,Palatino LT STD,Book Antiqua,Georgia,serif; }
+		.georgia { font-family: Georgia,Times,Times New Roman,serif; }
+		.century-gothic { font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; }
+		.avant-garde { font-family: Avant Garde,Avantgarde,Century Gothic,CenturyGothic,AppleGothic,sans-serif; }
+		.lucida-grande { font-family: Lucida Grande,Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif; }
+		.impact { font-family: Impact,Haettenschweiler,Franklin Gothic Bold,Charcoal,Helvetica Inserat,Bitstream Vera Sans Bold,Arial Black,sans serif; }
+		.rockwell { font-family: Rockwell Extra Bold,Rockwell Bold,monospace; }
+		.times-new-roman { font-family: TimesNewRoman,Times New Roman,Times,Baskerville,Georgia,serif; }
+		.lucida-sans { font-family: Lucida Sans Typewriter,Lucida Console,monaco,Bitstream Vera Sans Mono,monospace; }
+		.great-vibes { font-family: "Great Vibes", cursive; }
+
+		.bold { font-weight: bold; }
+		.italic { font-style: italic; }
+	</style>
+</head>
+<body>
+	<section class="container" style="background-color:#000;color:var(--solid)">
+	    <div class="mobile-box b1 em15 bold lucida-grande padding-3 center noselect pointer" onclick="window.location.href='https://cotalogo.com'">Cotalogo</div>
+	</section>
+	<div class="container padding-10">
+		<div class="box b1 lucida-grande bold em25 padding-10 center"><%= user.business %></div>
+		<div class="box b1 container ground padding-10">
+			<div class="box b1 lucida-grande padding-10">Olá <%= user.name %>,</div>
+			<div class="box b1 lucida-grande padding-10">Muito obrigado por realizar seu cadastro, precisamos apenas que confirme seu email clicando no link abaixo para começar a criar e personalizar seus catálogos</div>
+			<a class="box b1 lucida-grande padding-10 underline" href="http://127.0.0.1:3001/user/confirm-email/<%= token %>">Confirmar Email</a>
+			<div class="box b1 container lucida-grande padding-10">
+				<div class="mobile-box b3-5" style="color: var(--disabled)">
+					© Cotalogo 2021<br>
+					Follow us on <a href="">Instagram</a>
+				</div>
+				<div class="mobile-box b2-5 bold color-lg-st border-lg-st-2 center padding-10 radius-5 pointer">Contatar Suporte</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

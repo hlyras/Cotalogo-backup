@@ -1,0 +1,11 @@
+@font-face {
+	font-family: 'Army';
+	src: url('./Army.eot');
+	src: local('Army'), url('./Army.woff') format('woff'), url('./Army.ttf') format('truetype');
+}
+/* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_1410">Text with this font applied</p> */
+.fontsforweb_fontid_1410 {
+	font-family: 'Army' !important;
+}
+
+/* Font downloaded from FontsForWeb.com */

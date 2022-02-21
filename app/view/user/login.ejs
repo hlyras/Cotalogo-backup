@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <% include ./../partials/head %>
+        <style type="text/css">
+            .btn-act {
+                background-color:#356ae6;
+                color:#fff;
+            }
+
+            .btn-act:hover {
+                background-color:#245ae5;
+                color:#fff;
+            }
+        </style>
+    </head>
+    <body>
+        <% include ./../partials/header %>
+        <section class="container h-center margin-top-50 lucida-grande">
+            <form action="/user/login" method="post" class="box b3 container ground margin-top-15 padding-10">
+                <div class="box b1 underline georgia margin-top-10 center noselect">Acesse seu Cotalogo!</div>
+                <% if (message.length > 0) { %>
+                    <div class="box b1 center margin-top-10 padding-5 radius-5" style="background-color: #F08080; color:#fff;"><%= message %></div>
+                <% } %>
+                <input type="email" name="email" class="box b1 em11 georgia border-bottom padding-10 margin-top-5" id="email" maxlength="60" autocomplete="off" placeholder="Nome da empresa ou E-mail">
+                <input type="password" name="password" class="box b1 em11 georgia border-bottom padding-10 margin-top-5" maxlength="45" autocomplete="off" placeholder="Senha">
+                <input type="submit" class="box b1 submit-generic border-bottom margin-top-10 noselect pointer" value="Acessar meu Cotalogo">
+            </form>
+        </section>
+    </body>
+    <footer>
+        <% include ./../partials/footer %>
+        <% include ./partial %>
+    </footer>
+</html>
