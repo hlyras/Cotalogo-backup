@@ -132,7 +132,6 @@ const productController = {
 				};
 				// Somente salvar o produto caso tenha todas as variações
 				if(variation.length == product.variations.length) { products.push(products_response[i]); }
-				// coment de teste
 			};
 
 			res.send({products});
