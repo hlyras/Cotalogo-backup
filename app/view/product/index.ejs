@@ -1,7 +1,9 @@
 <html>
+
 <head>
   <% include ./../partials/head %>
 </head>
+
 <body>
   <% include ./../partials/userHeader %>
   <% include ./help/code %>
@@ -12,7 +14,9 @@
         <div class="box b1 container">
           <div class="mobile-box b10"></div>
           <div class="mobile-box b4-5 em12 lucida-grande bold center">Novo Produto</div>
-          <div class="mobile-box b10 center"><img class="size-20 icon noselect" src="/images/icon/expand.png" onclick="lib.displayDiv('product-create-form', this, '/images/icon/expand.png', '/images/icon/retract.png');"></div>
+          <div class="mobile-box b10 center"><img class="size-20 icon noselect" src="/images/icon/expand.png"
+              onclick="lib.displayDiv('product-create-form', this, '/images/icon/expand.png', '/images/icon/retract.png');">
+          </div>
         </div>
         <% include ./form/product-create %>
       </div>
@@ -23,7 +27,9 @@
         <div class="box b1 container">
           <div class="mobile-box b10"></div>
           <div class="mobile-box b4-5 em12 lucida-grande bold center">Buscar Produto</div>
-          <div class="mobile-box b10 center"><img class="size-20 icon noselect" src="/images/icon/expand.png" onclick="lib.displayDiv('product-filter-form', this, '/images/icon/expand.png', '/images/icon/retract.png');"></div>
+          <div class="mobile-box b10 center"><img class="size-20 icon noselect" src="/images/icon/expand.png"
+              onclick="lib.displayDiv('product-filter-form', this, '/images/icon/expand.png', '/images/icon/retract.png');">
+          </div>
         </div>
         <% include ./form/product-filter %>
       </div>
@@ -31,9 +37,10 @@
 
   </section>
   <% include ./../partials/loader %>
-  </body>
-  <footer>
-    <% include ./../partials/footer %>
-    <% include ./partial %>
-  </footer>
+</body>
+<footer>
+  <% include ./../partials/footer %>
+  <% include ./partial %>
+</footer>
+
 </html>

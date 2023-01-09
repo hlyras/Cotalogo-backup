@@ -3,8 +3,7 @@
 
 const homeController = {
 	index: async (req, res) => {
-		if(req.user){
-			console.log(req.user);
+		if (req.user) {
 			return res.render('home', { user: req.user });
 		};
 		res.render('index', { user: req.user });
@@ -13,7 +12,7 @@ const homeController = {
 		res.send({ done: 'Email Enviado' });
 	},
 	login: (req, res) => {
-		if(req.user){
+		if (req.user) {
 			return res.redirect("/");
 		};
 		res.render('user/login', { user: req.user, message: req.flash('loginMessage') });
@@ -22,10 +21,10 @@ const homeController = {
 		res.redirect('/');
 	},
 	signup: async (req, res) => {
-		if(req.user){
+		if (req.user) {
 			return res.redirect('/');
 		};
-		res.render('user/signup', { user: req.user, message: req.flash('signupMessage')});
+		res.render('user/signup', { user: req.user, message: req.flash('signupMessage') });
 	},
 	successfulSignup: (req, res) => {
 		res.redirect('/');
