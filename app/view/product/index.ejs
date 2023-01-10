@@ -1,13 +1,13 @@
 <html>
 
 <head>
-  <% include ./../partials/head %>
+  <%- include('./../partials/head.ejs') %>
 </head>
 
 <body>
-  <% include ./../partials/userHeader %>
-  <% include ./help/code %>
-  <% include ./../partials/nav %>
+  <%- include('./../partials/userHeade.ejs') %>
+  <%- include('./help/code.ejs') %>
+  <%- include('./../partials/nav.ejs') %>
   <section class="container padding-10">
     <div class="box a1 container h-center">
       <div class="box b2 container border ground margin-top-10 padding-10 radius-10">
@@ -18,7 +18,7 @@
               onclick="lib.displayDiv('product-create-form', this, '/images/icon/expand.png', '/images/icon/retract.png');">
           </div>
         </div>
-        <% include ./form/product-create %>
+        <%- include('./form/product-create.ejs') %>
       </div>
     </div>
 
@@ -31,16 +31,16 @@
               onclick="lib.displayDiv('product-filter-form', this, '/images/icon/expand.png', '/images/icon/retract.png');">
           </div>
         </div>
-        <% include ./form/product-filter %>
+        <%- include('./form/product-filter.ejs') %>
       </div>
     </div>
 
   </section>
-  <% include ./../partials/loader %>
+  <%- include('./../partials/loader.ejs') %>
 </body>
 <footer>
-  <% include ./../partials/footer %>
-  <% include ./partial %>
+  <%- include('./../partials/footer.ejs') %>
+  <%- include('./partial.ejs') %>
 </footer>
 
 </html>

@@ -1,22 +1,22 @@
 <html>
 
 <head>
-	<% include ./partials/head %>
+	<%- include('./partials/head.ejs') %>
 </head>
 
 <body>
-	<% include ./partials/userHeader %>
-	<% include ./partials/nav %>
+	<%- include('./partials/userHeader.ejs') %>
+	<%- include('./partials/nav.ejs') %>
 	<section class="container">
 		<form action="/nova-imagem" method="POST" enctype="multipart/form-data">
 			<input type="file" name="image" multiple>
 			<button type="submit"> Enviar </button>
 		</form>
 	</section>
-	<% include ./partials/loader %>
+	<%- include('./partials/loader.ejs') %>
 </body>
 <footer>
-	<% include ./partials/footer %>
+	<%- include('./partials/footer.ejs') %>
 </footer>
 
 </html>
