@@ -1,0 +1,17 @@
+<script>
+  document.getElementById("category-create-form").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    let category = {
+      id: event.target.elements.namedItem("id").value,
+      name: event.target.elements.namedItem("name").value
+    };
+
+    let response = await API.response(Category.save, category);
+    if (!response) { return false; }
+
+    event.target.elements.namedItem("name").value = "";
+
+    document.getElementById("category-filter-form").submit.click();
+  });
+</script>

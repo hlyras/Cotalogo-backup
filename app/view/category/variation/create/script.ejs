@@ -1,0 +1,19 @@
+<script>
+  document.getElementById("variation-create-form").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    let variation = {
+      id: event.target.elements.namedItem("id").value,
+      category_id: event.target.elements.namedItem("category-id").value,
+      name: event.target.elements.namedItem("name").value
+    };
+
+    let response = await API.response(Variation.save, variation);
+    if (!response) { return false; }
+
+    event.target.elements.namedItem("id").value = "";
+    event.target.elements.namedItem("name").value = "";
+
+    document.getElementById("variation-filter-form").submit.click();
+  });
+</script>

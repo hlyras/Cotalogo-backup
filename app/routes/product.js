@@ -18,7 +18,6 @@ router.post('/category/save', lib.route.toHttps, userController.authorize, categ
 router.post('/category/filter', lib.route.toHttps, userController.authorize, categoryController.filter);
 router.delete('/category/delete/:id', lib.route.toHttps, userController.authorize, categoryController.delete);
 
-router.get('/variation', lib.route.toHttps, userController.verify, variationController.index);
 router.post('/variation/save', lib.route.toHttps, userController.authorize, variationController.save);
 router.post('/variation/filter', lib.route.toHttps, userController.authorize, variationController.filter);
 router.delete('/variation/delete/:id', lib.route.toHttps, userController.authorize, variationController.delete);
