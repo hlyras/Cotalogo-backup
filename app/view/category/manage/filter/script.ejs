@@ -9,23 +9,51 @@
     let categories = await API.response(Category.filter, category);
     if (!categories) { return false; }
 
-    lib.display("category-show-box", 'none');
+    lib.display("category-detail-box", 'none');
 
     const pagination = { pageSize: 10, page: 0 };
-    (function () { lib.carousel.execute("category-filter-box", Category.view.filter, categories, pagination); }());
+    (function () { lib.carousel.execute("category-filter-box", categoryFilter, categories, pagination); }());
   });
 
-  Category.controller.edit = async (category_id) => {
+  const categoryFilter = (categories, pagination) => {
+    let filter_box = document.getElementById("category-filter-box");
+    let filter_div = document.getElementById("category-filter-div");
+    filter_div.innerHTML = "";
+
+    if (categories.length) {
+      let div_header = lib.element.create("div", { class: "box b1 container border em07 center" });
+
+      div_header.appendChild(lib.element.create("div", { class: "mobile-box b10" }));
+      div_header.appendChild(lib.element.create("div", { class: "mobile-box b7-10 padding-5 bold noselect" }, "Nome"));
+      filter_div.appendChild(div_header);
+      for (let i = pagination.page * pagination.pageSize; i < categories.length && i < (pagination.page + 1) * pagination.pageSize; i++) {
+        let div_category = lib.element.create("div", { class: "box b1 container box-hover padding-5 margin-top-5 border" });
+
+        div_category.appendChild(lib.element.icon('10', 20, "/images/icon/open.png", `categoryDetail(${categories[i].id})`));
+        div_category.appendChild(lib.element.create("div", { class: "mobile-box b7-10 center" }, categories[i].name));
+        div_category.appendChild(lib.element.icon('b10', 20, "/images/icon/edit.png", `categoryEdit(${categories[i].id})`));
+        div_category.appendChild(lib.element.icon('b10', 20, "/images/icon/trash.png", `categoryDelete(${categories[i].id})`));
+        filter_div.appendChild(div_category);
+      };
+      filter_box.style.display = "";
+    } else {
+      let div_category = lib.element.create("div", { class: "box b1 center box-hover padding-5 border" }, "Sem resultados");
+      filter_div.appendChild(div_category);
+      filter_box.style.display = "";
+    };
+  };
+
+  const categoryEdit = async (category_id) => {
     let category = await API.response(Category.filter, { id: category_id });
     if (!category) { return false; }
 
     document.getElementById("category-create-form").elements.namedItem("id").value = category[0].id;
     document.getElementById("category-create-form").elements.namedItem("name").value = category[0].name;
 
-    lib.display("category-show-box", 'none');
+    lib.display("category-detail-box", 'none');
   };
 
-  Category.controller.delete = async (category_id) => {
+  const categoryDelete = async (category_id) => {
     let r = confirm('Deseja realmente excluir a variação?');
     if (r) {
       if (!await API.response(Category.delete, category_id)) { return false; };

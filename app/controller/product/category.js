@@ -4,6 +4,7 @@ const userController = require('../user');
 const Category = require('../../model/product/category');
 
 const lib = require('jarmlib');
+const Variation = require('../../model/product/variation');
 
 const categoryController = {
 	index: async (req, res) => {
@@ -61,6 +62,7 @@ const categoryController = {
 
 		try {
 			await Category.delete(req.params.id);
+			await Variation.deleteByCategoryId(req.params.id);
 			res.send({ done: "Categoria excluída com sucesso!" });
 		} catch (err) {
 			console.log(err);

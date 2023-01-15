@@ -23,17 +23,8 @@
       </div>
     </div>
 
-    <div id="category-show-box" class="box b2 container border-explicit ground margin-top-10 padding-10"
-      style="display:none">
-      <div class="box b1 border padding-10 margin-top-10">
-        <div id="category-create-title" class="box b1 container lucida-grande bold center"></div>
-        <%- include('./variation/create/form.ejs') %>
-      </div>
-      <div class="box b1 border padding-10 margin-top-10">
-        <div id="category-filter-title" class="box b1 container lucida-grande bold center"></div>
-        <%- include('./variation/filter/form.ejs') %>
-      </div>
-    </div>
+    <%- include('./manage/detail/box.ejs') %>
+
   </section>
   <%- include('./../partials/loader.ejs') %>
 </body>
@@ -44,6 +35,7 @@
   <script src="/scripts/category/variation/main.js"></script>
   <%- include('./manage/create/script.ejs') %>
   <%- include('./manage/filter/script.ejs') %>
+  <%- include('./manage/detail/script.ejs') %>
   <%- include('./variation/create/script.ejs') %>
   <%- include('./variation/filter/script.ejs') %>
 </footer>

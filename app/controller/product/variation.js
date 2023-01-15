@@ -15,25 +15,25 @@ const variationController = {
 
 		console.log(variation);
 
-		try{
+		try {
 			if (!variation.id) {
 				let response = await variation.save();
-	      if(response.err){ return res.send({ msg: response.err }); }
+				if (response.err) { return res.send({ msg: response.err }); }
 
-      	res.send({ done: "Variação cadastrada com sucesso!" })
+				res.send({ done: "Variação cadastrada com sucesso!" })
 			} else {
 				let strict_params = { keys: [], values: [] };
 				lib.Query.fillParam('variation.id', variation.id, strict_params);
-				let verifyVariation = await Variation.filter([],[],[],strict_params,[])
-				
-				if(verifyVariation[0].user_id != req.user.id){ return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" }); }
-				
+				let verifyVariation = await Variation.filter([], [], [], strict_params, [])
+
+				if (verifyVariation[0].user_id != req.user.id) { return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" }); }
+
 				let response = await variation.update();
-	      if(response.err){ return res.send({ msg: response.err }); }
-      	
-      	res.send({ done: "Variação atualizada com sucesso!" });
+				if (response.err) { return res.send({ msg: response.err }); }
+
+				res.send({ done: "Variação atualizada com sucesso!" });
 			}
-		} catch(err) {
+		} catch (err) {
 			console.log(err);
 			res.send({ msg: "Ocorreu um erro ao cadastrar a cor, aguarde um momento ou recarregue a página." });
 		}
@@ -48,8 +48,8 @@ const variationController = {
 		lib.Query.fillParam('variation.name', req.body.name, params);
 
 		try {
-			let variations = await Variation.filter([],[],params,strict_params,[]);
-			res.send({variations});
+			let variations = await Variation.filter([], [], params, strict_params, []);
+			res.send({ variations });
 		} catch (err) {
 			console.log(err);
 			res.send({ msg: "Ocorreu um erro ao filtrar as variações" })
@@ -58,9 +58,9 @@ const variationController = {
 	delete: async (req, res) => {
 		let strict_params = { keys: [], values: [] };
 		lib.Query.fillParam('variation.id', req.params.id, strict_params);
-		let verifyVariation = await Variation.filter([],[],[],strict_params,[])
-		
-		if(verifyVariation[0].user_id != req.user.id){ return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" }); }
+		let verifyVariation = await Variation.filter([], [], [], strict_params, [])
+
+		if (verifyVariation[0].user_id != req.user.id) { return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" }); }
 
 		try {
 			await Variation.delete(req.params.id);
@@ -69,7 +69,7 @@ const variationController = {
 			console.log(err);
 			res.send({ msg: "Ocorreu um erro ao filtrar as variações" })
 		}
-	},
+	}
 };
 
 module.exports = variationController;

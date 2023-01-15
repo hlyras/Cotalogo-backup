@@ -1,4 +1,18 @@
 <script>
+  document.getElementById("variation-filter-form").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    let variation = {
+      name: event.target.elements.namedItem("name").value,
+      category_id: event.target.elements.namedItem("category-id").value
+    };
+
+    let variations = await API.response(Variation.filter, variation);
+    if (!variations) { return false; }
+
+    const pagination = { pageSize: 10, page: 0 };
+    (function () { lib.carousel.execute("variation-filter-box", variationFilter, variations, pagination); }());
+  });
 
   function variationFilter(variations, pagination) {
     let filter_box = document.getElementById("variation-filter-box");
@@ -14,8 +28,8 @@
         let div_variation = lib.element.create("div", { class: "box b1 container box-hover padding-5 margin-top-5 border" });
 
         div_variation.appendChild(lib.element.create("div", { class: "mobile-box b8-10 center" }, variations[i].name));
-        div_variation.appendChild(lib.element.icon('b10', 20, "/images/icon/edit.png", "Variation.controller.edit(" + variations[i].id + ")"));
-        div_variation.appendChild(lib.element.icon('b10', 20, "/images/icon/trash.png", "Variation.controller.delete(" + variations[i].id + ")"));
+        div_variation.appendChild(lib.element.icon('b10', 20, "/images/icon/edit.png", `variationEdit(${variations[i].id})`));
+        div_variation.appendChild(lib.element.icon('b10', 20, "/images/icon/trash.png", `variationDelete(${variations[i].id})`));
         filter_div.appendChild(div_variation);
       };
       filter_box.style.display = "";
@@ -26,18 +40,21 @@
     };
   };
 
-  document.getElementById("variation-filter-form").addEventListener("submit", async event => {
-    event.preventDefault();
+  const variationEdit = async (variation_id) => {
+    let variation = await API.response(Variation.filter, { id: variation_id });
+    if (!variation) { return false; }
 
-    let variation = {
-      name: event.target.elements.namedItem("name").value,
-      category_id: event.target.elements.namedItem("category-id").value
-    };
+    document.getElementById("variation-create-form").elements.namedItem("id").value = variation[0].id;
+    document.getElementById("variation-create-form").elements.namedItem("name").value = variation[0].name;
 
-    let variations = await API.response(Variation.filter, variation);
-    if (!variations) { return false; }
+    lib.display("variation-create-form", '');
+  };
 
-    const pagination = { pageSize: 10, page: 0 };
-    (function () { lib.carousel.execute("variation-filter-box", variationFilter, variations, pagination); }());
-  });
+  const variationDelete = async (variation_id) => {
+    let r = confirm('Deseja realmente excluir a variação?');
+    if (r) {
+      if (!await API.response(Variation.delete, variation_id)) { return false; };
+      document.getElementById("variation-filter-form").submit.click();
+    }
+  };
 </script>

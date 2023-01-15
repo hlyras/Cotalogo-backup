@@ -1,0 +1,28 @@
+<script>
+  const categoryDetail = async (category_id) => {
+    let category = (await API.response(Category.filter, { id: category_id }))[0];
+    if (!category) { return false; }
+
+    let variations = await API.response(Variation.filter, { category_id });
+    if (!variations) { return false; }
+
+    category.variations = variations;
+
+    lib.display("category-detail-box", '');
+    lib.display("variation-create-form", 'none');
+
+    let variation_create_title = document.getElementById("category-create-title");
+    variation_create_title.innerHTML = "";
+    variation_create_title.appendChild(lib.element.create("div", { class: "mobile-box b9-10" }, "Cadastrar " + category.name));
+    variation_create_title.appendChild(lib.element.icon('b10', 20, "/images/icon/expand.png", "lib.displayDiv('variation-create-form', this, '/images/icon/expand.png', '/images/icon/retract.png');"));
+    document.getElementById("variation-create-form").elements.namedItem("category-id").value = category.id;
+
+    let variation_filter_title = document.getElementById("category-filter-title");
+    variation_filter_title.innerHTML = "";
+    variation_filter_title.appendChild(lib.element.create("div", { class: "mobile-box b9-10" }, "Buscar " + category.name));
+    variation_filter_title.appendChild(lib.element.icon('b10', 20, "/images/icon/retract.png", "lib.displayDiv('variation-filter-form', this, '/images/icon/expand.png', '/images/icon/retract.png');"));
+    document.getElementById("variation-filter-form").elements.namedItem("category-id").value = category.id;
+
+    document.getElementById("variation-filter-form").submit.click();
+  };
+</script>
