@@ -1,0 +1,26 @@
+<script>
+  // form de código busca por nome ou código do produto e desce dropdown
+  // com isso o produto pode ser enconrado pelo nome caso não se lembre do código de um produto específico
+  document.getElementById("product-create-form").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    let product = {};
+
+    for (let i in event.target.elements) {
+      if (event.target.elements[event.target.elements[i].name]) {
+        product[event.target.elements[i].name] = event.target.elements[event.target.elements[i].name].value;
+      }
+    };
+
+    delete product.item;
+    delete product.namedItem;
+    delete product.submit;
+
+    let response = await API.response(Product.save, product);
+    if (!response) { return false; }
+
+    Object.entries(product).map(property => { event.target.elements.namedItem(property[0]).value = ""; });
+
+    document.getElementById("product-filter-form").submit.click();
+  });
+</script>

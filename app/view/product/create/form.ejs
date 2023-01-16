@@ -1,0 +1,50 @@
+<form id="product-create-form" class="box b1 container padding-10" style="display:none;">
+  <div class="box a1 container">
+    <div class="box b1 em08 lucida-grande margin-top-10">Código</div>
+    <input type="text" name="code" class="mobile-box b4-5 input-generic border-lg-st radius-5 center nofocus"
+      placeholder="Código do Produto" autocomplete="off" maxlength="6">
+    <img class='mobile-box size-20 center icon pointer noselect' onclick="lib.display('code-help', '')"
+      src="/images/icon/help.png">
+  </div>
+  <div class="box b1 em08 lucida-grande margin-top-10">Nome do produto</div>
+  <input type="text" name="name" class="box b1 input-generic border-lg-st radius-5 center nofocus"
+    placeholder="Nome do Produto" autocomplete="off" maxlength="100">
+
+  <div class="box b1 container border-lg-st padding-10 margin-top-10 radius-5">
+    <div class="box b1 container">
+      <div class="mobile-box b10"></div>
+      <div class="mobile-box b4-5 em09 lucida-grande bold center noselect">Características do produto</div>
+      <div class="mobile-box b10 center"><img class="size-20 icon noselect" src="/images/icon/expand.png"
+          onclick="lib.displayDiv('create-variation-box', this, '/images/icon/expand.png', '/images/icon/retract.png');">
+      </div>
+    </div>
+    <div id="create-variation-box" class="box a1 container" style="display:none;">
+      <% for(let i in categories) { %>
+      <% if(categories[i].variations) { %>
+      <div class="box b1 container margin-top-10 border-lg-st radius-5 padding-1">
+        <div class="mobile-box a2 em08 lucida-grande v-center padding-5"><%= categories[i].name %></div>
+        <select name="variation-<%= categories[i].name %>" class="mobille-box a2 input-generic radius-5 center">
+          <option selected value="">Nenhum</option>
+          <% for(let j in categories[i].variations) { %>
+          <option value="<%= categories[i].variations[j].id %>"><%= categories[i].variations[j].name %></option>
+          <% } %>
+        </select>
+      </div>
+      <% } %>
+      <% } %>
+    </div>
+  </div>
+  <!-- <input type="file" name="image" class="box b2 border padding-10 center"> -->
+
+  <!--   <form action="/nova-imagem"  method="POST" enctype="multipart/form-data">
+      O NAME do input deve ser exatamente igual ao especificado na rota
+      <button type="submit"> Enviar </button>
+  </form>
+ -->
+  <div class="box b1 em08 lucida-grande margin-top-10">Descrição</div>
+  <textarea name="description" class="box b1 height-80 avant-garde border-lg-st padding-5 radius-5 nofocus"
+    placeholder="Descrição do Produto"></textarea>
+
+  <input type="submit" name="submit"
+    class="box b3 em10 bold input-submit height-50 center margin-top-20 radius-5 pointer" value="Cadastrar">
+</form>
