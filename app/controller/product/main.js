@@ -106,8 +106,6 @@ const productController = {
 
 		try {
 			// Buscar os produtos por código e nome (propriedades padrões)
-			let inners = [];
-			// need inner variations with product.id
 			let params = { keys: [], values: [] };
 			let strict_params = { keys: [], values: [] };
 
@@ -131,8 +129,30 @@ const productController = {
 					// Cada varição existente soma 1
 					if ((variation.response).length) { variation.length++; };
 				};
-				// Somente salvar o produto caso tenha todas as variações
-				if (variation.length == product.variations.length) { products.push(products_response[i]); }
+
+				let variation_props = [
+					"category.id category_id",
+					"category.name category_name",
+					"variation.id variation_id",
+					"variation.name variation_name"
+				];
+
+				let variation_inners = [
+					["cms_cotalogo.variation variation", "product_variation.variation_id", "variation.id"],
+					["cms_cotalogo.category category", "category.id", "variation.category_id"]
+				];
+
+				let variation_strict_params = { keys: [], values: [] };
+
+				// busca a categoria e as variações pelo id do produto
+				lib.Query.fillParam('product_variation.product_id', products_response[i].id, variation_strict_params);
+
+				products_response[i].variations = await Product.variation.filter(variation_props, variation_inners, [], variation_strict_params, []);
+
+				// Somente incluir o produto na busca caso tenha todas as variações
+				if (variation.length == product.variations.length) {
+					products.push(products_response[i]);
+				}
 			};
 
 			res.send({ products });

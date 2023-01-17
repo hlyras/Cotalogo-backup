@@ -10,6 +10,7 @@
     let response = await API.response(Category.save, category);
     if (!response) { return false; }
 
+    event.target.elements.namedItem("id").value = "";
     event.target.elements.namedItem("name").value = "";
 
     document.getElementById("category-filter-form").submit.click();

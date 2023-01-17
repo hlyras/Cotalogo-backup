@@ -63,6 +63,7 @@ const categoryController = {
 		try {
 			await Category.delete(req.params.id);
 			await Variation.deleteByCategoryId(req.params.id);
+			// need delete all variations included in products
 			res.send({ done: "Categoria excluída com sucesso!" });
 		} catch (err) {
 			console.log(err);
