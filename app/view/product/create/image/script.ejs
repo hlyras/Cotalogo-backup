@@ -1,0 +1,39 @@
+<script>
+  function drawImages(images) {
+    let image_box = document.getElementById("product-image-div");
+    image_box.innerHTML = "";
+
+    if (!images.length) {
+      image_box.append(lib.element.create("div", { class: "box b1 lucida-grande bold center" }, "Não foi encontrada nenhuma imagem."));
+    }
+
+    for (let i in images) {
+      if (images[i].url) {
+        let image_div = lib.element.create("div", {
+          class: 'ground height-90 width-90 border shadow-hover noselect margin-left-10 relative',
+          style: 'display: inline-block;vertical-align:top;'
+        });
+
+        image_div.append(lib.element.create("img", {
+          src: `${images[i].url}`,
+          class: 'product-image image-fit noselect'
+        }));
+
+        image_div.append(lib.element.create("img", {
+          onclick: `imageDelete('${images[i].id}', this.parentNode)`,
+          class: "width-30 height-30 remove-icon opacity-out-05 center pointer",
+          src: "https://spaces.jariomilitar.com/erp-images/icon/junk.png"
+        }));
+
+        image_box.append(image_div);
+      }
+    };
+  };
+
+  async function imageDelete(id, parent) {
+    let response = await API.response(Product.image.delete, id);
+    if (!response) { return false; }
+
+    parent && parent.remove();
+  };
+</script>

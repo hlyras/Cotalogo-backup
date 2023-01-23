@@ -35,12 +35,18 @@ const productController = {
 
 		// save variation input values
 		// salvar o valor dos inputs das variações
+		console.log(req.body);
+		console.log(product);
+		// console.log(req.files);
+
 		let obj = lib.convertTo.object(req.body);
 		Object.entries(obj).map(variation => {
 			if (lib.string.splitBy(variation[0], '-')[0] == 'variation' && parseInt(variation[1])) {
 				product.variations.push(parseInt(variation[1]));
 			}
 		});
+
+		return res.send({ done: "Produto cadastrado com sucesso!" });
 
 		try {
 			// Verificar se o código do produto já está cadastrado pelo usuário
@@ -82,6 +88,9 @@ const productController = {
 				let save_variation_response = await product.variation.save();
 				if (save_variation_response.err) { console.log(save_variation_response.err, lib.date.timestamp.toDatetime(lib.date.timestamp.generate())); }
 			};
+
+			// Salvar imagens
+			// Save images
 
 			res.send({ done: "Produto cadastrado com sucesso!" });
 		} catch (err) {

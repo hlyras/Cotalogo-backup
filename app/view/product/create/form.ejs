@@ -1,6 +1,7 @@
 <form id="product-create-form" class="box b1 container padding-10" style="display:none;">
   <div class="box a1 container">
     <div class="box b1 em08 lucida-grande margin-top-10">Código</div>
+    <input type="hidden" name="id" value="">
     <input type="text" name="code" class="mobile-box b4-5 input-generic border-lg-st radius-5 center nofocus"
       placeholder="Código do Produto" autocomplete="off" maxlength="6">
     <img class='mobile-box size-20 center icon pointer noselect' onclick="lib.display('code-help', '')"
@@ -41,6 +42,10 @@
       <button type="submit"> Enviar </button>
   </form>
  -->
+
+  <%- include('./image/box.ejs') %>
+  <%- include('./image/upload-box.ejs') %>
+
   <div class="box b1 em08 lucida-grande margin-top-10">Descrição</div>
   <textarea name="description" class="box b1 height-80 avant-garde border-lg-st padding-5 radius-5 nofocus"
     placeholder="Descrição do Produto"></textarea>

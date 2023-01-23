@@ -1,0 +1,28 @@
+<style type="text/css">
+  .scroll-x {
+    overflow-x: scroll;
+    white-space: nowrap;
+  }
+
+  .remove-icon {
+    display: none;
+    position: absolute;
+    top: 35px;
+    left: 35px;
+  }
+
+  .remove-icon:hover {
+    display: block;
+  }
+
+  .product-image {}
+
+  .product-image:hover+.remove-icon {
+    display: block;
+  }
+</style>
+
+<div id="product-image-box" class="box a1 container border radius-5 padding-5 margin-top-5" style="display:none;">
+  <div class="box b1 lucida-grande bold underline center">Fotos do produto</div>
+  <div id="product-image-div" class="box b1 border padding-5 height-125 scroll-x margin-top-5"></div>
+</div>

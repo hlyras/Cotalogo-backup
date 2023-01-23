@@ -17,8 +17,6 @@
     let products = await API.response(Product.filter, product);
     if (!products) { return false; }
 
-    console.log(products);
-
     lib.display("product-detail-box", 'none');
 
     const pagination = { pageSize: 10, page: 0 };

@@ -8,14 +8,16 @@
 
     category.variations = variations;
 
+    lib.display("category-filter-div", 'none');
     lib.display("category-detail-box", '');
     // lib.display("variation-create-form", 'none');
 
     let variation_create_title = document.getElementById("category-create-title");
     variation_create_title.innerHTML = "";
-    variation_create_title.appendChild(lib.element.create("div", { class: "mobile-box b9-10" }, "Cadastrar " + category.name));
+    variation_create_title.appendChild(lib.element.create("div", { class: "mobile-box b9-10" }, `Cadastrar ${category.name}`));
     // variation_create_title.appendChild(lib.element.icon('b10', 20, "/images/icon/expand.png", "lib.displayDiv('variation-create-form', this, '/images/icon/expand.png', '/images/icon/retract.png');"));
     document.getElementById("variation-create-form").elements.namedItem("category-id").value = category.id;
+    document.getElementById("variation-create-form").elements.namedItem("name").placeholder = `${category.name}`;
 
     let variation_filter_title = document.getElementById("category-filter-title");
     variation_filter_title.innerHTML = "";

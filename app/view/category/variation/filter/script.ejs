@@ -10,11 +10,10 @@
     let variations = await API.response(Variation.filter, variation);
     if (!variations) { return false; }
 
-    const pagination = { pageSize: 10, page: 0 };
-    (function () { lib.carousel.execute("variation-filter-box", variationFilter, variations, pagination); }());
+    variationFilter(variations);
   });
 
-  function variationFilter(variations, pagination) {
+  function variationFilter(variations) {
     let filter_box = document.getElementById("variation-filter-box");
     let filter_div = document.getElementById("variation-filter-div");
     filter_div.innerHTML = "";
@@ -24,14 +23,15 @@
 
       div_header.appendChild(lib.element.create("div", { class: "mobile-box b4-5 padding-5 bold noselect" }, "Nome"));
       filter_div.appendChild(div_header);
-      for (let i = pagination.page * pagination.pageSize; i < variations.length && i < (pagination.page + 1) * pagination.pageSize; i++) {
+
+      variations.forEach(variation => {
         let div_variation = lib.element.create("div", { class: "box b1 container box-hover padding-5 margin-top-5 border" });
 
-        div_variation.appendChild(lib.element.create("div", { class: "mobile-box b8-10 center" }, variations[i].name));
-        div_variation.appendChild(lib.element.icon('b10', 20, "/images/icon/edit.png", `variationEdit(${variations[i].id})`));
-        div_variation.appendChild(lib.element.icon('b10', 20, "/images/icon/trash.png", `variationDelete(${variations[i].id})`));
+        div_variation.appendChild(lib.element.create("div", { class: "mobile-box b8-10 center" }, variation.name));
+        div_variation.appendChild(lib.element.icon('b10', 20, "/images/icon/edit.png", `variationEdit(${variation.id})`));
+        div_variation.appendChild(lib.element.icon('b10', 20, "/images/icon/trash.png", `variationDelete(${variation.id})`));
         filter_div.appendChild(div_variation);
-      };
+      });
       filter_box.style.display = "";
     } else {
       let div_variation = lib.element.create("div", { class: "box b1 center box-hover padding-5 border" }, "Sem resultados");
@@ -46,6 +46,7 @@
 
     document.getElementById("variation-create-form").elements.namedItem("id").value = variation[0].id;
     document.getElementById("variation-create-form").elements.namedItem("name").value = variation[0].name;
+    document.getElementById("variation-create-form").elements.namedItem("name").focus();
 
     lib.display("variation-create-form", '');
   };

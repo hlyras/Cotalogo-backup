@@ -1,25 +1,34 @@
 <script>
   // form de código busca por nome ou código do produto e desce dropdown
   // com isso o produto pode ser enconrado pelo nome caso não se lembre do código de um produto específico
-  document.getElementById("product-create-form").addEventListener("submit", async event => {
-    event.preventDefault();
+  document.getElementById("product-create-form").addEventListener("submit", async e => {
+    e.preventDefault();
 
-    let product = {};
+    let product = new FormData();
+    product.append('id', e.target.id.value);
+    product.append('code', e.target.code.value);
+    product.append('name', e.target.name.value);
+    product.append('description', e.target.description.value);
 
-    for (let i in event.target.elements) {
-      if (event.target.elements[event.target.elements[i].name]) {
-        product[event.target.elements[i].name] = event.target.elements[event.target.elements[i].name].value;
-      }
+    const input = document.getElementById('files');
+    if (!input.files.length) {
+      if (!confirm("Tem certeza que não deseja incluir imagens do produto?")) { return false; }
+    }
+
+    for (let i in input.files) {
+      product.append('file', input.files[i]);
     };
 
-    delete product.item;
-    delete product.namedItem;
-    delete product.submit;
+    // delete product.item;
+    // delete product.namedItem;
+    // delete product.submit;
+
+    console.log(product);
 
     let response = await API.response(Product.save, product);
     if (!response) { return false; }
 
-    Object.entries(product).map(property => { event.target.elements.namedItem(property[0]).value = ""; });
+    Object.entries(product).map(property => { e.target.elements.namedItem(property[0]).value = ""; });
 
     document.getElementById("product-filter-form").submit.click();
   });

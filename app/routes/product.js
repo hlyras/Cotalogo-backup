@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const lib = require('jarmlib');
 
-const passport = require('../../config/passport');
+const multer = require('../middleware/multer');
 
 const userController = require("../controller/user");
 const productController = require("../controller/product/main");
@@ -9,7 +9,7 @@ const categoryController = require("../controller/product/category");
 const variationController = require("../controller/product/variation");
 
 router.get('/', lib.route.toHttps, userController.verify, productController.index);
-router.post('/save', lib.route.toHttps, userController.verify, productController.save);
+router.post('/save', lib.route.toHttps, userController.verify, multer.any('files'), productController.save);
 router.post('/filter', lib.route.toHttps, userController.verify, productController.filter);
 // router.delete('/delete/:id', lib.route.toHttps, userController.verify, productController.delete);
 
