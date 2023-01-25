@@ -2,11 +2,11 @@ const db = require('../../../config/connection');
 const lib = require('jarmlib');
 
 const Product = function (product) {
-	this.id;
-	this.user_id = product.user_id;
-	this.code = product.code;
-	this.name = product.name;
-	this.description = product.description;
+	this.id = 0;
+	this.user_id = 0;
+	this.code = "";
+	this.name = "";
+	this.description = "";
 
 	this.save = () => {
 		if (!this.name || this.name.length < 2 || this.name.length > 100) { return { err: "Nome inválido" }; }

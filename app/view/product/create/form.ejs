@@ -24,7 +24,7 @@
       <% if(categories[i].variations) { %>
       <div class="box b1 container margin-top-10 border-lg-st radius-5 padding-1">
         <div class="mobile-box a2 em08 lucida-grande v-center padding-5"><%= categories[i].name %></div>
-        <select name="variation-<%= categories[i].name %>" class="mobille-box a2 input-generic radius-5 center">
+        <select name="category<%= categories[i].id %>" class="mobille-box a2 input-generic radius-5 center">
           <option selected value="">Nenhum</option>
           <% for(let j in categories[i].variations) { %>
           <option value="<%= categories[i].variations[j].id %>"><%= categories[i].variations[j].name %></option>

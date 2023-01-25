@@ -29,22 +29,19 @@ const productController = {
 		};
 	},
 	save: async (req, res) => {
-		let product = new Product(req.body);
+		let product = new Product();
 		product.user_id = req.user.id;
-		product.variations = [];
+		product.id = req.body.id;
+		product.code = req.body.code;
+		product.name = req.body.name;
+		product.description = req.body.description;
+		product.variations = req.body.variations;
 
-		// save variation input values
 		// salvar o valor dos inputs das variações
 		console.log(req.body);
 		console.log(product);
-		// console.log(req.files);
 
-		let obj = lib.convertTo.object(req.body);
-		Object.entries(obj).map(variation => {
-			if (lib.string.splitBy(variation[0], '-')[0] == 'variation' && parseInt(variation[1])) {
-				product.variations.push(parseInt(variation[1]));
-			}
-		});
+		// Agora realizar o cadastro de imagens
 
 		return res.send({ done: "Produto cadastrado com sucesso!" });
 

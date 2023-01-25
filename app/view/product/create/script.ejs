@@ -10,6 +10,11 @@
     product.append('name', e.target.name.value);
     product.append('description', e.target.description.value);
 
+    let variation_box = document.getElementById("create-variation-box");
+    Array.from(variation_box.querySelectorAll("select")).map(input => {
+      product.append(`${`variations`}`, input.value);
+    });
+
     const input = document.getElementById('files');
     if (!input.files.length) {
       if (!confirm("Tem certeza que não deseja incluir imagens do produto?")) { return false; }
