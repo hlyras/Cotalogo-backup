@@ -1,4 +1,5 @@
-todo list
-1 - refatorar category
-1 - refatorar variation
-1 - refatorar product
+Cobranças do sistema
+
+R$10,00 por catálogo
+Produtos ilimitados
+Preço por foto

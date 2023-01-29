@@ -1,16 +1,37 @@
 // const User = require('../model/user');
 // const userController = require('./user');
 
-const gerencianetAPI = require('../middleware/gerencianet');
+const GNAPI = require('../api/gerencianet');
 
 const homeController = {
 	index: async (req, res) => {
-		console.log(gerencianetAPI);
+		const reqGN = await GNAPI({
+			clientId: process.env.GN_CLIENT_ID,
+			clientSecret: process.env.GN_CLIENT_SECRET
+		});
+
+		const dataCob = {
+			calendario: {
+				expiracao: 3600
+			},
+			devedor: {
+				cpf: '12345678909',
+				nome: "Francisco da Silva"
+			},
+			valor: {
+				original: '119.97'
+			},
+			chave: "596eaf56-e3c0-4f88-8791-355d1bb6dd6e",
+			solicitacaoPagador: "Informe o número ou identificador do pedido."
+		};
+
+		const cobResponse = await reqGN.post('/v2/cob', dataCob);
+		const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
 
 		if (req.user) {
 			return res.render('home', { user: req.user });
 		};
-		res.render('index', { user: req.user });
+		res.render('index', { user: req.user, qrcodeImage: qrcodeResponse.data.imagemQrcode });
 	},
 	business: async (req, res) => {
 		res.send({ done: 'Email Enviado' });
