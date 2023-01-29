@@ -12,7 +12,6 @@ const agent = new https.Agent({
 });
 
 const authenticate = ({ clientId, clientSecret }) => {
-  console.log(clientId, clientSecret);
   const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
   return axios({

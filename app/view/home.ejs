@@ -7,12 +7,11 @@
 <body>
 	<%- include('./partials/userHeader.ejs') %>
 	<%- include('./partials/nav.ejs') %>
+
 	<section class="container">
-		<form action="/nova-imagem" method="POST" enctype="multipart/form-data">
-			<input type="file" name="image" multiple>
-			<button type="submit"> Enviar </button>
-		</form>
+		<h1>Informações do cliente</h1>
 	</section>
+
 	<%- include('./partials/loader.ejs') %>
 </body>
 <footer>
