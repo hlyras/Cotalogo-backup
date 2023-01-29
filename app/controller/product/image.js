@@ -13,7 +13,7 @@ const imageController = {};
 imageController.upload = async (file, product_id) => {
   try {
     let newPath = await compressImage(file, 425);
-    let imageData = await uploadFileS3(newPath, file.filename.split('.')[0] + '.png', "/produtos");
+    let imageData = await uploadFileS3(newPath, file.filename.split('.')[0] + '.png', "/development");
 
     fs.promises.unlink(newPath);
     file.mimetype != 'image/png' && fs.promises.unlink(file.path);

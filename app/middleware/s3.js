@@ -1,5 +1,5 @@
-const fs = require("fs");
 const aws = require("aws-sdk");
+const fs = require("fs");
 
 const s3 = new aws.S3({ endpoint: process.env.S3_ENDPOINT });
 

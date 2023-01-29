@@ -2,8 +2,11 @@ const User = require('../../model/user');
 const userController = require('../user');
 
 const Product = require('../../model/product/main');
+Product.image = require('../../model/product/image');
 const Category = require('../../model/product/category');
 const Variation = require('../../model/product/variation');
+
+const imageController = require('./image');
 
 const lib = require('jarmlib');
 
@@ -37,17 +40,8 @@ const productController = {
 		product.description = req.body.description;
 		product.variations = req.body.variations;
 
-		// salvar o valor dos inputs das variações
-		console.log(req.body);
-		console.log(product);
-
-		// Agora realizar o cadastro de imagens
-
-		return res.send({ done: "Produto cadastrado com sucesso!" });
-
 		try {
-			// Verificar se o código do produto já está cadastrado pelo usuário
-			// Verify product code is already registered
+			// Verify code duplicity
 			if (product.code) {
 				let code_strict_params = { keys: [], values: [] };
 				lib.Query.fillParam('product.code', product.code, code_strict_params);
@@ -56,7 +50,7 @@ const productController = {
 				if ((code_response).length) { return res.send({ msg: "O código do produto já está sendo utilizado" }); }
 			}
 
-			// Verificar se as variações do produto pertencem ao usuário
+
 			// Verify if variations belongs to the user
 			for (let i in product.variations) {
 				let variation_strict_params = { keys: [], values: [] };
@@ -66,13 +60,12 @@ const productController = {
 				if (!(variation_response).length) { return res.send({ unauthorized: "Variações inválidas, tente cadastrar novamente!" }); }
 			};
 
-			// Salvar produto
+
 			// Save product
 			let save_product_response = await product.save();
 			if (save_product_response.err) { return res.send({ msg: save_product_response.err }); }
 			product.id = save_product_response.insertId;
 
-			// Salvar variações
 			// Save variations
 			for (let i in product.variations) {
 				let product_variation = {
@@ -86,8 +79,10 @@ const productController = {
 				if (save_variation_response.err) { console.log(save_variation_response.err, lib.date.timestamp.toDatetime(lib.date.timestamp.generate())); }
 			};
 
-			// Salvar imagens
 			// Save images
+			for (let i in req.files) {
+				await imageController.upload(req.files[i], parseInt(save_product_response.insertId));
+			};
 
 			res.send({ done: "Produto cadastrado com sucesso!" });
 		} catch (err) {

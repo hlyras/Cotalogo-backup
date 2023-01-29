@@ -1,8 +1,12 @@
 // const User = require('../model/user');
 // const userController = require('./user');
 
+const gerencianetAPI = require('../middleware/gerencianet');
+
 const homeController = {
 	index: async (req, res) => {
+		console.log(gerencianetAPI);
+
 		if (req.user) {
 			return res.render('home', { user: req.user });
 		};
