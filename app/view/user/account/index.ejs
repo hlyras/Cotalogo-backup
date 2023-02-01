@@ -1,0 +1,59 @@
+<html>
+
+<head>
+  <%- include('./../../partials/head.ejs') %>
+  <style type="text/css">
+    .btn-act {
+      background-color: #356ae6;
+      color: #fff;
+    }
+
+    .btn-act:hover {
+      background-color: #245ae5;
+      color: #fff;
+    }
+
+    .image-card {
+      object-fit: contain;
+      width: 100%;
+      height: 200px;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('./../../partials/header.ejs') %>
+  <%- include('./../../partials/nav.ejs') %>
+  <section class="container h-center">
+    <div class="box b2-3 container ground radius-5 padding-10 h-center">
+
+
+      <!-- Mostrar quanto custa a conta por mês -->
+      <!-- <h3 class="box b1 lucida-grande center">Custo mensal: R$23.94</h3> -->
+      <!-- Mostrar quantidade de catálogos ativos -->
+      <!-- <h3 class="box b1 lucida-grande center">Quantidade de catálogos: 2</h3> -->
+      <!-- Mostrar quantidade de imagens ativas -->
+      <!-- <h3 class="box b1 lucida-grande center">Quantidade de imagens: 78</h3> -->
+      <!-- Mostrar opção para realizar recarga e o valor da recarga -->
+
+      <%- include('./stats/box.ejs') %>
+
+      <%- include('./PIX/create-cob/form.ejs') %>
+
+    </div>
+    <!-- id: 2,
+    name: 'Chris Carvalho',
+    business: 'Coisas de menina',
+    email: 'chriscarvalho@gmail.com',
+    status: 'Active',
+    balance: 0 -->
+
+  </section>
+  <%- include('./../../partials/loader.ejs') %>
+</body>
+<footer>
+  <%- include('./../../partials/footer.ejs') %>
+  <%- include('./PIX/create-cob/script.ejs') %>
+</footer>
+
+</html>

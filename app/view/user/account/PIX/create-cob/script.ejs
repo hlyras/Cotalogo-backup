@@ -1,0 +1,32 @@
+<script>
+  document.getElementById("create-cob-form").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const pix = {
+      value: e.target.cost.value
+    };
+
+    let response = await fetch("/user/account/cob", {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(pix)
+    });
+    response = await response.json();
+
+    if (API.verifyResponse(response)) { return false };
+    console.log(response);
+
+    lib.display("create-cob-form", "none");
+    lib.display("qrcode-box", "");
+
+    document.getElementById("qrcode-image").src = response.qrcodeImage;
+  });
+
+  document.getElementById('copia-e-cola').addEventListener('click', async e => {
+    e.preventDefault();
+
+    navigator.clipboard.writeText(e.target.value).then(() => alert('Código copiado com sucesso!'));
+  });
+
+  // https://pix.gerencianet.com.br/cob/pagar/c0a68af7ece6468cbb8e120e29a27cb5
+</script>

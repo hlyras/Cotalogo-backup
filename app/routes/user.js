@@ -12,6 +12,7 @@ const homeController = require("../controller/home");
 router.get('/', lib.route.toHttps, userController.auth.verify, userController.index);
 
 router.get('/account', lib.route.toHttps, userController.auth.verify, userController.account.index);
+router.post('/account/cob', lib.route.toHttps, userController.auth.verify, userController.account.genCob);
 
 router.post('/login', passport.authenticate('local-login', {
 	failureRedirect: '/login',
