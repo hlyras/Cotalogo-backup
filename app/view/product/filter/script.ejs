@@ -35,15 +35,31 @@
       div_header.appendChild(lib.element.create("div", { class: "mobile-box b7-10 padding-5" }, "Nome"));
       filter_div.appendChild(div_header);
       for (let i = pagination.page * pagination.pageSize; i < products.length && i < (pagination.page + 1) * pagination.pageSize; i++) {
-        let div_product = lib.element.create("div", { class: "box b1 container box-hover padding-5 margin-top-5 border" });
+        let div_product = lib.element.create("div", { class: "box b3 container ground margin-top-10 padding-10 pointer shadow-st-hover border transition-04-04 radius-5 noselect pointer" });
 
-        div_product.appendChild(lib.element.create("div", {
-          class: "mobile-box b5 em11 lucida-grande input-show border-st-2 bold nowrap center pointer noselect",
-          onclick: "productDetail(" + products[i].id + ")"
-        }, products[i].code || 'S/C'));
-        div_product.appendChild(lib.element.create("div", { class: "mobile-box b6-10 center" }, products[i].name));
-        div_product.appendChild(lib.element.icon('b10', 20, "/images/icon/edit.png", "Product.controller.edit(" + products[i].id + ")"));
-        div_product.appendChild(lib.element.icon('b10', 20, "/images/icon/trash.png", "Product.controller.delete(" + products[i].id + ")"));
+        !products[i].pack && div_product.addEventListener('click', () => { Catalog.product.controller.show(products[i].id, products[i].category_id) });
+        products[i].pack && div_product.addEventListener('click', () => { Catalog.package.controller.show(products[i].id, products[i].category_id || 0) });
+
+        products[i].images.length && div_product.appendChild(lib.element.create("img", {
+          class: "mobile-box b2 image-card height-300 center",
+          src: products[i].images[0].url
+        }));
+
+        !products[i].images.length && div_product.appendChild(lib.element.create("img", {
+          class: "mobile-box b2 image-card height-300 center",
+          src: '/images/product/no-product.png'
+        }));
+
+        let div_info = lib.element.create("div", { class: "mobile-box b1 container opacity-out-07 transition-04-04 h-center" });
+        products[i].name && div_info.append(lib.element.create("div", { class: "box b1 em11 lucida-grande bold underline center" }, products[i].name));
+        div_info.append(lib.element.create("div", { class: "mobile-box b1 em14 lucida-grande bold padding-3 center" }, `R$10,00`));
+
+        // for (let y in products[i].variations) {
+        //   console.log(products[i].variations[y]);
+        //   div_info.append(lib.element.info("mobile-box b2", products[i].variations[y].category_name, products[i].variations[y].variation_name));
+        // };
+
+        div_product.appendChild(div_info);
         filter_div.appendChild(div_product);
       };
       filter_box.style.display = "";

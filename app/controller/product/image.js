@@ -10,7 +10,7 @@ Product.image = require('../../model/product/image');
 
 const imageController = {};
 
-imageController.upload = async (file, product_id) => {
+imageController.upload = async (user_id, file, product_id) => {
   try {
     let newPath = await compressImage(file, 425);
     let imageData = await uploadFileS3(newPath, file.filename.split('.')[0] + '.png', "/development");
@@ -19,6 +19,7 @@ imageController.upload = async (file, product_id) => {
     file.mimetype != 'image/png' && fs.promises.unlink(file.path);
 
     let image = new Product.image();
+    image.user_id = user_id;
     image.product_id = product_id;
     image.etag = imageData.ETag.replaceAll(`"`, "");
     image.url = imageData.Location;

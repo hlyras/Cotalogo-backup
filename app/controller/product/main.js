@@ -81,7 +81,7 @@ const productController = {
 
 			// Save images
 			for (let i in req.files) {
-				await imageController.upload(req.files[i], parseInt(save_product_response.insertId));
+				await imageController.upload(req.user.id, req.files[i], parseInt(save_product_response.insertId));
 			};
 
 			res.send({ done: "Produto cadastrado com sucesso!" });
@@ -152,6 +152,7 @@ const productController = {
 
 				// Somente incluir o produto na busca caso tenha todas as variações
 				if (variation.length == product.variations.length) {
+					products_response[i].images = await Product.image.findByProductId(products_response[i].id);
 					products.push(products_response[i]);
 				}
 			};

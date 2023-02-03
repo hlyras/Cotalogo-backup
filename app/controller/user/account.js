@@ -38,6 +38,11 @@ accountController.genCob = async (req, res) => {
   res.send({ qrcodeImage: qrcodeResponse.data.imagemQrcode });
 };
 
+accountController.webhooks = async (req, res) => {
+  console.log(req.body);
+  res.send(200);
+};
+
 module.exports = accountController;
 
 // const GNAPI = require('../api/gerencianet');
