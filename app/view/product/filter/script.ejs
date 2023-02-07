@@ -35,32 +35,35 @@
       div_header.appendChild(lib.element.create("div", { class: "mobile-box b7-10 padding-5" }, "Nome"));
       filter_div.appendChild(div_header);
       for (let i = pagination.page * pagination.pageSize; i < products.length && i < (pagination.page + 1) * pagination.pageSize; i++) {
-        let div_product = lib.element.create("div", { class: "box b3 container ground margin-top-10 padding-10 pointer shadow-st-hover border transition-04-04 radius-5 noselect pointer" });
+        let div_product = lib.element.create("div", { class: "box b3 container margin-top-10 padding-10 pointer border radius-5 noselect pointer h-center" });
 
-        !products[i].pack && div_product.addEventListener('click', () => { Catalog.product.controller.show(products[i].id, products[i].category_id) });
-        products[i].pack && div_product.addEventListener('click', () => { Catalog.package.controller.show(products[i].id, products[i].category_id || 0) });
+        let product_carousel = lib.element.create("div", { id: `product-${products[i].id}`, class: "carousel-container h-center" });
+        let carousel_slides = lib.element.create("div", { class: `carousel-slides h-center border` });
+        product_carousel.append(carousel_slides);
 
-        products[i].images.length && div_product.appendChild(lib.element.create("img", {
-          class: "mobile-box b2 image-card height-300 center",
-          src: products[i].images[0].url
-        }));
+        for (let y in products[i].images) {
+          let carousel_slide = lib.element.create("div", { class: `carousel-slide height-200` });
+          carousel_slide.append(lib.element.create("img", {
+            class: "image-prop max-height-200",
+            src: products[i].images[y].url
+          }));
+          carousel_slides.append(carousel_slide);
+        };
+        div_product.append(product_carousel);
 
-        !products[i].images.length && div_product.appendChild(lib.element.create("img", {
-          class: "mobile-box b2 image-card height-300 center",
+        !products[i].images.length && product_carousel.appendChild(lib.element.create("img", {
+          class: "mobile-box b2 image-card center",
           src: '/images/product/no-product.png'
         }));
 
         let div_info = lib.element.create("div", { class: "mobile-box b1 container opacity-out-07 transition-04-04 h-center" });
         products[i].name && div_info.append(lib.element.create("div", { class: "box b1 em11 lucida-grande bold underline center" }, products[i].name));
         div_info.append(lib.element.create("div", { class: "mobile-box b1 em14 lucida-grande bold padding-3 center" }, `R$10,00`));
+        div_product.append(div_info);
 
-        // for (let y in products[i].variations) {
-        //   console.log(products[i].variations[y]);
-        //   div_info.append(lib.element.info("mobile-box b2", products[i].variations[y].category_name, products[i].variations[y].variation_name));
-        // };
+        filter_div.append(div_product);
 
-        div_product.appendChild(div_info);
-        filter_div.appendChild(div_product);
+        lib.Carousel(`product-${products[i].id}`);
       };
       filter_box.style.display = "";
     } else {

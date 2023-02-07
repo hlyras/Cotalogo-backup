@@ -2,12 +2,6 @@
 
 <head>
   <%- include('./../partials/head.ejs') %>
-  <style>
-    .image-card {
-      object-fit: contain;
-      width: 100%;
-    }
-  </style>
 </head>
 
 <body>
@@ -43,6 +37,96 @@
 </body>
 <footer>
   <%- include('./../partials/footer.ejs') %>
+
+  <script>
+    lib.Carousel = (id) => {
+      const carousel = document.querySelector(`#${id}`);
+      const slides = carousel.querySelectorAll('.carousel-slides img');
+      let slideIndex = 0;
+
+      const showSlides = (n) => {
+        slides.forEach((slide) => {
+          slide.style.display = "none";
+        });
+        slides[n].style.display = "block";
+      };
+
+      const plusSlides = (n) => {
+        slideIndex += n;
+        if (slideIndex >= slides.length) {
+          slideIndex = 0;
+        }
+        if (slideIndex < 0) {
+          slideIndex = slides.length - 1;
+        }
+        showSlides(slideIndex);
+      };
+
+      const prev = document.createElement('a');
+      prev.classList.add('carousel-prev');
+      prev.innerHTML = "&#10094;";
+      prev.addEventListener('click', () => {
+        plusSlides(-1);
+      });
+      carousel.appendChild(prev);
+
+      const next = document.createElement('a');
+      next.classList.add('carousel-next');
+      next.innerHTML = "&#10095;";
+      next.addEventListener('click', () => {
+        plusSlides(1);
+      });
+      carousel.appendChild(next);
+
+      // finger touch slide detect
+      let touchStartX;
+      carousel.addEventListener('touchstart', (event) => {
+        touchStartX = event.touches[0].clientX;
+      });
+
+      carousel.addEventListener('touchend', (event) => {
+        const touchEndX = event.changedTouches[0].clientX;
+        const deltaX = touchEndX - touchStartX;
+        if (deltaX > 0) {
+          plusSlides(-1);
+        } else {
+          plusSlides(1);
+        }
+      });
+
+      // mouse slide detect
+      let mouseDownX;
+      let isDragging = false;
+
+      carousel.addEventListener('mousedown', (event) => {
+        mouseDownX = event.clientX;
+        isDragging = true;
+      });
+
+      carousel.addEventListener('mousemove', (event) => {
+        if (!isDragging) {
+          return;
+        }
+        const mouseMoveX = event.clientX;
+        const deltaX = mouseMoveX - mouseDownX;
+        if (Math.abs(deltaX) > 50) {
+          isDragging = false;
+          if (deltaX > 0) {
+            plusSlides(-1);
+          } else {
+            plusSlides(1);
+          }
+        }
+      });
+
+      carousel.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+
+      showSlides(0);
+    };
+  </script>
+
   <script src="/scripts/product/main.js"></script>
   <%- include('./create/script.ejs') %>
   <%- include('./create/image/script.ejs') %>
@@ -51,3 +135,17 @@
 </footer>
 
 </html>
+
+<!-- <div id="product-2" class="carousel-container h-center">
+  <div class="carousel-slides h-center border">
+    <div class="carousel-slide height-200"><img class="image-prop max-height-200"
+        src="https://wt-images-cdn.sfo3.digitaloceanspaces.com/development/1675600456571-fundo.png"
+        style="display: none;"></div>
+    <div class="carousel-slide height-200"><img class="image-prop max-height-200"
+        src="https://wt-images-cdn.sfo3.digitaloceanspaces.com/development/1675600456577-luna.png"
+        style="display: block;"></div>
+    <div class="carousel-slide height-200"><img class="image-prop max-height-200"
+        src="https://wt-images-cdn.sfo3.digitaloceanspaces.com/development/1675600456582-luna.png"
+        style="display: none;"></div>
+  </div>
+</div> -->
