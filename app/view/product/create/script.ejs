@@ -28,13 +28,47 @@
     // delete product.namedItem;
     // delete product.submit;
 
-    console.log(product);
-
     let response = await API.response(Product.save, product);
     if (!response) { return false; }
 
-    Object.entries(product).map(property => { e.target.elements.namedItem(property[0]).value = ""; });
+    e.target.id.value = "";
+    e.target.code.value = "";
+    e.target.name.value = "";
+    e.target.description.value = "";
+
+    Array.from(variation_box.querySelectorAll("select")).map(input => {
+      input.value = "";
+    });
+
+    clearFileList();
 
     document.getElementById("product-filter-form").submit.click();
   });
+
+  async function productEdit(id) {
+    let product = await API.response(Product.findById, id);
+    if (!product) { return false };
+
+    console.log(product);
+    return;
+
+    lib.display("product-image-box", "");
+    drawImages(product.images);
+
+    const product_create_form = document.getElementById('product-create-form');
+    product_create_form.id.value = product.id;
+    product_create_form.code.value = product.code;
+    product_create_form.name.value = product.name;
+    product_create_form.description.value = product.description;
+
+    clearFileList();
+  };
+
+  async function productDelete(id) {
+    let r = confirm('Deseja realmente excluir o produto? Atenção, essa ação não pode ser desfeita!');
+    if (r) {
+      if (!await API.response(Product.delete, id)) { return false; };
+      document.getElementById("product-filter-form").submit.click();
+    }
+  };
 </script>

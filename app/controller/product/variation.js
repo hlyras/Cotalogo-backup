@@ -13,8 +13,6 @@ const variationController = {
 		let variation = new Variation(req.body);
 		variation.user_id = req.user.id;
 
-		console.log(variation);
-
 		try {
 			if (!variation.id) {
 				let response = await variation.save();

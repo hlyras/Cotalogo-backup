@@ -8,7 +8,7 @@
       if (event.target.elements[event.target.elements[i].name]) {
         product[event.target.elements[i].name] = event.target.elements[event.target.elements[i].name].value;
       }
-    }
+    };
 
     delete product.item;
     delete product.namedItem;
@@ -34,6 +34,7 @@
       div_header.appendChild(lib.element.create("div", { class: "mobile-box b10" }));
       div_header.appendChild(lib.element.create("div", { class: "mobile-box b7-10 padding-5" }, "Nome"));
       filter_div.appendChild(div_header);
+
       for (let i = pagination.page * pagination.pageSize; i < products.length && i < (pagination.page + 1) * pagination.pageSize; i++) {
         let div_product = lib.element.create("div", { class: "box b3 container margin-top-10 padding-10 pointer border radius-5 noselect pointer h-center" });
 
@@ -45,7 +46,8 @@
           let carousel_slide = lib.element.create("div", { class: `carousel-slide height-200` });
           carousel_slide.append(lib.element.create("img", {
             class: "image-prop max-height-200",
-            src: products[i].images[y].url
+            src: products[i].images[y].url,
+            draggable: false
           }));
           carousel_slides.append(carousel_slide);
         };
@@ -53,12 +55,14 @@
 
         !products[i].images.length && product_carousel.appendChild(lib.element.create("img", {
           class: "mobile-box b2 image-card center",
-          src: '/images/product/no-product.png'
+          src: '/images/product/no-product.png',
+          draggable: false
         }));
 
         let div_info = lib.element.create("div", { class: "mobile-box b1 container opacity-out-07 transition-04-04 h-center" });
-        products[i].name && div_info.append(lib.element.create("div", { class: "box b1 em11 lucida-grande bold underline center" }, products[i].name));
-        div_info.append(lib.element.create("div", { class: "mobile-box b1 em14 lucida-grande bold padding-3 center" }, `R$10,00`));
+        div_info.append(lib.element.create("div", { class: "box b1 em11 lucida-grande bold margin-top-5 center" }, products[i].name));
+        div_info.append(lib.element.icon('b2', 20, "/images/icon/edit.png", `productEdit(${products[i].id})`));
+        div_info.append(lib.element.icon('b2', 20, "/images/icon/trash.png", `productDelete(${products[i].id})`));
         div_product.append(div_info);
 
         filter_div.append(div_product);
