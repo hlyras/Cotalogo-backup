@@ -50,12 +50,13 @@ imageController.deleteByProductId = async (product_id) => {
 };
 
 imageController.delete = async (req, res) => {
-  if (!await userController.verifyAccess(req, res, ['adm', 'man', 'adm-man', 'adm-vis'])) {
-    return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
-  };
 
   try {
     const image = (await Product.image.findById(req.params.id))[0];
+
+    if (image.user_id != req.user.id) {
+      return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+    }
 
     await Product.image.delete(image.id);
     if (image.keycode) { await deleteFileS3(image.keycode); }

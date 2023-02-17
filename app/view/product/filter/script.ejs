@@ -53,8 +53,8 @@
         };
         div_product.append(product_carousel);
 
-        !products[i].images.length && product_carousel.appendChild(lib.element.create("img", {
-          class: "mobile-box b2 image-card center",
+        !products[i].images.length && carousel_slides.appendChild(lib.element.create("img", {
+          class: "image-prop height-200",
           src: '/images/product/no-product.png',
           draggable: false
         }));
@@ -67,7 +67,7 @@
 
         filter_div.append(div_product);
 
-        lib.Carousel(`product-${products[i].id}`);
+        products[i].images.length && lib.Carousel(`product-${products[i].id}`);
       };
       filter_box.style.display = "";
     } else {

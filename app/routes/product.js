@@ -5,6 +5,7 @@ const multer = require('../middleware/multer');
 
 const userController = require("../controller/user");
 const productController = require("../controller/product/main");
+productController.image = require("../controller/product/image");
 const categoryController = require("../controller/product/category");
 const variationController = require("../controller/product/variation");
 
@@ -13,6 +14,7 @@ router.post('/save', lib.route.toHttps, userController.verify, multer.any('files
 router.post('/filter', lib.route.toHttps, userController.verify, productController.filter);
 router.get('/:id', lib.route.toHttps, userController.verify, productController.findById);
 // router.delete('/delete/:id', lib.route.toHttps, userController.verify, productController.delete);
+router.delete('/image/id/:id', lib.route.toHttps, userController.authorize, productController.image.delete);
 
 router.get('/category', lib.route.toHttps, userController.verify, categoryController.index);
 router.post('/category/save', lib.route.toHttps, userController.authorize, categoryController.save);

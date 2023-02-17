@@ -3,148 +3,159 @@
 <head>
 	<%- include('./partials/head.ejs') %>
 	<style>
-		.carousel {
-			position: relative;
-			width: 100%;
+		.sidebar {
+			position: fixed;
+			top: 0;
+			right: 0;
+			width: 275px;
+			height: 100%;
+			background-color: #f0f0f0;
+			padding-top: 20px;
+			border-right: 1px solid #ccc;
+			transform: translateX(100%);
+			transition: transform 0.5s ease;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 		}
 
-		.slides {
-			display: flex;
+		.sidebar a {
+			padding: 6px 8px 6px 16px;
+			display: block;
 		}
 
-		.slides img {
-			height: auto;
+		.sidebar a:hover {
+			background-color: #ddd;
+		}
+
+		.sidebar ul ul {
 			display: none;
 		}
 
-		.prev,
-		.next {
-			cursor: pointer;
-			position: absolute;
-			top: 50%;
-			width: auto;
-			margin-top: -22px;
-			padding: 16px;
-			color: white;
-			font-weight: bold;
-			font-size: 18px;
-			transition: 0.6s ease;
-			border-radius: 0 3px 3px 0;
-			user-select: none;
+		.sidebar li.active>ul {
+			display: block;
 		}
 
-		.next {
-			right: 0;
-			border-radius: 3px 0 0 3px;
+		.sidebar.open {
+			transform: translateX(0);
 		}
 
-		.prev:hover,
-		.next:hover {
-			background-color: rgba(0, 0, 0, 0.8);
-		}
-
-		.image-card {
-			object-fit: contain;
-			width: 100%;
-		}
-
-		.shadow-st-hover:hover {
-			box-shadow: 5px 5px 5px var(--solid);
+		@media screen and (max-height: 450px) {
+			.sidebar {
+				padding-top: 40px;
+			}
 		}
 	</style>
 </head>
 
 <body>
 	<%- include('./partials/userHeader.ejs') %>
-	<%- include('./partials/nav.ejs') %>
+	<div class="container">
+		<div class="mobile-box right padding-10">
+			<img class='icon size-40 open-btn' src='/images/icon/menu.png' onclick="openNav()">
+		</div>
+	</div>
+
+	<div class="sidebar scroll-y" id="mySidebar">
+		<div class="container margin-bottom-20">
+			<div class="mobile-box b6-7"></div>
+			<div class="mobile-box container b7 h-center">
+				<img class='icon size-15 open-btn' src='/images/icon/close.png' onclick="closeNav()">
+			</div>
+		</div>
+
+		<ul>
+			<li class="underline margin-top-5">
+				<a class="lucida-grande bold">Financeiro</a>
+				<ul>
+					<li><a href="#" class="em12">Subitem 1.1</a></li>
+					<li><a href="#" class="em12">Subitem 1.2</a></li>
+					<li><a href="#" class="em12">Subitem 1.3</a></li>
+				</ul>
+			</li>
+			<li class="underline margin-top-5">
+				<a class="lucida-grande bold">Produtos</a>
+				<ul>
+					<li><a href="#" class="em12">Subitem 2.1</a></li>
+					<li><a href="#" class="em12">Subitem 2.2</a></li>
+					<li><a href="#" class="em12">Subitem 2.3</a></li>
+				</ul>
+			</li>
+			<li class="underline margin-top-5">
+				<a class="lucida-grande bold">Produtos</a>
+				<ul>
+					<li><a href="#" class="em12">Subitem 2.1</a></li>
+					<li><a href="#" class="em12">Subitem 2.2</a></li>
+					<li><a href="#" class="em12">Subitem 2.3</a></li>
+				</ul>
+			</li>
+			<li class="underline margin-top-5">
+				<a class="lucida-grande bold">Produtos</a>
+				<ul>
+					<li><a href="#" class="em12">Subitem 2.1</a></li>
+					<li><a href="#" class="em12">Subitem 2.2</a></li>
+					<li><a href="#" class="em12">Subitem 2.3</a></li>
+				</ul>
+			</li>
+			<li class="underline margin-top-5">
+				<a class="lucida-grande bold">Produtos</a>
+				<ul>
+					<li><a href="#" class="em12">Subitem 2.1</a></li>
+					<li><a href="#" class="em12">Subitem 2.2</a></li>
+					<li><a href="#" class="em12">Subitem 2.3</a></li>
+				</ul>
+			</li>
+			<li class="underline margin-top-5"><a href="#" class="lucida-grande bold">Matéria-Prima</a></li>
+		</ul>
+	</div>
 
 	<section class="container h-center">
-		<div class="box b2-3 ground radius-5 padding-10">
-			<h1 class="box b1 underline lucida-grande center">Painel de controle</h1>
 
-			<div class="box b4 container border padding-10 margin-top-10">
-				<div class="carousel h-center">
-					<div class="slides-1 container h-center border">
-						<div class="box b1 container h-center">
-							<img src="/images/icon/add-image.png" class="mobile-box b2 image-card height-200 center">
-						</div>
-						<div class="box b1 container h-center">
-							<img src="/images/icon/add.png" class="mobile-box b2 image-card height-200 center">
-						</div>
-						<div class="box b1 container h-center">
-							<img src="/images/icon/admin.png" class="mobile-box b2 image-card height-200 center">
-						</div>
-					</div>
-					<a class="prev" onclick="carousel1.plusSlides(-1)">&#10094;</a>
-					<a class="next" onclick="carousel1.plusSlides(1)">&#10095;</a>
-				</div>
-
-				<div class="carousel h-center">
-					<div class="slides-2 container h-center border">
-						<div class="box b1 container h-center">
-							<img src="/images/icon/add-image.png" class="mobile-box b2 image-card height-200 center">
-						</div>
-						<div class="box b1 container h-center">
-							<img src="/images/icon/add.png" class="mobile-box b2 image-card height-200 center">
-						</div>
-						<div class="box b1 container h-center">
-							<img src="/images/icon/admin.png" class="mobile-box b2 image-card height-200 center">
-						</div>
-					</div>
-					<a class="prev" onclick="carousel2.plusSlides(-1)">&#10094;</a>
-					<a class="next" onclick="carousel2.plusSlides(1)">&#10095;</a>
-				</div>
-			</div>
-
-		</div>
 	</section>
 
 	<%- include('./partials/loader.ejs') %>
 </body>
 <footer>
 	<%- include('./partials/footer.ejs') %>
-
-	<script>
-		function Carousel(name) {
-			let slideIndex = 1;
-			let slides = document.querySelectorAll(`.slides-${name} img`);
-
-			function init() {
-				showSlides(slideIndex);
-			}
-
-			function plusSlides(n) {
-				showSlides(slideIndex += n);
-			}
-
-			function showSlides(n) {
-				let i;
-				if (n > slides.length) {
-					slideIndex = 1;
-				}
-				if (n < 1) {
-					slideIndex = slides.length;
-				}
-				for (i = 0; i < slides.length; i++) {
-					slides[i].style.display = "none";
-				}
-				slides[slideIndex - 1].style.display = "block";
-			}
-
-			return {
-				init,
-				plusSlides,
-			};
-		};
-
-		let carousel1 = Carousel("1");
-		let carousel2 = Carousel("2");
-
-		document.addEventListener("DOMContentLoaded", function () {
-			carousel1.init();
-			carousel2.init();
-		});
-	</script>
 </footer>
+
+<script>
+	const sidebar = document.querySelector(".sidebar");
+
+	document.addEventListener("DOMContentLoaded", () => {
+		// add active class to the first link on page load
+		sidebar.querySelector("a").classList.add("active");
+	});
+
+	sidebar.addEventListener("click", (event) => {
+		if (event.target.tagName === "A") {
+			// remove active class from all links
+			sidebar.querySelectorAll("a").forEach((link) => {
+				link.classList.remove("active");
+			});
+
+			// add active class to the clicked link
+			event.target.classList.add("active");
+
+			// toggle submenu display
+			const li = event.target.parentNode;
+			li.classList.toggle("active");
+		}
+	});
+
+	function openNav() {
+		document.getElementById("mySidebar").classList.add("open");
+
+		// fecha a barra lateral se um clique ocorrer fora dela
+		document.addEventListener("click", function closeNav(event) {
+			if (!event.target.closest(".sidebar") && !event.target.closest(".open-btn")) {
+				document.getElementById("mySidebar").classList.remove("open");
+				document.removeEventListener("click", closeNav);
+			}
+		});
+	}
+
+	function closeNav() {
+		document.getElementById("mySidebar").classList.remove("open");
+	}
+</script>
 
 </html>

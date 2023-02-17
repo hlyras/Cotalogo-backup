@@ -49,8 +49,6 @@
     let product = await API.response(Product.findById, id);
     if (!product) { return false };
 
-    console.log(product);
-
     lib.display("product-image-box", "");
     drawImages(product.images);
 
@@ -59,6 +57,17 @@
     product_create_form.code.value = product.code;
     product_create_form.name.value = product.name;
     product_create_form.description.value = product.description;
+
+    let variation_box = document.getElementById("create-variation-box");
+    product.variations.forEach(variation => {
+      Array.from(variation_box.querySelectorAll("select")).map(input => {
+        input.querySelectorAll('option').forEach(option => {
+          if (option.value == variation.variation_id) {
+            input.value = option.value;
+          }
+        });
+      });
+    });
 
     clearFileList();
   };
