@@ -43,48 +43,115 @@ productController.save = async (req, res) => {
 	product.variations = req.body.variations;
 
 	try {
-		// Verify code duplicity
-		if (product.code) {
+		if (!product.id) {
+			// Verify code duplicity
+			if (product.code) {
+				let code_strict_params = { keys: [], values: [] };
+				lib.Query.fillParam('product.code', product.code, code_strict_params);
+				lib.Query.fillParam('product.user_id', req.user.id, code_strict_params);
+				let code_response = await Product.filter([], [], [], code_strict_params, []);
+				if ((code_response).length) { return res.send({ msg: "O código do produto já está sendo utilizado" }); }
+			}
+
+			// Verify if variations belongs to the user
+			for (let i in product.variations) {
+				let variation_strict_params = { keys: [], values: [] };
+				lib.Query.fillParam('variation.user_id', req.user.id, variation_strict_params);
+				lib.Query.fillParam('variation.id', product.variations[i], variation_strict_params);
+				let variation_response = await Variation.filter([], [], [], variation_strict_params, []);
+				if (!(variation_response).length) { return res.send({ unauthorized: "Variações inválidas, tente cadastrar novamente!" }); }
+			};
+
+			// Save product
+			let save_product_response = await product.save();
+			if (save_product_response.err) { return res.send({ msg: save_product_response.err }); }
+			product.id = save_product_response.insertId;
+
+			// Save variations
+			for (let i in product.variations) {
+				let product_variation = {
+					user_id: parseInt(req.user.id),
+					product_id: parseInt(product.id),
+					variation_id: parseInt(product.variations[i])
+				};
+
+				product.variation = new Product.variation(product_variation);
+				await product.variation.save();
+			};
+
+			// Save images
+			for (let i in req.files) {
+				await imageController.upload(req.user.id, req.files[i], parseInt(save_product_response.insertId));
+			};
+
+			res.send({ done: "Produto cadastrado com sucesso!" });
+		} else {
+			// Verify code duplicity or code update
 			let code_strict_params = { keys: [], values: [] };
 			lib.Query.fillParam('product.code', product.code, code_strict_params);
 			lib.Query.fillParam('product.user_id', req.user.id, code_strict_params);
 			let code_response = await Product.filter([], [], [], code_strict_params, []);
-			if ((code_response).length) { return res.send({ msg: "O código do produto já está sendo utilizado" }); }
-		}
+			if (code_response[0] && code_response[0].id != product.id) { return res.send({ msg: "Este código está sendo utilizado por outro produto." }); }
 
-		// Verify if variations belongs to the user
-		for (let i in product.variations) {
-			let variation_strict_params = { keys: [], values: [] };
-			lib.Query.fillParam('variation.user_id', req.user.id, variation_strict_params);
-			lib.Query.fillParam('variation.id', product.variations[i], variation_strict_params);
-			let variation_response = await Variation.filter([], [], [], variation_strict_params, []);
-			if (!(variation_response).length) { return res.send({ unauthorized: "Variações inválidas, tente cadastrar novamente!" }); }
-		};
-
-		// Save product
-		let save_product_response = await product.save();
-		if (save_product_response.err) { return res.send({ msg: save_product_response.err }); }
-		product.id = save_product_response.insertId;
-
-		// Save variations
-		for (let i in product.variations) {
-			let product_variation = {
-				user_id: parseInt(req.user.id),
-				product_id: parseInt(product.id),
-				variation_id: parseInt(product.variations[i])
+			// Verify if variations belongs to the user
+			for (let i in product.variations) {
+				let variation_strict_params = { keys: [], values: [] };
+				lib.Query.fillParam('variation.user_id', req.user.id, variation_strict_params);
+				lib.Query.fillParam('variation.id', product.variations[i], variation_strict_params);
+				let variation_response = await Variation.filter([], [], [], variation_strict_params, []);
+				if (!(variation_response).length) { return res.send({ msg: "Variações inválidas, tente cadastrar novamente!" }); }
 			};
 
-			product.variation = new Product.variation(product_variation);
-			let save_variation_response = await product.variation.save();
-			if (save_variation_response.err) { console.log(save_variation_response.err, lib.date.timestamp.toDatetime(lib.date.timestamp.generate())); }
-		};
+			let product_variations_strict_params = { keys: [], values: [] };
+			lib.Query.fillParam('product_variation.user_id', req.user.id, product_variations_strict_params);
+			lib.Query.fillParam('product_variation.product_id', product.id, product_variations_strict_params);
+			let variations_response = await Product.variation.filter([], [], [], product_variations_strict_params, []);
+			let product_variations = variations_response.map(variation => variation.variation_id);
 
-		// Save images
-		for (let i in req.files) {
-			await imageController.upload(req.user.id, req.files[i], parseInt(save_product_response.insertId));
-		};
+			let newVar = product.variations.reduce((newVar, variation_id) => {
+				for (let i in product_variations) {
+					if (product_variations[i] == variation_id) { return newVar; }
+				};
 
-		res.send({ done: "Produto cadastrado com sucesso!" });
+				newVar.push({ variation_id: variation_id, product_id: product.id });
+				return newVar;
+			}, []);
+
+			let remVar = product_variations.reduce((remVar, variation_id) => {
+				for (let i in product.variations) {
+					if (product.variations[i] == variation_id) { return remVar; }
+				};
+
+				remVar.push({ variation_id: variation_id, product_id: product.id });
+				return remVar;
+			}, []);
+
+			newVar.forEach(async variation => {
+				let product_variation = {
+					user_id: parseInt(req.user.id),
+					product_id: parseInt(variation.product_id),
+					variation_id: parseInt(variation.variation_id)
+				};
+
+				product.variation = new Product.variation(product_variation);
+				variation.variation_id && await product.variation.save();
+			});
+
+			remVar.forEach(async variation => {
+				await Product.variation.delete(variation.variation_id, variation.product_id);
+			});
+
+			// Save images
+			for (let i in req.files) {
+				await imageController.upload(req.user.id, req.files[i], parseInt(product.id));
+			};
+
+			// Save product
+			let update_product_response = await product.update();
+			if (update_product_response.err) { return res.send({ msg: update_product_response.err }); }
+
+			res.send({ done: "Produto atualizado com sucesso!" });
+		}
 	} catch (err) {
 		console.log(err);
 		res.send({ msg: "Ocorreu um erro ao cadastrar seu produto, por favor recarregue sua página e tente novamente." });
@@ -171,7 +238,8 @@ productController.findById = async (req, res) => {
 	lib.Query.fillParam('product.user_id', req.user.id, strict_params);
 	let product = (await Product.filter([], [], [], strict_params, []))[0];
 
-	let variation_props = [];
+	if (!product) { product = []; }
+
 	let variation_inners = [["cms_cotalogo.variation", "variation.id", "product_variation.variation_id"]];
 	let variation_strict_params = { keys: [], values: [] };
 	lib.Query.fillParam('product_variation.user_id', req.user.id, variation_strict_params);

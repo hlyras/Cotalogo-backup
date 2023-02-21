@@ -24,10 +24,6 @@
       product.append('file', input.files[i]);
     };
 
-    // delete product.item;
-    // delete product.namedItem;
-    // delete product.submit;
-
     let response = await API.response(Product.save, product);
     if (!response) { return false; }
 
@@ -41,6 +37,9 @@
     });
 
     clearFileList();
+    drawImages([]);
+
+    lib.display("product-image-box", "none");
 
     document.getElementById("product-filter-form").submit.click();
   });
@@ -51,6 +50,10 @@
 
     lib.display("product-image-box", "");
     drawImages(product.images);
+
+    document.getElementById("product-create-form").scrollIntoView();
+    lib.display("product-create-form", "");
+    document.getElementById("product-create-expander").src = "/images/icon/retract.png";
 
     const product_create_form = document.getElementById('product-create-form');
     product_create_form.id.value = product.id;

@@ -12,7 +12,7 @@ const variationController = require("../controller/product/variation");
 router.get('/', lib.route.toHttps, userController.verify, productController.index);
 router.post('/save', lib.route.toHttps, userController.verify, multer.any('files'), productController.save);
 router.post('/filter', lib.route.toHttps, userController.verify, productController.filter);
-router.get('/:id', lib.route.toHttps, userController.verify, productController.findById);
+router.get('/id/:id', lib.route.toHttps, userController.verify, productController.findById);
 // router.delete('/delete/:id', lib.route.toHttps, userController.verify, productController.delete);
 router.delete('/image/id/:id', lib.route.toHttps, userController.authorize, productController.image.delete);
 

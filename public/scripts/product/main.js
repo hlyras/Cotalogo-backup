@@ -27,7 +27,7 @@ Product.filter = async product => {
 };
 
 Product.findById = async (id) => {
-  let response = await fetch(`/product/${id}`);
+  let response = await fetch(`/product/id/${id}`);
   response = await response.json();
 
   if (API.verifyResponse(response)) { return false };

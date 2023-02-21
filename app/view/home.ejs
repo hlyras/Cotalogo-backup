@@ -2,160 +2,16 @@
 
 <head>
 	<%- include('./partials/head.ejs') %>
-	<style>
-		.sidebar {
-			position: fixed;
-			top: 0;
-			right: 0;
-			width: 275px;
-			height: 100%;
-			background-color: #f0f0f0;
-			padding-top: 20px;
-			border-right: 1px solid #ccc;
-			transform: translateX(100%);
-			transition: transform 0.5s ease;
-			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-		}
-
-		.sidebar a {
-			padding: 6px 8px 6px 16px;
-			display: block;
-		}
-
-		.sidebar a:hover {
-			background-color: #ddd;
-		}
-
-		.sidebar ul ul {
-			display: none;
-		}
-
-		.sidebar li.active>ul {
-			display: block;
-		}
-
-		.sidebar.open {
-			transform: translateX(0);
-		}
-
-		@media screen and (max-height: 450px) {
-			.sidebar {
-				padding-top: 40px;
-			}
-		}
-	</style>
 </head>
 
 <body>
 	<%- include('./partials/userHeader.ejs') %>
-	<div class="container">
-		<div class="mobile-box right padding-10">
-			<img class='icon size-40 open-btn' src='/images/icon/menu.png' onclick="openNav()">
-		</div>
-	</div>
-
-	<div class="sidebar scroll-y" id="mySidebar">
-		<div class="container margin-bottom-20">
-			<div class="mobile-box b6-7"></div>
-			<div class="mobile-box container b7 h-center">
-				<img class='icon size-15 open-btn' src='/images/icon/close.png' onclick="closeNav()">
-			</div>
-		</div>
-
-		<ul>
-			<li class="underline margin-top-5">
-				<a class="lucida-grande bold">Financeiro</a>
-				<ul>
-					<li><a href="#" class="em12">Subitem 1.1</a></li>
-					<li><a href="#" class="em12">Subitem 1.2</a></li>
-					<li><a href="#" class="em12">Subitem 1.3</a></li>
-				</ul>
-			</li>
-			<li class="underline margin-top-5">
-				<a class="lucida-grande bold">Produtos</a>
-				<ul>
-					<li><a href="#" class="em12">Subitem 2.1</a></li>
-					<li><a href="#" class="em12">Subitem 2.2</a></li>
-					<li><a href="#" class="em12">Subitem 2.3</a></li>
-				</ul>
-			</li>
-			<li class="underline margin-top-5">
-				<a class="lucida-grande bold">Produtos</a>
-				<ul>
-					<li><a href="#" class="em12">Subitem 2.1</a></li>
-					<li><a href="#" class="em12">Subitem 2.2</a></li>
-					<li><a href="#" class="em12">Subitem 2.3</a></li>
-				</ul>
-			</li>
-			<li class="underline margin-top-5">
-				<a class="lucida-grande bold">Produtos</a>
-				<ul>
-					<li><a href="#" class="em12">Subitem 2.1</a></li>
-					<li><a href="#" class="em12">Subitem 2.2</a></li>
-					<li><a href="#" class="em12">Subitem 2.3</a></li>
-				</ul>
-			</li>
-			<li class="underline margin-top-5">
-				<a class="lucida-grande bold">Produtos</a>
-				<ul>
-					<li><a href="#" class="em12">Subitem 2.1</a></li>
-					<li><a href="#" class="em12">Subitem 2.2</a></li>
-					<li><a href="#" class="em12">Subitem 2.3</a></li>
-				</ul>
-			</li>
-			<li class="underline margin-top-5"><a href="#" class="lucida-grande bold">Matéria-Prima</a></li>
-		</ul>
-	</div>
-
-	<section class="container h-center">
-
-	</section>
+	<%- include('./partials/sidebar.ejs') %>
 
 	<%- include('./partials/loader.ejs') %>
 </body>
 <footer>
 	<%- include('./partials/footer.ejs') %>
 </footer>
-
-<script>
-	const sidebar = document.querySelector(".sidebar");
-
-	document.addEventListener("DOMContentLoaded", () => {
-		// add active class to the first link on page load
-		sidebar.querySelector("a").classList.add("active");
-	});
-
-	sidebar.addEventListener("click", (event) => {
-		if (event.target.tagName === "A") {
-			// remove active class from all links
-			sidebar.querySelectorAll("a").forEach((link) => {
-				link.classList.remove("active");
-			});
-
-			// add active class to the clicked link
-			event.target.classList.add("active");
-
-			// toggle submenu display
-			const li = event.target.parentNode;
-			li.classList.toggle("active");
-		}
-	});
-
-	function openNav() {
-		document.getElementById("mySidebar").classList.add("open");
-
-		// fecha a barra lateral se um clique ocorrer fora dela
-		document.addEventListener("click", function closeNav(event) {
-			if (!event.target.closest(".sidebar") && !event.target.closest(".open-btn")) {
-				document.getElementById("mySidebar").classList.remove("open");
-				document.removeEventListener("click", closeNav);
-			}
-		});
-	}
-
-	function closeNav() {
-		document.getElementById("mySidebar").classList.remove("open");
-	}
-</script>
 
 </html>

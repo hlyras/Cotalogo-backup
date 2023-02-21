@@ -9,11 +9,23 @@ const Product = function (product) {
 	this.description = "";
 
 	this.save = () => {
+		if (!this.code) { return { err: "Código inválido" }; }
 		if (!this.name || this.name.length < 2 || this.name.length > 100) { return { err: "Nome inválido" }; }
 
 		let obj = lib.convertTo.object(this);
 
 		let query = lib.Query.save(obj, 'cms_cotalogo.product');
+		return db(query);
+	};
+
+	this.update = () => {
+		if (!this.id) { return { err: "O id do produto é inválido" }; }
+		if (!this.code) { return { err: "Código inválido" }; }
+		if (!this.name || this.name.length < 2 || this.name.length > 100) { return { err: "Nome inválido" }; }
+
+		let obj = lib.convertTo.object(this);
+		let query = lib.Query.update(obj, 'cms_cotalogo.product', 'id');
+
 		return db(query);
 	};
 };
@@ -42,6 +54,11 @@ Product.variation.filter = (props, inners, params, strict_params, order_params) 
 		.inners(inners).params(params).strictParams(strict_params).order(order_params).build().query;
 	return db(query);
 };
+
+Product.variation.delete = (variation_id, product_id) => {
+	let query = `DELETE FROM cms_cotalogo.product_variation WHERE variation_id='${variation_id}' AND product_id='${product_id}';`;
+	return db(query);
+}
 
 // Product.variation.deleteByCategoryId = async (category_id) => {
 // 	let query = `DELETE cms_cotalogo.product_variation, cms_cotalogo. FROM cms_cotalogo.product_variation WHERE category_id='${category_id}';`;
