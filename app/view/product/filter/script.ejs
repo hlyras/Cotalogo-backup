@@ -69,11 +69,16 @@
 
         products[i].images.length && lib.Carousel(`product-${products[i].id}`);
       };
+
       filter_box.style.display = "";
     } else {
       let div_product = lib.element.create("div", { class: "box b1 center box-hover padding-5 border" }, "Sem resultados");
       filter_div.appendChild(div_product);
       filter_box.style.display = "";
     };
+  };
+
+  function clearVariationInputs() {
+    document.getElementById("product-filter-form").querySelectorAll("select").forEach(input => input.value = "");
   };
 </script>

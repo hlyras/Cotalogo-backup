@@ -45,4 +45,10 @@ authController.confirmEmail = async (req, res, next) => {
   });
 };
 
+authController.logout = (req, res) => {
+  req.logout(function (err) {
+    res.redirect('/');
+  });
+};
+
 module.exports = authController;

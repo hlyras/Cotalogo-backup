@@ -36,10 +36,11 @@
       input.value = "";
     });
 
-    clearFileList();
     drawImages([]);
-
+    clearFileList();
     lib.display("product-image-box", "none");
+
+    e.target.submit.value = "Cadastrar produto";
 
     document.getElementById("product-filter-form").submit.click();
   });
@@ -51,9 +52,10 @@
     lib.display("product-image-box", "");
     drawImages(product.images);
 
-    document.getElementById("product-create-form").scrollIntoView();
     lib.display("product-create-form", "");
+    document.getElementById("product-create-container").scrollIntoView();
     document.getElementById("product-create-expander").src = "/images/icon/retract.png";
+    document.getElementById("product-create-form").elements.submit.value = "Atualizar produto";
 
     const product_create_form = document.getElementById('product-create-form');
     product_create_form.id.value = product.id;

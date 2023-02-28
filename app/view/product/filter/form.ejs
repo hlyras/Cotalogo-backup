@@ -1,37 +1,50 @@
-<form id="product-filter-form" class="box b1 container padding-10 radius-5" style="display:none;">
-  <input type="hidden" name="id" value="">
-  <input type="text" name="code" class="mobile-box b5 input-generic radius-5 margin-top-5 center" placeholder="Código"
-    autocomplete="off">
-  <input type="text" name="name" class="mobile-box b3-5 input-generic radius-5 margin-top-5 center"
-    placeholder="Nome do Produto" autocomplete="off">
-  <div class="mobile-box b10 margin-top-5 center"><img class="size-25 icon" src="/images/icon/filter-control-black.png"
-      onclick="lib.displayDiv('filter-control-box', this, '/images/icon/filter-control-black.png', '/images/icon/close-small.png')">
+<div id="product-filter-container" class="box b1 container">
+  <div class="mobile-box b10"></div>
+  <div class="mobile-box b4-5 em12 lucida-grande bold center">Buscar Produto</div>
+  <div class="mobile-box b10 center"><img class="size-20 icon noselect" src="/images/icon/expand.png"
+      onclick="lib.displayDiv('product-filter-form', this, '/images/icon/expand.png', '/images/icon/retract.png');">
   </div>
-  <button type="submit" name="submit" class="mobile-box b10 noborder margin-top-5 center"><img class="size-25 icon"
-      src="/images/icon/filter.png"></button>
-
-  <div id="filter-control-box" class="box b1 container padding-5 margin-top-5 border-st radius-5" style="display:none;">
-    <div class="box b1 em08 lucida-grande underline center">Ajustar filtros</div>
-    <% for(let i in categories) { %>
-    <% if(categories[i].variations) { %>
-    <select name="variation-<%= categories[i].name %>"
-      class="mobile-box b2 input-generic border-lg-st radius-5 center margin-top-5">
-      <option selected value=""><%= categories[i].name %></option>
-      <% for(let j in categories[i].variations) { %>
-      <option value="<%= categories[i].variations[j].id %>"><%= categories[i].variations[j].name %></option>
-      <% } %>
-    </select>
-    <% } %>
-    <% } %>
-  </div>
-
-  <div id="product-filter-box" class="box a1 container ground margin-top-10">
-    <div id="product-filter-div" class="box b1 container">
+  <form id="product-filter-form" class="box b1 container padding-10 radius-5" style="display:none;">
+    <input type="hidden" name="id" value="">
+    <input type="text" name="code" class="mobile-box b5 input-generic radius-5 margin-top-5 center" placeholder="Código"
+      autocomplete="off">
+    <input type="text" name="name" class="mobile-box b3-5 input-generic radius-5 margin-top-5 center"
+      placeholder="Nome do Produto" autocomplete="off">
+    <div class="mobile-box b10 margin-top-5 center"><img class="size-25 icon"
+        src="/images/icon/filter-control-black.png"
+        onclick="lib.displayDiv('filter-control-box', this, '/images/icon/filter-control-black.png', '/images/icon/close-small.png')">
     </div>
-    <%- include('./../../partials/carousel.ejs') %>
-  </div>
-  <div id="product-detail-box" class="box a1 container ground margin-top-10" style="display:none">
-    <div id="product-image-div" class="box b1 container"></div>
-    <%- include('./../../partials/carousel.ejs') %>
-  </div>
-</form>
+    <button type="submit" name="submit" class="mobile-box b10 noborder margin-top-5 center"><img class="size-25 icon"
+        src="/images/icon/filter.png"></button>
+
+    <div id="filter-control-box" class="box b1 container padding-5 margin-top-5 border-st radius-5"
+      style="display:none;">
+      <div class="mobile-box b5"></div>
+      <div class="mobile-box b3-5 lucida-grande underline center">Ajustar filtros</div>
+      <div onclick="clearVariationInputs();"
+        class="mobile-box b5 lucida-grande em08 bold center radius-10 opacity-out-08 pointer">Limpar
+        filtros</div>
+      <% for(let i in categories) { %>
+      <% if(categories[i].variations) { %>
+      <select name="variation-<%= categories[i].name %>"
+        class="mobile-box b2 input-generic border-lg-st radius-5 center margin-top-5">
+        <option selected value="">Qualquer <%= categories[i].name %></option>
+        <% for(let j in categories[i].variations) { %>
+        <option value="<%= categories[i].variations[j].id %>"><%= categories[i].variations[j].name %></option>
+        <% } %>
+      </select>
+      <% } %>
+      <% } %>
+    </div>
+
+    <div id="product-filter-box" class="box a1 container ground margin-top-10">
+      <div id="product-filter-div" class="box b1 container">
+      </div>
+      <%- include('./../../partials/carousel.ejs') %>
+    </div>
+    <div id="product-detail-box" class="box a1 container ground margin-top-10" style="display:none">
+      <div id="product-image-div" class="box b1 container"></div>
+      <%- include('./../../partials/carousel.ejs') %>
+    </div>
+  </form>
+</div>

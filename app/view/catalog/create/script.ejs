@@ -1,0 +1,46 @@
+<script>
+  document.getElementById("catalog-create-form").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    if (lib.hasForbiddenChar(e.target.url.value)) { return alert("O endereço é inválido."); }
+
+    const catalog = {
+      id: e.target.id.value,
+      name: e.target.name.value,
+      url: e.target.url.value.toLowerCase()
+    };
+
+    let response = await API.response(Catalog.create, catalog);
+    if (!response) { return false; }
+
+    e.target.id.value = "";
+    e.target.name.value = "";
+    e.target.url.value = "";
+
+    lib.display("catalog-create-form", "none");
+    document.getElementById("catalog-filter-expander").src = "/images/icon/retract.png";
+
+    lib.display("catalog-filter-box", "");
+    document.getElementById("catalog-create-expander").src = "/images/icon/expand.png";
+
+    document.getElementById("catalog-filter-form").submit.click();
+  });
+
+  async function catalogEdit(catalog_id) {
+    let catalog = await API.response(Catalog.findById, catalog_id);
+    if (!catalog) { return false; }
+
+    lib.display("catalog-filter-box", "none");
+    document.getElementById("catalog-filter-expander").src = "/images/icon/expand.png";
+    document.getElementById("catalog-filter-box").scrollIntoView();
+
+    lib.display("catalog-create-form", "");
+    document.getElementById("catalog-create-expander").src = "/images/icon/retract.png";
+
+    document.getElementById("catalog-create-form").id.value = catalog.id;
+    document.getElementById("catalog-create-form").name.value = catalog.name;
+    document.getElementById("catalog-create-form").url.value = catalog.url;
+
+    document.getElementById("catalog-create-form").submit.value = "Atualizar catálogo";
+  };
+</script>

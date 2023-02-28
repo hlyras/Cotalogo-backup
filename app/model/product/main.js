@@ -58,7 +58,7 @@ Product.variation.filter = (props, inners, params, strict_params, order_params) 
 Product.variation.delete = (variation_id, product_id) => {
 	let query = `DELETE FROM cms_cotalogo.product_variation WHERE variation_id='${variation_id}' AND product_id='${product_id}';`;
 	return db(query);
-}
+};
 
 // Product.variation.deleteByCategoryId = async (category_id) => {
 // 	let query = `DELETE cms_cotalogo.product_variation, cms_cotalogo. FROM cms_cotalogo.product_variation WHERE category_id='${category_id}';`;

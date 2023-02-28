@@ -25,7 +25,7 @@ router.post('/signup', passport.authenticate('local-signup', {
 	failureFlash: true
 }), homeController.successfulSignup);
 
-// router.get("/logout", lib.route.toHttps, homeController.logout);
+router.get("/logout", lib.route.toHttps, userController.auth.logout);
 
 router.get("/confirm-email/:token", lib.route.toHttps, userController.auth.confirmEmail);
 

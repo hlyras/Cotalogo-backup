@@ -10,5 +10,6 @@ router.get("/signup", lib.route.toHttps, homeController.signup);
 
 router.use("/user", require("./user"));
 router.use("/product", require("./product"));
+router.use("/catalog", require("./catalog"));
 
 module.exports = router;
