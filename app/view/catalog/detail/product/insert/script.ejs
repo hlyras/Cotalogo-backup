@@ -1,0 +1,22 @@
+<script>
+  document.getElementById("product-insert-form").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    let product = {
+      catalog_id: e.target.catalog_id.value,
+      product_id: e.target.product_id.dataset.id,
+      price: e.target.price.value,
+      status: e.target.status.value
+    };
+
+    // criar função para acessar controller
+    let response = await API.response(Catalog.product.insert, product);
+    if (!response) { return false; }
+
+    e.target.catalog_id.value = "";
+    e.target.product_id.dataset.id = "";
+    e.target.product_id.value = "";
+    e.target.price.value = "0.00";
+    e.target.status.value = "Ativo";
+  });
+</script>

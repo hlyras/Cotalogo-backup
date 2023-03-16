@@ -6,7 +6,6 @@
 
     const catalog = {
       id: e.target.id.value,
-      name: e.target.name.value,
       url: e.target.url.value.toLowerCase()
     };
 
@@ -14,7 +13,6 @@
     if (!response) { return false; }
 
     e.target.id.value = "";
-    e.target.name.value = "";
     e.target.url.value = "";
 
     lib.display("catalog-create-form", "none");
@@ -22,6 +20,9 @@
 
     lib.display("catalog-filter-box", "");
     document.getElementById("catalog-create-expander").src = "/images/icon/expand.png";
+
+    document.getElementById("catalog-create-label").innerHTML = "Novo catálogo";
+    document.getElementById("catalog-create-form").submit.value = "Criar catálogo";
 
     document.getElementById("catalog-filter-form").submit.click();
   });
@@ -38,9 +39,9 @@
     document.getElementById("catalog-create-expander").src = "/images/icon/retract.png";
 
     document.getElementById("catalog-create-form").id.value = catalog.id;
-    document.getElementById("catalog-create-form").name.value = catalog.name;
     document.getElementById("catalog-create-form").url.value = catalog.url;
 
+    document.getElementById("catalog-create-label").innerHTML = "Atualizar catálogo";
     document.getElementById("catalog-create-form").submit.value = "Atualizar catálogo";
   };
 </script>

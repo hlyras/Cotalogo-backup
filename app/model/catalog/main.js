@@ -4,12 +4,10 @@ const lib = require('jarmlib');
 const Catalog = function () {
   this.id = 0;
   this.user_id = 0;
-  this.name = "";
   this.url = "";
 
   this.create = () => {
     if (!this.user_id) { return { err: "Usuário inválido" }; }
-    if (!this.name || this.url.length < 2 || this.url.length > 30) { return { err: "Nome inválido" }; }
     if (!this.url || this.url.length < 2 || this.url.length > 30) { return { err: "URL inválida" }; }
 
     let obj = lib.convertTo.object(this);
@@ -21,7 +19,7 @@ const Catalog = function () {
   this.update = () => {
     if (!this.id) { return { err: "O id do produto é inválido" }; }
     if (!this.user_id) { return { err: "Usuário inválido" }; }
-    if (!this.url || this.url.length < 2 || this.url.length > 100) { return { err: "Nome inválido" }; }
+    if (!this.url || this.url.length < 2 || this.url.length > 30) { return { err: "URL inválida" }; }
 
     let obj = lib.convertTo.object(this);
     let query = lib.Query.update(obj, 'cms_cotalogo.catalog', 'id');
@@ -38,7 +36,6 @@ Catalog.filter = (props, inners, params, strict_params, order_params) => {
 
 Catalog.findById = (id) => {
   let query = `SELECT * FROM cms_cotalogo.catalog WHERE id = '${id}'`;
-  console.log(query);
   return db(query);
 };
 

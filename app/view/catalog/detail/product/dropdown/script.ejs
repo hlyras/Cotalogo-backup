@@ -1,0 +1,12 @@
+<script>
+  async function productDropdown(input) {
+    let products = await Product.filter({ name: input.value });
+    if (!products) { return false; }
+
+    let properties = ["code", "name"];
+
+    lib.Dropdown.setEvents("product-dropdown-box", "product-dropdown-ul");
+    input.value.length >= 2 && lib.Dropdown.render(products, input, "product-dropdown-ul", properties);
+    input.value.length < 2 && lib.Dropdown.render([], input, "product-dropdown-ul", properties);
+  };
+</script>

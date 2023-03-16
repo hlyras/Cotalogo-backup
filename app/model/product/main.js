@@ -30,6 +30,11 @@ const Product = function (product) {
 	};
 };
 
+Product.findById = async (id) => {
+	let query = "SELECT * FROM cms_cotalogo.product WHERE id='" + id + "';";
+	return db(query);
+};
+
 Product.filter = (props, inners, params, strict_params, order_params) => {
 	let query = new lib.Query().select().props(props).table("cms_cotalogo.product product")
 		.inners(inners).params(params).strictParams(strict_params).order(order_params).build().query;

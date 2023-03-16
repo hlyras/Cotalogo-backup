@@ -21,10 +21,10 @@
     }
 
     catalogs.forEach(catalog => {
-      let catalog_div = lib.element.create("div", { class: "box b1 container border-lg-st radius-5 padding-10 margin-top-5" });
+      let catalog_div = lib.element.create("div", { class: "box b2 container border-lg-st radius-5 padding-10 margin-top-5" });
 
-      catalog_div.append(lib.element.create("div", { class: "mobile-box b4-10 lucida-grande em09 bold center" }, catalog.name));
-      catalog_div.append(lib.element.create("div", { class: "mobile-box b4-10 lucida-grande em09 bold center" }, `/${catalog.url}`));
+      catalog_div.appendChild(lib.element.icon('b10', 20, "/images/icon/open.png", `catalogDetail(${catalog.id})`));
+      catalog_div.append(lib.element.create("div", { class: "mobile-box b7-10 lucida-grande em09 bold center" }, `/${catalog.url}`));
       catalog_div.append(lib.element.icon('b10', 20, "/images/icon/edit.png", `catalogEdit(${catalog.id})`));
       catalog_div.append(lib.element.icon('b10', 20, "/images/icon/trash.png", `catalogDelete(${catalog.id})`));
 

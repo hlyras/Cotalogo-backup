@@ -20,14 +20,27 @@ catalogController.create = async (req, res) => {
   const catalog = new Catalog();
   catalog.id = req.body.id;
   catalog.user_id = req.user.id;
-  catalog.name = req.body.name;
   catalog.url = req.body.url;
 
   try {
-    let response = await catalog.create();
-    if (response.err) { return res.send({ msg: response.err }); }
+    if (!catalog.id) {
+      let response = await catalog.create();
+      if (response.err) { return res.send({ msg: response.err }); }
 
-    return res.send({ done: "Catálogo cadastrado com sucesso." });
+      return res.send({ done: "Catálogo cadastrado com sucesso." });
+    } else {
+      // Filtrar o catálogo com esse id e verifica se pertence ao usuário
+      let catalog_response = (await Catalog.findById(catalog.id))[0];
+
+      if (catalog_response.user_id != catalog.user_id) {
+        return res.send({ msg: "Você não tem permissão para atualizar o catálogo." });
+      };
+
+      let response = await catalog.update();
+      if (response.err) { return res.send({ msg: response.err }); }
+
+      return res.send({ done: "Catálogo atualizado com sucesso." });
+    }
   } catch (err) {
     console.log(err);
     res.send({ msg: "Ocorreu um erro ao cadastrar o produto, por favor recarregue a página." });
@@ -55,7 +68,6 @@ catalogController.filter = async (req, res) => {
 catalogController.findById = async (req, res) => {
   try {
     let catalog = (await Catalog.findById(req.params.id))[0];
-    console.log(catalog);
     res.send({ catalog });
   } catch (err) {
     console.log(err);

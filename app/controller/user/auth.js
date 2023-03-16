@@ -1,5 +1,7 @@
 const User = require('../../model/user');
 
+const JWT = require('jsonwebtoken');
+
 const authController = {};
 
 authController.authorize = (req, res, next) => {

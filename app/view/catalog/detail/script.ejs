@@ -1,0 +1,36 @@
+<script>
+  async function catalogDetail(id) {
+    let catalog = await API.response(Catalog.findById, id);
+    if (!catalog) { return false; }
+
+    catalog.products = await API.response(Catalog.product.filter, { catalog_id: id });
+    if (!catalog.products) { return false; }
+
+    lib.display("catalog-detail-box", "");
+    lib.display("catalog-filter-container", "none");
+
+    catalogInfo(catalog);
+
+    document.getElementById("product-insert-form").catalog_id.value = id;
+
+    // Cria form com busca por digitação (product_name, user_id)
+    // inclui produto no catálogo
+    // mostra todos os produtos do catálogo
+    // atualizar valor do produto
+    // remover produto do catálogo
+  };
+
+  function catalogInfo(catalog) {
+    let detail_div = document.getElementById("catalog-detail-div");
+    detail_div.innerHTML = "";
+
+    detail_div.append(lib.element.create('div', { class: "mobile-box b12" }));
+    detail_div.append(lib.element.create("div", { class: "mobile-box b5-6 underline lucida-grande bold center" }, `/${catalog.url}`));
+    detail_div.append(lib.element.icon('b12', 20, '/images/icon/close.png', `closeCatalog()`));
+  };
+
+  function closeCatalog() {
+    lib.display("catalog-detail-box", "none");
+    lib.display("catalog-filter-container", "");
+  };
+</script>
