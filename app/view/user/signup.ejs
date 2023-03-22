@@ -18,23 +18,23 @@
 <body>
 	<%- include('./../partials/header.ejs') %>
 	<section class="container h-center margin-top-50 lucida-grande">
-		<form action="/user/signup" method="post" class="box b3 container ground margin-top-15 padding-10">
+		<form id="signup-form" action="/user/signup" method="post" class="box b3 container ground margin-top-15 padding-10">
 			<div class="box b1 underline georgia margin-top-10 center noselect">30 dias grátis para construir seu catálogo e
 				encantar seus clientes</div>
 			<% if (message.length > 0) { %>
 			<div class="box b1 center margin-top-10 padding-5 radius-5" style="background-color: #F08080; color:#fff;">
 				<%= message %></div>
 			<% } %>
-			<input type="text" name="name" class="box b1 em11 georgia border-bottom padding-10 margin-top-5" maxlength="60"
-				placeholder="Nome Completo" role="presentation" autocomplete="off">
+			<!-- <input type="text" name="name" class="box b1 em11 georgia border-bottom padding-10 margin-top-5" maxlength="60"
+				placeholder="Nome Completo" role="presentation" autocomplete="off"> -->
 			<input type="text" name="business" class="box b1 em11 georgia border-bottom padding-10 margin-top-5"
-				maxlength="60" placeholder="Nome da Empresa" role="presentation" autocomplete="off">
+				maxlength="60" placeholder="/minhaempresa" role="presentation" autocomplete="off">
 			<input type="email" name="email" class="box b1 em11 georgia border-bottom padding-10 margin-top-5" id="email"
 				maxlength="60" placeholder="E-mail" role="presentation" autocomplete="off">
 			<input type="password" name="password" class="box b1 em11 georgia border-bottom padding-10 margin-top-5"
 				maxlength="45" placeholder="Senha" role="presentation" autocomplete="off">
-			<input type="password" name="passwordConfirm" class="box b1 em11 georgia border-bottom padding-10 margin-top-5"
-				maxlength="45" placeholder="Confirmar senha" role="presentation" autocomplete="off">
+			<!-- <input type="password" name="passwordConfirm" class="box b1 em11 georgia border-bottom padding-10 margin-top-5"
+				maxlength="45" placeholder="Confirmar senha" role="presentation" autocomplete="off"> -->
 			<input type="submit" class="box b1 submit-generic border-bottom margin-top-10 noselect" value="Cadastrar">
 		</form>
 	</section>
@@ -42,6 +42,32 @@
 <footer>
 	<%- include('./../partials/footer.ejs') %>
 	<%- include('./partial.ejs') %>
+	<script>
+		document.getElementById("signup-form").business.addEventListener("input", function (event) {
+			if (this.value.length === 1 && event.data === "/") {
+
+			} else if (this.value.length === 1 && event.data != "/") {
+				if (lib.hasForbiddenChar(event.data)) {
+					console.log('===1', this.value.length);
+					this.value = this.value.slice(0, this.value.length - 1);
+					return alert("Simbolo não permitido em uma URL.");
+				}
+			} else if (this.value.length > 1) {
+				if (lib.hasForbiddenChar(event.data)) {
+					console.log('>1', this.value.length - 1);
+					this.value = this.value.slice(0, this.value.length - 1);
+					return alert("Simbolo não permitido em uma URL.");
+				}
+			}
+
+			if (this.value.length === 1 && event.data && event.data !== "/") {
+				console.log('1')
+				this.value = "/" + this.value;
+			} else if (this.value.length === 1 && !event.data) {
+				this.value = "";
+			}
+		});
+	</script>
 </footer>
 
 </html>

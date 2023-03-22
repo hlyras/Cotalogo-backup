@@ -4,29 +4,32 @@ const bcrypt = require('bcrypt-nodejs');
 
 const User = function (user) {
 	this.id;
-	this.name = user.name;
-	this.business = user.business;
 	this.email = user.email;
+	this.business = user.business;
 	this.password = user.password;
-	this.passwordConfirm = user.passwordConfirm;
+	this.name = user.name;
 	this.access = '30days';
+	this.balance = 0;
+	this.token = "";
 
 	this.save = () => {
-		if (!this.name || this.name.length < 3) { return { err: "Nome inválido" }; }
 		if (!this.business || this.business.length < 1) { return { err: "O nome da empresa é inválido!" }; }
 		if (!lib.validateEmail(this.email)) { return { err: "Email inválido!" }; }
-		if (!this.password || this.password.length < 8) { return { err: "Senha inválida!" }; }
-		if (this.password !== this.passwordConfirm) { return { err: "Senhas não conferem!" }; }
 
 		this.password = bcrypt.hashSync(this.password, null, null);
 
-		let query = "INSERT INTO cms_cotalogo.user (name, business, email, password, access) values ('"
-			+ this.name + "', '"
-			+ this.business + "', '"
-			+ this.email + "', '"
-			+ this.password + "', '"
-			+ this.access + "')";
+		let obj = lib.convertTo.object(this);
+
+		let query = lib.Query.save(obj, 'cms_cotalogo.user');
 		return db(query);
+
+		// let query = "INSERT INTO cms_cotalogo.user (name, business, email, password, access) values ('"
+		// 	+ this.name + "', '"
+		// 	+ this.business + "', '"
+		// 	+ this.email + "', '"
+		// 	+ this.password + "', '"
+		// 	+ this.access + "')";
+		// return db(query);
 	};
 
 	this.token = (token) => {
