@@ -8,7 +8,7 @@ const Catalog = function () {
 
   this.create = () => {
     if (!this.user_id) { return { err: "Usuário inválido" }; }
-    if (!this.url || this.url.length < 2 || this.url.length > 30) { return { err: "URL inválida" }; }
+    if (!this.url || this.url.length < 1 || this.url.length > 30) { return { err: "URL inválida" }; }
 
     let obj = lib.convertTo.object(this);
 

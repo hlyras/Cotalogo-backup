@@ -8,10 +8,10 @@
   <form id="catalog-create-form" class="box b1 container padding-10" style="display:none;">
     <input type="hidden" name="id" value="">
 
-    <div class="box b1 lucida-grande em08 bold margin-top-10">Endereço da URL</div>
-    <div class="mobile-box b2 lucida-grande em12 bold center"><%= user.business %>/</div>
-    <input type="text" name="url" class="mobile-box b4-10 lucida-grande bold border-bottom padding-5 nofocus"
-      placeholder="novocatalogo" autocomplete="off" maxlength="100">
+    <div class="box b1 lucida-grande em09 bold margin-top-10">Escolha o link do seu novo catálogo
+    </div>
+    <input type="text" name="url" class="mobile-box b9-10 lucida-grande em12 bold border-bottom padding-5 nofocus"
+      autocomplete="off" maxlength="100" value="cotalogo.com/<%= user.business %>/">
 
     <div class="mobile-box b10 container">
       <img class='image-prop size-20 center icon pointer noselect' onclick="lib.display('code-help', '')"
@@ -19,6 +19,7 @@
     </div>
 
     <input type="submit" name="submit"
-      class="box b3 em10 bold btn-act noborder height-50 center margin-top-20 radius-5 pointer" value="Criar catálogo">
+      class="box b3 em10 bold btn-act noborder shadow-lg-st height-50 center margin-top-20 radius-5 pointer"
+      value="Criar catálogo">
   </form>
 </div>

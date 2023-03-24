@@ -22,6 +22,8 @@ catalogController.create = async (req, res) => {
   catalog.user_id = req.user.id;
   catalog.url = req.body.url;
 
+  if (catalog.url.length < 2) { return res.send({ msg: "Não é possível utilizar este link!" }); }
+
   try {
     if (!catalog.id) {
       let response = await catalog.create();
