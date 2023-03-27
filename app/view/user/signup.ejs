@@ -18,55 +18,87 @@
 <body>
 	<%- include('./../partials/header.ejs') %>
 	<section class="container h-center margin-top-50 lucida-grande">
-		<form id="signup-form" action="/user/signup" method="post" class="box b3 container ground margin-top-15 padding-10">
-			<div class="box b1 underline georgia margin-top-10 center noselect">30 dias grátis para construir seu catálogo e
-				encantar seus clientes</div>
-			<% if (message.length > 0) { %>
-			<div class="box b1 center margin-top-10 padding-5 radius-5" style="background-color: #F08080; color:#fff;">
-				<%= message %></div>
-			<% } %>
-			<!-- <input type="text" name="name" class="box b1 em11 georgia border-bottom padding-10 margin-top-5" maxlength="60"
-				placeholder="Nome Completo" role="presentation" autocomplete="off"> -->
-			<input type="text" name="business" class="box b1 em11 georgia border-bottom padding-10 margin-top-5"
+		<form id="signup-form" class="box b3 container ground margin-top-15 padding-10">
+			<div class="box b1 underline lucida-grande em09 bold margin-top-10 center noselect">Crie sua conta e receba
+				R$20,00 para começar</div>
+
+			<input type="text" name="business" class="box b1 em11 lucida-grande border-bottom padding-10 margin-top-5"
 				maxlength="60" placeholder="/minhaempresa" role="presentation" autocomplete="off">
-			<input type="email" name="email" class="box b1 em11 georgia border-bottom padding-10 margin-top-5" id="email"
-				maxlength="60" placeholder="E-mail" role="presentation" autocomplete="off">
-			<input type="password" name="password" class="box b1 em11 georgia border-bottom padding-10 margin-top-5"
-				maxlength="45" placeholder="Senha" role="presentation" autocomplete="off">
-			<!-- <input type="password" name="passwordConfirm" class="box b1 em11 georgia border-bottom padding-10 margin-top-5"
-				maxlength="45" placeholder="Confirmar senha" role="presentation" autocomplete="off"> -->
-			<input type="submit" class="box b1 submit-generic border-bottom margin-top-10 noselect" value="Cadastrar">
+			<input type="email" name="email" class="box b1 em11 lucida-grande border-bottom padding-10 margin-top-5"
+				id="email" maxlength="60" placeholder="E-mail" role="presentation" autocomplete="off">
+
+			<div class="box b1 container border-bottom">
+				<input type="password" name="password" class="box b9-10 em11 lucida-grande padding-10 margin-top-5 noborder"
+					maxlength="45" placeholder="Senha" role="presentation" autocomplete="off">
+				<div class="box b10 container center"><img src="/images/icon/see.png" class="image-prop icon size-20"
+						onclick="switchPasswordView(this)">
+				</div>
+			</div>
+			<input type="submit"
+				class="box b1 btn-act lucida-grande em11 bold radius-5 noborder shadow-lg-st padding-10 margin-top-10 margin-bottom-5 noselect pointer"
+				value="Criar minha conta">
 		</form>
 	</section>
+	<%- include('./../partials/loader.ejs') %>
 </body>
 <footer>
 	<%- include('./../partials/footer.ejs') %>
 	<%- include('./partial.ejs') %>
+	<script src="/scripts/user/main.js"></script>
+
 	<script>
 		document.getElementById("signup-form").business.addEventListener("input", function (event) {
 			if (this.value.length === 1 && event.data === "/") {
 
 			} else if (this.value.length === 1 && event.data != "/") {
 				if (lib.hasForbiddenChar(event.data)) {
-					console.log('===1', this.value.length);
 					this.value = this.value.slice(0, this.value.length - 1);
 					return alert("Simbolo não permitido em uma URL.");
 				}
 			} else if (this.value.length > 1) {
 				if (lib.hasForbiddenChar(event.data)) {
-					console.log('>1', this.value.length - 1);
 					this.value = this.value.slice(0, this.value.length - 1);
 					return alert("Simbolo não permitido em uma URL.");
 				}
 			}
 
 			if (this.value.length === 1 && event.data && event.data !== "/") {
-				console.log('1')
 				this.value = "/" + this.value;
 			} else if (this.value.length === 1 && !event.data) {
 				this.value = "";
 			}
+
+			this.value = this.value.toLowerCase();
 		});
+
+		document.getElementById("signup-form").addEventListener("submit", async e => {
+			e.preventDefault();
+
+			const user = {
+				business: e.target.business.value.slice(1),
+				email: e.target.email.value,
+				password: e.target.password.value
+			};
+
+			let response = await API.response(User.signup, user);
+			if (!response) { return false; }
+
+			if (response.done) {
+				alert("Sua conta foi criada com sucesso!");
+				return window.location.href = "/";
+			}
+		});
+
+		function switchPasswordView(input) {
+			console.log(document.getElementById("signup-form").password.type);
+			if (document.getElementById("signup-form").password.type == "password") {
+				document.getElementById("signup-form").password.type = "text";
+				input.src = "/images/icon/hide.png";
+			} else if (document.getElementById("signup-form").password.type == "text") {
+				document.getElementById("signup-form").password.type = "password";
+				input.src = "/images/icon/see.png";
+			}
+		};
 	</script>
 </footer>
 

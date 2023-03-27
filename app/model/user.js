@@ -13,7 +13,7 @@ const User = function (user) {
 	this.token = "";
 
 	this.save = () => {
-		if (!this.business || this.business.length < 1) { return { err: "O nome da empresa é inválido!" }; }
+		if (!this.business || this.business.length < 1 || lib.string.hasForbidden(user.business)) { return { err: "O nome da empresa é inválido!" }; }
 		if (!lib.validateEmail(this.email)) { return { err: "Email inválido!" }; }
 
 		this.password = bcrypt.hashSync(this.password, null, null);
@@ -70,7 +70,7 @@ User.findByEmail = email => {
 };
 
 User.findByBusiness = business => {
-	let query = "SELECT * FROM cms_cotalogo.user WHERE business='" + business + "';";
+	let query = `SELECT * FROM cms_cotalogo.user WHERE business='${business}';`;
 	return db(query);
 };
 

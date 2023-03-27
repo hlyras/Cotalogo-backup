@@ -22,7 +22,8 @@ catalogController.create = async (req, res) => {
   catalog.user_id = req.user.id;
   catalog.url = req.body.url;
 
-  if (catalog.url.length < 2) { return res.send({ msg: "Não é possível utilizar este link!" }); }
+  if (catalog.url.length < 2) { return res.send({ msg: "O link precisa ter mais de duas letras ou caracteres." }); }
+  if (lib.string.hasForbidden(catalog.url.slice(1))) { return res.send({ msg: "Não é permitido utilizar estes caracteres." }); }
 
   try {
     if (!catalog.id) {

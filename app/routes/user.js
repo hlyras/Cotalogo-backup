@@ -15,15 +15,8 @@ router.get('/account', lib.route.toHttps, userController.auth.verify, userContro
 router.post('/account/cob', lib.route.toHttps, userController.auth.verify, userController.account.genCob);
 router.post('/account/webhooks(/pix)?', lib.route.toHttps, userController.auth.verify, userController.account.webhooks);
 
-router.post('/login', passport.authenticate('local-login', {
-	failureRedirect: '/login',
-	failureFlash: true
-}), homeController.successfulLogin);
-
-router.post('/signup', passport.authenticate('local-signup', {
-	failureRedirect: '/signup',
-	failureFlash: true
-}), homeController.successfulSignup);
+router.post('/login', lib.route.toHttps, passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login' }));
+router.post('/signup', lib.route.toHttps, userController.auth.signup);
 
 router.get("/logout", lib.route.toHttps, userController.auth.logout);
 

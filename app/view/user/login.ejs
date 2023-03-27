@@ -18,18 +18,26 @@
 <body>
     <%- include('./../partials/header.ejs') %>
     <section class="container h-center margin-top-50 lucida-grande">
-        <form action="/user/login" method="post" class="box b3 container ground margin-top-15 padding-10">
-            <div class="box b1 underline georgia margin-top-10 center noselect">Acesse seu Cotalogo!</div>
+        <form action="/user/login" method="post" class="box b3 container ground margin-top-15 padding-10 h-center">
+            <div class="box b1 lucida-grande em09 bold underline margin-top-10 center noselect">Preencha as informações
+                de login
+            </div>
             <% if (message.length > 0) { %>
-            <div class="box b1 center margin-top-10 padding-5 radius-5" style="background-color: #F08080; color:#fff;">
+            <div class="box b1 lucida-grande em09 bold center margin-top-10 padding-5 radius-5"
+                style="background-color: #e32626; color:#fff;">
                 <%= message %></div>
             <% } %>
-            <input type="email" name="email" class="box b1 em11 georgia border-bottom padding-10 margin-top-5"
-                id="email" maxlength="60" autocomplete="off" placeholder="Nome da empresa ou E-mail">
+            <input type="text" name="username" class="box b1 em11 georgia border-bottom padding-10 margin-top-5"
+                maxlength="60" role="presentation" autocomplete="off" placeholder="Nome da empresa ou E-mail">
             <input type="password" name="password" class="box b1 em11 georgia border-bottom padding-10 margin-top-5"
-                maxlength="45" autocomplete="off" placeholder="Senha">
-            <input type="submit" class="box b1 submit-generic border-bottom margin-top-10 noselect pointer"
-                value="Acessar meu Cotalogo">
+                maxlength="45" role="presentation" autocomplete="off" placeholder="Senha">
+            <input type="submit"
+                class="box b1 btn-act lucida-grande em11 bold radius-5 noborder shadow-lg-st padding-10 margin-top-10 margin-bottom-5 noselect pointer"
+                value="Acessar minha conta">
+
+            <div class="box b1 underline"></div>
+
+            <a href="/signup" class="box b1 lucida-grande em09 bold margin-top-5 center">Criar nova conta</a>
         </form>
     </section>
 </body>

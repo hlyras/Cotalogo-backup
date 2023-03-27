@@ -11,6 +11,7 @@
     product.append('description', e.target.description.value);
 
     let variation_box = document.getElementById("create-variation-box");
+    console.log(Array.from(variation_box.querySelectorAll("select")));
     Array.from(variation_box.querySelectorAll("select")).map(input => {
       product.append(`${`variations`}`, input.value);
     });
@@ -64,6 +65,7 @@
     product_create_form.description.value = product.description;
 
     let variation_box = document.getElementById("create-variation-box");
+
     product.variations.forEach(variation => {
       Array.from(variation_box.querySelectorAll("select")).map(input => {
         input.querySelectorAll('option').forEach(option => {

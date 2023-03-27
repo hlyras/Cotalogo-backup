@@ -1,8 +1,67 @@
-const User = require('../../model/user');
+const User = require('./../../model/user');
 
 const JWT = require('jsonwebtoken');
 
+const Mailer = require('./../../../config/mailer');
+const ejs = require("ejs");
+const Token = require('./../../../config/token');
+const path = require('path');
+
 const authController = {};
+
+authController.signup = async (req, res, next) => {
+  const user = new User(req.body);
+  console.log(user);
+
+  if ((await User.findByEmail(user.email)).length) { return res.send({ msg: 'Este E-mail já está sendo utilizado.' }); }
+  if ((await User.findByBusiness(user.business)).length) { return res.send({ msg: 'Este nome de empresa já está sendo utilizado.' }); }
+
+  try {
+    let response = await user.save();
+    if (response.err) { return res.send({ msg: response.err }); } //signupMessage', response.err));
+
+    user.id = response.insertId;
+
+    const JWTData = {
+      // exp: Math.floor((Date.now()/1000) + (60*60)) * 1000,
+      iss: 'cotalogo-api',
+      data: {
+        user_id: user.id,
+        business: user.business
+      },
+    };
+
+    const token = await Token.generate(JWTData);
+
+    await user.token(token);
+
+    const data = await ejs.renderFile(path.join(__dirname + "../../../../app/view/email-template/confirm-signup.ejs"), { title: 'Confirmação de email', user, token });
+
+    const option = {
+      from: "Cotalogo.com <suporte@cotalogo.com>",
+      to: `${user.name} <${user.email}>`,
+      subject: "Confirmação de email",
+      html: data
+    };
+
+    Mailer.sendMail(option, (err, info) => {
+      if (err) { console.log(err); }
+      else { console.log('Message sent: ' + info.response); }
+    });
+
+    await new Promise((resolve, reject) => {
+      req.logIn({ id: user.id, business: user.business }, err => {
+        if (err) { return res.send({ msg: "Ocorreu um erro inesperado ao realizar login" }); }
+        return res.status(200).send({ done: 'Login realizado com sucesso' });
+      });
+    });
+  } catch (err) {
+    console.log(err);
+    return res.send({ msg: "Ocorreu um erro ao realizar o cadastro, atualize a página, caso o problema persista por favor contate o suporte." });
+  }
+
+  res.send({ done: "Sua conta foi criada com sucesso!" });
+};
 
 authController.authorize = (req, res, next) => {
   console.log(req.isAuthenticated());
