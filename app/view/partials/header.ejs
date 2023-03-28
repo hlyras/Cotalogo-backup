@@ -1,17 +1,19 @@
-<section class="container" style="background-color:#000;color:var(--solid)">
-    <div class="mobile-box a5 center"></div>
-    <div class="mobile-box a3-5 em15 bold lucida-grande padding-3 center noselect pointer"
-        onclick="window.location.href='/'">Cotalogo</div>
-    <div class="mobile-box b5 container">
-        <div class="mobile-box container right padding-5">
-            <% if(!user){ %>
-            <div class="mobile-box bold lucida-grande padding-3 margin-right-3 noselect pointer icon"
-                style="color:#fff;" onclick="window.location.href = '/login'">Acessar</div>
-            <% } else { %>
-            <a><img class="mobile-box noselect icon size-30 padding-5"
-                    onclick="let r = confirm('deseja sair?');if(r==true){window.location.href='/user/logout'}"
-                    src="/images/icon/logout-white.png"></a>
-            <% } %>
+<section class="container" style="background-color: rgb(0, 0, 0)">
+    <div class="box b1 container">
+        <div class="mobile-box a5 center"></div>
+        <div class="mobile-box a3-5 em20 bold lucida-grande padding-3 center noselect pointer" style="color:rgb(225, 225, 225)"
+            onclick="window.location.href='/'">Cotalogo</div>
+        <div class="mobile-box b5 container">
+            <div class="mobile-box container right padding-5">
+                <% if(!user){ %>
+                <div class="mobile-box lucida-grande underline-link radius-5 padding-10 noselect pointer"
+                    style="color:#fff;" onclick="window.location.href = '/login'">Login</div>
+                <% } else { %>
+                <a><img class="mobile-box noselect icon size-30 padding-5"
+                        onclick="let r = confirm('deseja sair?');if(r==true){window.location.href='/user/logout'}"
+                        src="/images/icon/logout-white.png"></a>
+                <% } %>
+            </div>
         </div>
     </div>
 </section>
