@@ -1,7 +1,6 @@
 <script>
-  // const business_name = document.getElementById("catalog-create-form").business_name.value;
-  const business_name = document.getElementById("catalog-create-form").url.value.slice(12, document.getElementById("catalog-create-form").url.value.length - 1);
-  // const boldText = "<b>" + text.slice(startIndex) + "</b>";
+  let cotalogo_url = document.getElementById("catalog-create-form").url.value
+  const business_name = cotalogo_url.slice(13, cotalogo_url.length - 1);
 
   document.getElementById("catalog-create-form").url.addEventListener("input", function (e) {
     if (lib.hasForbiddenChar(event.data)) {
@@ -9,8 +8,8 @@
       return alert("Simbolo não permitido em uma URL.");
     }
 
-    if (this.value.length < 12 + business_name.length + 1) {
-      this.value = `cotalogo.com${business_name}/`
+    if (this.value.length < 13 + business_name.length + 1) {
+      this.value = `cotalogo.com/${business_name}/`
     }
 
     this.value = this.value.toLowerCase();
@@ -19,18 +18,18 @@
   document.getElementById("catalog-create-form").addEventListener("submit", async e => {
     e.preventDefault();
 
-    // if (lib.hasForbiddenChar(e.target.url.value.slice(12 + business_name.length + 1))) { return alert("O endereço é inválido."); }
+    if (lib.hasForbiddenChar(e.target.url.value.slice(13 + business_name.length + 1))) { return alert("O endereço é inválido."); }
 
     const catalog = {
       id: e.target.id.value,
-      url: e.target.url.value.slice(12 + business_name.length).toLowerCase()
+      url: e.target.url.value.slice(13 + business_name.length).toLowerCase()
     };
 
     let response = await API.response(Catalog.create, catalog);
     if (!response) { return false; }
 
     e.target.id.value = ``;
-    e.target.url.value = `cotalogo.com${business_name}/`;
+    e.target.url.value = `cotalogo.com/${business_name}/`;
 
     lib.display("catalog-create-form", "none");
     document.getElementById("catalog-filter-expander").src = "/images/icon/retract.png";

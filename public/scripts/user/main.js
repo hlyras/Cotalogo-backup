@@ -11,7 +11,6 @@
 //   return response;
 // };
 
-
 const User = {};
 
 User.signup = async user => {
@@ -21,10 +20,5 @@ User.signup = async user => {
     body: JSON.stringify(user)
   });
   response = await response.json();
-
-  if (API.verifyResponse(response)) { return false };
-
   return response;
 };
-
-console.log(User);

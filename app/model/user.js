@@ -15,6 +15,8 @@ const User = function (user) {
 	this.save = () => {
 		if (!this.business || this.business.length < 1 || lib.string.hasForbidden(user.business)) { return { err: "O nome da empresa é inválido!" }; }
 		if (!lib.validateEmail(this.email)) { return { err: "Email inválido!" }; }
+		if (!this.password) { return { err: "Senha inválida!" }; }
+		if (this.password.length < 8) { return { err: "A senha deve conter mais de 8 caracteres." }; }
 
 		this.password = bcrypt.hashSync(this.password, null, null);
 

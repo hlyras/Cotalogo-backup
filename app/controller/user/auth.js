@@ -6,12 +6,14 @@ const Mailer = require('./../../../config/mailer');
 const ejs = require("ejs");
 const Token = require('./../../../config/token');
 const path = require('path');
+const { ServiceCatalog } = require('aws-sdk');
+
+const Catalog = require('../../model/catalog/main');
 
 const authController = {};
 
 authController.signup = async (req, res, next) => {
   const user = new User(req.body);
-  console.log(user);
 
   if ((await User.findByEmail(user.email)).length) { return res.send({ msg: 'Este E-mail já está sendo utilizado.' }); }
   if ((await User.findByBusiness(user.business)).length) { return res.send({ msg: 'Este nome de empresa já está sendo utilizado.' }); }
@@ -21,6 +23,12 @@ authController.signup = async (req, res, next) => {
     if (response.err) { return res.send({ msg: response.err }); } //signupMessage', response.err));
 
     user.id = response.insertId;
+
+    let catalog = new Catalog();
+    catalog.user_id = user.id;
+    catalog.url = '/';
+    let catalog_response = await catalog.create();
+    if (catalog_response.err) { return res.send({ msg: catalog_response.err }); }
 
     const JWTData = {
       // exp: Math.floor((Date.now()/1000) + (60*60)) * 1000,

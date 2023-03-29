@@ -2,17 +2,6 @@
 
 <head>
 	<%- include('./../partials/head.ejs') %>
-	<style type="text/css">
-		.btn-act {
-			background-color: #356ae6;
-			color: #fff;
-		}
-
-		.btn-act:hover {
-			background-color: #245ae5;
-			color: #fff;
-		}
-	</style>
 </head>
 
 <body>
@@ -22,16 +11,20 @@
 			<div class="box b1 underline lucida-grande em09 bold margin-top-10 center noselect">Crie sua conta e receba
 				R$20,00 para começar</div>
 
+			<div id="message" class="box b1 lucida-grande em09 bold center margin-top-10 padding-5 radius-5"
+				style="background-color:#e32626;color:#fff;display: none;"><%= message %></div>
+
 			<input type="text" name="business" class="box b1 em11 lucida-grande border-bottom padding-10 margin-top-5"
 				maxlength="60" placeholder="/minhaempresa" role="presentation" autocomplete="off">
 			<input type="email" name="email" class="box b1 em11 lucida-grande border-bottom padding-10 margin-top-5"
 				id="email" maxlength="60" placeholder="E-mail" role="presentation" autocomplete="off">
 
 			<div class="box b1 container border-bottom">
-				<input type="password" name="password" class="box b9-10 em11 lucida-grande padding-10 margin-top-5 noborder"
-					maxlength="45" placeholder="Senha" role="presentation" autocomplete="off">
-				<div class="box b10 container center"><img src="/images/icon/see.png" class="image-prop icon size-15 center"
-						onclick="switchPasswordView(this)">
+				<input type="password" name="password"
+					class="mobile-box b9-10 em11 lucida-grande padding-10 margin-top-5 noborder" maxlength="45"
+					placeholder="Senha" role="presentation" autocomplete="off">
+				<div class="mobile-box b10 container center"><img src="/images/icon/eye-open.png"
+						class="image-prop icon size-20 center" onclick="switchPasswordView(this)">
 				</div>
 			</div>
 			<input type="submit"
@@ -81,7 +74,20 @@
 			};
 
 			let response = await API.response(User.signup, user);
-			if (!response) { return false; }
+
+			console.log(response);
+
+			// if (!response.done && !response.msg) {
+			// 	document.getElementById("message").innerHTML = "Ocorreu um erro ao realizar seu cadastro, por favor atualize a página e tente novamente";
+			// 	document.getElementById("message").style.display = "";
+			// 	return;
+			// }
+
+			if (response.msg) {
+				document.getElementById("message").innerHTML = response.msg;
+				document.getElementById("message").style.display = "";
+				return;
+			}
 
 			if (response.done) {
 				alert("Sua conta foi criada com sucesso!");
@@ -93,10 +99,10 @@
 			console.log(document.getElementById("signup-form").password.type);
 			if (document.getElementById("signup-form").password.type == "password") {
 				document.getElementById("signup-form").password.type = "text";
-				input.src = "/images/icon/hide.png";
+				input.src = "/images/icon/eye-closed.png";
 			} else if (document.getElementById("signup-form").password.type == "text") {
 				document.getElementById("signup-form").password.type = "password";
-				input.src = "/images/icon/see.png";
+				input.src = "/images/icon/eye-open.png";
 			}
 		};
 	</script>
