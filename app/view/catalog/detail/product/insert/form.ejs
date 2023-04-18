@@ -1,39 +1,16 @@
-<style>
-  .b6tob3 {
-    width: 15.66%;
-    margin-left: 0.5%;
-    margin-right: 0.5%;
-  }
-
-  @media (max-width: 800px) {
-    .b6tob3 {
-      width: 32.33%;
-      margin-left: 0.5%;
-      margin-right: 0.5%;
-    }
-  }
-</style>
-
-<div id="product-insert-box" class="box b1 container border radius-5 padding-5 margin-top-10">
-  <div class="mobile-box b6 container center icon"><img src="/images/icon/increase.png"
-      class="image-prop size-20 center pointer"
-      onclick="lib.displayDiv('product-insert-form', this, '/images/icon/increase.png', '/images/icon/up-arrow.png')">
-  </div>
-  <div class="mobile-box b2-3 lucida-grande em09 center">Adicionar produto ao catálogo</div>
-
-  <form id="product-insert-form" class="box b1 container padding-5" style="display: none;">
-    <input type="hidden" name="catalog_id" value="">
-    <%- include('./../dropdown/input.ejs') %>
-    <input type="number" name="price"
-      class="mobile-box b6tob3 lucida-grande input-generic padding-5 margin-top-5 nofocus" step="0.01" value="0.00"
-      onfocus="if(this.value < 0.01){this.value=''}"
-      onblur="if(this.value < 0.01){ this.value=parseFloat(0).toFixed(2) } else { this.value=parseFloat(this.value).toFixed(2) }"
-      autocomplete="off" role="presentation" />
-    <select name="status" class="mobile-box b6tob3 lucida-grande input-generic padding-5 margin-top-5">
-      <option value="Ativo">Ativo</option>
-      <option value="Inativo">Inativo</option>
-    </select>
-    <input type="submit" name="submit"
-      class="mobile-box b6tob3 input-generic btn-act bold noborder padding-5 margin-top-5 pointer" value="Adicionar">
-  </form>
-</div>
+<form id="product-insert-form" class="box b1 container border-st radius-5 padding-5 margin-top-10"
+  style="display: none;">
+  <div class="box b1 underline lucida-grande em08 bold center">Adicionar produto ao catálogo</div>
+  <input type="hidden" name="catalog_id" value="">
+  <%- include('./dropdown/input.ejs') %>
+  <input type="number" name="price" class="box b6 input-generic lucida-grande bold padding-5 margin-top-5 nofocus"
+    step="0.01" value="0.00" onfocus="if(this.value < 0.01){this.value=''}"
+    onblur="if(this.value < 0.01){ this.value=parseFloat(0).toFixed(2) } else { this.value=parseFloat(this.value).toFixed(2) }"
+    autocomplete="off" role="presentation" />
+  <select name="status" class="box b6 input-generic lucida-grande bold padding-5 margin-top-5">
+    <option value="Ativo">Ativo</option>
+    <option value="Inativo">Inativo</option>
+  </select>
+  <input type="submit" name="submit" class="box b6 input-generic btn-act bold noborder padding-5 margin-top-5 pointer"
+    value="Adicionar">
+</form>

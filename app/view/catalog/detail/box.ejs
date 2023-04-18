@@ -1,10 +1,54 @@
-<div id="catalog-detail-box" class="box b2-3 container ground border margin-top-10 padding-10 radius-10"
+<div id="catalog-detail-box" class="box b3-5 container ground border margin-top-10 padding-10 radius-10"
   style="display: none;">
   <div id="catalog-detail-div" class="box b1 container"></div>
 
+  <%- include('./product/insert/toggle.ejs') %>
+  <%- include('./product/filter/toggle.ejs') %>
+
   <%- include('./product/insert/form.ejs') %>
+  <%- include('./product/filter/form.ejs') %>
 
   <div id="catalog-product-box" class="box b1 container">
     <div id="catalog-product-div" class="box b1 container"></div>
   </div>
 </div>
+
+<script>
+  function switchDetailMenu(input) {
+    if (input.id == "product-insert-toggle") {
+      document.getElementById("product-insert-form").style.display = "";
+      lib.addCss(document.getElementById("product-insert-toggle"), ["shadow-st", "border-st", "bold", "em11"]);
+      lib.removeCss(document.getElementById("product-insert-toggle"), ["shadow-lg-st", "border-lg-st"]);
+
+      document.getElementById("insert-icon").style.display = "";
+      lib.addCss(document.getElementById("insert-icon"), ["size-20"]);
+      lib.removeCss(document.getElementById("insert-icon"), ["size-15"]);
+
+      document.getElementById("product-filter-form").style.display = "none";
+      lib.addCss(document.getElementById("product-filter-toggle"), ["shadow-lg-st", "border-lg-st"]);
+      lib.removeCss(document.getElementById("product-filter-toggle"), ["shadow-st", "border-st", "bold", "em11"]);
+
+      document.getElementById("filter-icon").style.display = "";
+      lib.addCss(document.getElementById("filter-icon"), ["size-15"]);
+      lib.removeCss(document.getElementById("filter-icon"), ["size-20"]);
+    }
+
+    if (input.id == "product-filter-toggle") {
+      document.getElementById("product-filter-form").style.display = "";
+      lib.addCss(document.getElementById("product-filter-toggle"), ["shadow-st", "border-st", "bold", "em11"]);
+      lib.removeCss(document.getElementById("product-filter-toggle"), ["shadow-lg-st", "border-lg-st"]);
+
+      document.getElementById("insert-icon").style.display = "";
+      lib.addCss(document.getElementById("insert-icon"), ["size-15"]);
+      lib.removeCss(document.getElementById("insert-icon"), ["size-20"]);
+
+      document.getElementById("product-insert-form").style.display = "none";
+      lib.addCss(document.getElementById("product-insert-toggle"), ["shadow-lg-st", "border-lg-st"]);
+      lib.removeCss(document.getElementById("product-insert-toggle"), ["shadow-st", "border-st", "bold", "em11"]);
+
+      document.getElementById("filter-icon").style.display = "";
+      lib.addCss(document.getElementById("filter-icon"), ["size-20"]);
+      lib.removeCss(document.getElementById("filter-icon"), ["size-15"]);
+    }
+  };
+</script>

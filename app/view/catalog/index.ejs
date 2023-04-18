@@ -10,14 +10,12 @@
   <%- include('./../partials/sidebar.ejs') %>
 
   <section class="container padding-10 h-center">
-    <div class="box b2-3 container border ground margin-top-10 padding-10 radius-10">
+    <div class="box b3-5 container border ground margin-top-10 padding-10 radius-10">
       <%- include('./create/form.ejs') %>
     </div>
 
     <%- include('./filter/form.ejs') %>
-
     <%- include('./detail/box.ejs') %>
-
   </section>
   <%- include('./../partials/loader.ejs') %>
 </body>
@@ -30,6 +28,57 @@
   <%- include('./filter/script.ejs') %>
   <%- include('./detail/script.ejs') %>
   <%- include('./detail/product/insert/script.ejs') %>
+
+  <script>
+    // lib.dropdown.input = (objects, input, content, props) => {
+    //   if (!input) { return console.error("Elemento não encontrado:", input); }
+
+    //   content.innerHTML = "";
+    //   content.style.display = 'block';
+
+    //   input.onclick = function (event) {
+    //     event.stopPropagation();
+    //     if (this.readOnly) { this.value = ''; this.dataset.id = ''; this.readOnly = false; }
+    //     content.style.display = 'block';
+    //   };
+
+    //   content.onclick = function (event) {
+    //     event.stopPropagation();
+    //   };
+
+    //   objects.forEach(obj => {
+    //     const item = lib.element.create("div", {
+    //       class: "box b1 container box-hover padding-10 border pointer",
+    //       'data-id': obj["id"]
+    //     });
+
+    //     for (let i in props) {
+    //       item.append(lib.element.info(`b2`, props[i], obj[props[i]]));
+    //     };
+
+    //     item.onclick = function (event) {
+    //       input.dataset.id = this.dataset.id;
+    //       input.value = props.reduce((value, prop, currI, arr) => {
+    //         if (currI == arr.length - 1) { value += `${obj[prop]}`; }
+    //         else { value += `${obj[prop]} | `; }
+    //         return value;
+    //       }, "");
+    //       input.readOnly = true;
+    //       content.style.display = 'none';
+    //     };
+
+    //     content.appendChild(item);
+    //   });
+
+    //   document.addEventListener('click', function (event) {
+    //     const dropdownContent = document.querySelector('.dropdown-content');
+    //     if (dropdownContent.style.display === 'block') {
+    //       dropdownContent.style.display = 'none';
+    //     }
+    //   });
+    // };
+
+  </script>
 </footer>
 
 </html>

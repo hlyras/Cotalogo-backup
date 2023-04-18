@@ -25,16 +25,21 @@
       url: e.target.url.value.slice(13 + business_name.length).toLowerCase()
     };
 
+    if (!catalog.id && !confirm("Este catálogo irá custar R$0,33 por dia / R$10,00 em 30 dias \n\n Deseja prosseguir?")) { return false; }
+
     let response = await API.response(Catalog.create, catalog);
     if (!response) { return false; }
 
     e.target.id.value = ``;
     e.target.url.value = `cotalogo.com/${business_name}/`;
 
-    lib.display("catalog-create-form", "none");
-    document.getElementById("catalog-filter-expander").src = "/images/icon/retract.png";
 
+    lib.display("catalog-create-form", "none");
+    lib.display("catalog-detail-box", "none");
+    lib.display("catalog-filter-container", "");
     lib.display("catalog-filter-box", "");
+
+    document.getElementById("catalog-filter-expander").src = "/images/icon/retract.png";
     document.getElementById("catalog-create-expander").src = "/images/icon/expand.png";
 
     document.getElementById("catalog-create-label").innerHTML = "Novo catálogo";

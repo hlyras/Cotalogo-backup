@@ -10,23 +10,19 @@
     lib.display("catalog-filter-container", "none");
 
     catalogInfo(catalog);
-
-    document.getElementById("product-insert-form").catalog_id.value = id;
-
-    // Cria form com busca por digitação (product_name, user_id)
-    // inclui produto no catálogo
-    // mostra todos os produtos do catálogo
-    // atualizar valor do produto
-    // remover produto do catálogo
   };
 
   function catalogInfo(catalog) {
     let detail_div = document.getElementById("catalog-detail-div");
     detail_div.innerHTML = "";
 
-    detail_div.append(lib.element.create('div', { class: "mobile-box b12" }));
-    detail_div.append(lib.element.create("div", { class: "mobile-box b5-6 lucida-grande em11 bold center" }, `cotalogo.com/${business_name}${catalog.url}`));
+    catalog.url != "/" && detail_div.append(lib.element.create("div", { class: "mobile-box b3-4" }));
+    catalog.url != "/" && detail_div.append(lib.element.icon('b12', 20, "/images/icon/edit.png", `catalogEdit(${catalog.id})`));
+    catalog.url != "/" && detail_div.append(lib.element.icon('b12', 20, "/images/icon/trash.png", `catalogDelete(${catalog.id})`));
     detail_div.append(lib.element.icon('b12', 20, '/images/icon/close.png', `closeCatalog()`));
+    catalog.url == "/" && detail_div.append(lib.element.create("div", { class: "mobile-box b12" }));
+    catalog.url == "/" && detail_div.append(lib.element.create("div", { class: "mobile-box b1 underline lucida-grande margin-top-10 center" }, `cotalogo.com/${business_name}${catalog.url}`));
+    catalog.url != "/" && detail_div.append(lib.element.create("div", { class: "mobile-box b1 underline lucida-grande margin-top-10 center" }, `cotalogo.com/${business_name}${catalog.url}`));
   };
 
   function closeCatalog() {

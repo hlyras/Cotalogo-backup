@@ -77,12 +77,6 @@
 
 			console.log(response);
 
-			// if (!response.done && !response.msg) {
-			// 	document.getElementById("message").innerHTML = "Ocorreu um erro ao realizar seu cadastro, por favor atualize a página e tente novamente";
-			// 	document.getElementById("message").style.display = "";
-			// 	return;
-			// }
-
 			if (response.msg) {
 				document.getElementById("message").innerHTML = response.msg;
 				document.getElementById("message").style.display = "";
