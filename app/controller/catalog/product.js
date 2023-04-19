@@ -25,7 +25,11 @@ productController.insert = async (req, res) => {
     let product_user_id = (await Product.findById(product.product_id))[0].user_id;
     if (req.user.id != product_user_id) { return res.send({ unauthorized: "Você não tem permissão para utilizar este produto." }); }
 
-    // verificar se o produto já está incluído no catálogo
+    let strict_params = { keys: [], values: [] };
+    lib.Query.fillParam('catalog_product.product_id', product.product_id, strict_params);
+    lib.Query.fillParam('catalog_product.catalog_id', product.catalog_id, strict_params);
+    let catalog_products = await Catalog.product.filter([], [], [], strict_params, []);
+    if (catalog_products.length) { return res.send({ msg: "Você já incluiu este produto neste catálogo." }); }
 
     let response = await product.insert();
     if (response.err) { return res.send({ msg: "Ocorreu um erro ao inserir o produto." }); }

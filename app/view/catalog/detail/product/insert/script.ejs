@@ -9,11 +9,9 @@
       status: e.target.status.value
     };
 
-    // criar função para acessar controller
     let response = await API.response(Catalog.product.insert, product);
     if (!response) { return false; }
 
-    e.target.catalog_id.value = "";
     e.target.product_id.dataset.id = "";
     e.target.product_id.value = "";
     e.target.price.value = "0.00";
