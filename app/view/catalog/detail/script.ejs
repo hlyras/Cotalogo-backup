@@ -21,10 +21,9 @@
     catalog.url != "/" && detail_div.append(lib.element.create("div", { class: "mobile-box b3-4" }));
     catalog.url != "/" && detail_div.append(lib.element.icon('b12', 20, "/images/icon/edit.png", `catalogEdit(${catalog.id})`));
     catalog.url != "/" && detail_div.append(lib.element.icon('b12', 20, "/images/icon/trash.png", `catalogDelete(${catalog.id})`));
+    catalog.url == "/" && detail_div.append(lib.element.create("div", { class: "mobile-box b11-12" }));
     detail_div.append(lib.element.icon('b12', 20, '/images/icon/close.png', `closeCatalog()`));
-    catalog.url == "/" && detail_div.append(lib.element.create("div", { class: "mobile-box b12" }));
-    catalog.url == "/" && detail_div.append(lib.element.create("div", { class: "mobile-box b1 underline lucida-grande margin-top-10 center" }, `cotalogo.com/${business_name}${catalog.url}`));
-    catalog.url != "/" && detail_div.append(lib.element.create("div", { class: "mobile-box b1 underline lucida-grande margin-top-10 center" }, `cotalogo.com/${business_name}${catalog.url}`));
+    detail_div.append(lib.element.create("div", { class: "mobile-box b1 underline lucida-grande margin-top-10 center" }, `cotalogo.com/${business_name}${catalog.url}`));
   };
 
   function closeCatalog() {
