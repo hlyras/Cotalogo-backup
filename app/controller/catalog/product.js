@@ -43,7 +43,7 @@ productController.insert = async (req, res) => {
 
 productController.filter = async (req, res) => {
   try {
-    let props = ["catalog_product.*", "product.code", "product.name", "product.color", "product.size"];
+    let props = ["catalog_product.*", "product.code", "product.name"];
     let inners = [
       ["cms_cotalogo.product", "catalog_product.product_id", "product.id"]
     ];
@@ -54,8 +54,11 @@ productController.filter = async (req, res) => {
     lib.Query.fillParam('catalog_product.catalog_id', req.body.catalog_id, strict_params);
     lib.Query.fillParam('product.name', req.body.name, params);
     lib.Query.fillParam('product.code', req.body.code, params);
+    lib.Query.fillParam('catalog_product.status', req.body.status, strict_params);
 
-    let products = await Catalog.product.filter([], [], params, strict_params, []);
+    let order = [["product.code", "ASC"]];
+
+    let products = await Catalog.product.filter(props, inners, params, strict_params, order);
 
     res.send({ products });
   } catch (err) {

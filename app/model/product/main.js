@@ -4,6 +4,7 @@ const lib = require('jarmlib');
 const Product = function (product) {
 	this.id = 0;
 	this.user_id = 0;
+	this.reference_id = 0;
 	this.code = "";
 	this.name = "";
 	this.description = "";

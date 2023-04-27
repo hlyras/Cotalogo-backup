@@ -1,0 +1,35 @@
+<script>
+  document.getElementById("product-filter-form").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const product = {
+      catalog_id: e.target.catalog_id.value,
+      code: e.target.code.value,
+      name: e.target.name.value,
+      status: e.target.status.value
+    };
+
+    let products = await API.response(Catalog.product.filter, product);
+    if (!products) { return false; }
+
+    catalogProductFilter(products);
+  });
+
+  async function catalogProductFilter(products) {
+    let filter_div = document.getElementById("product-filter-div");
+    filter_div.innerHTML = "";
+
+    if (!products.length) {
+      filter_div.append(lib.element.create("div", { class: "box b1 lucida-grande em09 bold center" }, "Sem resultados"));
+    }
+
+    products.forEach(product => {
+      let product_div = lib.element.create("div", { class: "box b1 container border-lg-st radius-5 padding-5 margin-top-5" });
+      product_div.append(lib.element.create("div", { class: "box b6 lucida-grande em09 bold center" }, product.code));
+      product_div.append(lib.element.create("div", { class: "box b2-3 lucida-grande em09 bold center" }, product.name));
+      product_div.append(lib.element.icon('b12', 20, "/images/icon/edit.png", `productEdit(${product.id})`));
+      product_div.append(lib.element.icon('b12', 20, "/images/icon/trash.png", `productDelete(${product.id})`));
+      filter_div.append(product_div);
+    });
+  };
+</script>

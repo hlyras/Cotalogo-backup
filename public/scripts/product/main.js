@@ -7,7 +7,7 @@ Product.save = async (product) => {
   });
   response = await response.json();
 
-  if (API.verifyResponse(response)) { return false };
+  if (API.verifyResponse(response)) { return false; };
   alert(response.done);
 
   return response;
@@ -21,7 +21,7 @@ Product.filter = async product => {
   });
   response = await response.json();
 
-  if (API.verifyResponse(response)) { return false };
+  if (API.verifyResponse(response)) { return false; };
 
   return response.products;
 };
@@ -30,7 +30,7 @@ Product.findById = async (id) => {
   let response = await fetch(`/product/id/${id}`);
   response = await response.json();
 
-  if (API.verifyResponse(response)) { return false };
+  if (API.verifyResponse(response)) { return false; };
 
   return response.product;
 };

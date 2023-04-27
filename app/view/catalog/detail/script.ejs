@@ -10,8 +10,11 @@
     lib.display("catalog-filter-container", "none");
 
     document.getElementById("product-insert-form").catalog_id.value = catalog.id;
+    document.getElementById("product-filter-form").catalog_id.value = catalog.id;
 
     catalogInfo(catalog);
+
+    document.getElementById("product-filter-form").submit.click();
   };
 
   function catalogInfo(catalog) {
