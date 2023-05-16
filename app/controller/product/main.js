@@ -40,7 +40,7 @@ productController.save = async (req, res) => {
 	product.code = req.body.code;
 	product.name = req.body.name;
 	product.description = req.body.description;
-	product.variations = req.body.variations || [];
+	product.variations = [...req.body.variations] || [];
 
 	try {
 		if (!product.id) {

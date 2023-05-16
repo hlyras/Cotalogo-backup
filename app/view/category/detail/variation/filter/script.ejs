@@ -14,29 +14,20 @@
   });
 
   function variationFilter(variations) {
-    let filter_box = document.getElementById("variation-filter-box");
     let filter_div = document.getElementById("variation-filter-div");
     filter_div.innerHTML = "";
 
     if (variations.length) {
-      let div_header = lib.element.create("div", { class: "box b1 container border em07 center" });
-
-      div_header.appendChild(lib.element.create("div", { class: "mobile-box b4-5 padding-5 bold noselect" }, "Nome"));
-      filter_div.appendChild(div_header);
-
       variations.forEach(variation => {
-        let div_variation = lib.element.create("div", { class: "box b1 container box-hover padding-5 margin-top-5 border" });
-
-        div_variation.appendChild(lib.element.create("div", { class: "mobile-box b8-10 center" }, variation.name));
-        div_variation.appendChild(lib.element.icon('b10', 20, "/images/icon/edit.png", `variationEdit(${variation.id})`));
-        div_variation.appendChild(lib.element.icon('b10', 20, "/images/icon/trash.png", `variationDelete(${variation.id})`));
-        filter_div.appendChild(div_variation);
+        let variation_div = lib.element.create("div", { class: "box b1 container box-hover padding-5 margin-top-5 border" });
+        variation_div.appendChild(lib.element.create("div", { class: "mobile-box b8-10 lucida-grande em09 bold center" }, variation.name));
+        variation_div.appendChild(lib.element.icon('b10', 20, "/images/icon/edit.png", `variationEdit(${variation.id})`));
+        variation_div.appendChild(lib.element.icon('b10', 20, "/images/icon/trash.png", `variationDelete(${variation.id})`));
+        filter_div.appendChild(variation_div);
       });
-      filter_box.style.display = "";
     } else {
-      let div_variation = lib.element.create("div", { class: "box b1 center box-hover padding-5 border" }, "Sem resultados");
-      filter_div.appendChild(div_variation);
-      filter_box.style.display = "";
+      let variation_div = lib.element.create("div", { class: "box b1 center box-hover padding-5 border" }, "Sem resultados");
+      filter_div.appendChild(variation_div);
     };
   };
 

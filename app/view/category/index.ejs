@@ -6,23 +6,14 @@
 
 <body>
   <%- include('./../partials/userHeader.ejs') %>
-  <%- include('./manage/help/variation.ejs') %>
+  <%- include('./help/variation.ejs') %>
   <%- include('./../partials/sidebar.ejs') %>
   <section class="container h-center">
-    <div class="box b2 container border-explicit ground margin-top-10 padding-10">
-      <%- include('./manage/create/form.ejs') %>
-      <div class="box a1 container border ground margin-top-10 padding-10">
-        <div class="box b1 container">
-          <div class="mobile-box b10"></div>
-          <div class="mobile-box b4-5 em12 lucida-grande bold center">Buscar Categorias</div>
-          <div class="mobile-box b10 center"><img class="size-20 icon noselect" src="/images/icon/retract.png"
-              onclick="lib.displayDiv('category-filter-box', this, '/images/icon/expand.png', '/images/icon/retract.png');">
-          </div>
-        </div>
-        <%- include('./manage/filter/form.ejs') %>
-        <%- include('./manage/detail/box.ejs') %>
-      </div>
+    <div id="category-box" class="box b2-3 container ground border-st radius-5 padding-5">
+      <%- include('./create/form.ejs') %>
+      <%- include('./filter/box.ejs') %>
     </div>
+    <%- include('./detail/box.ejs') %>
   </section>
   <%- include('./../partials/loader.ejs') %>
 </body>
@@ -31,11 +22,11 @@
   <script src="/scripts/product/main.js"></script>
   <script src="/scripts/category/main.js"></script>
   <script src="/scripts/category/variation/main.js"></script>
-  <%- include('./manage/create/script.ejs') %>
-  <%- include('./manage/filter/script.ejs') %>
-  <%- include('./manage/detail/script.ejs') %>
-  <%- include('./variation/create/script.ejs') %>
-  <%- include('./variation/filter/script.ejs') %>
+  <%- include('./create/script.ejs') %>
+  <%- include('./filter/script.ejs') %>
+  <%- include('./detail/script.ejs') %>
+  <%- include('./detail/variation/create/script.ejs') %>
+  <%- include('./detail/variation/filter/script.ejs') %>
 
   <script>
     document.getElementById("category-filter-form").submit.click();

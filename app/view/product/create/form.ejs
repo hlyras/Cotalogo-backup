@@ -1,39 +1,28 @@
-<style>
-  .btn-act {
-    background-color: #356ae6;
-    color: #fff;
-  }
-
-  .btn-act:hover {
-    background-color: #245ae5;
-    color: #fff;
-  }
-</style>
-
 <div id="product-create-container" class="box b1 container">
-  <div class="mobile-box b10"></div>
+  <div class="mobile-box b10 container margin-top-2">
+    <img class='mobile-box size-25 center icon pointer noselect' onclick="lib.display('code-help', '')"
+      src="/images/icon/help.png">
+  </div>
   <div class="mobile-box b4-5 em12 lucida-grande bold center">Novo Produto</div>
   <div class="mobile-box b10 center"><img id="product-create-expander" class="size-20 icon noselect"
       src="/images/icon/expand.png"
       onclick="lib.displayDiv('product-create-form', this, '/images/icon/expand.png', '/images/icon/retract.png');">
   </div>
   <form id="product-create-form" class="box b1 container padding-10" style="display:none;">
-    <div class="box a1 container">
-      <div class="box b1 lucida-grande em08 bold margin-top-10">Código</div>
-      <input type="hidden" name="id" value="">
-      <input type="text" name="code" class="mobile-box b4-5 input-generic border-lg-st radius-5 center nofocus"
-        placeholder="Código do Produto" autocomplete="off" maxlength="6">
-      <img class='mobile-box size-20 center icon pointer noselect' onclick="lib.display('code-help', '')"
-        src="/images/icon/help.png">
+    <input type="hidden" name="id" value="">
+    <div class="box b4 container margin-top-25">
+
+      <%- include('./code/dropdown.ejs') %>
     </div>
-    <div class="box b1 lucida-grande em08 bold margin-top-10">Nome do produto</div>
-    <input type="text" name="name" class="box b1 input-generic border-lg-st radius-5 center nofocus"
-      placeholder="Nome do Produto" autocomplete="off" maxlength="100">
+    <div class="box b3-4 container margin-top-25">
+      <input type="text" name="name" class="box b1 lucida-grande em12 bold border-bottom-lg-st padding-5 center nofocus"
+        placeholder="Nome do Produto" autocomplete="off" maxlength="100">
+    </div>
 
     <div class="box b1 container border-lg-st padding-10 margin-top-10 radius-5">
       <div class="box b1 container">
         <div class="mobile-box b10"></div>
-        <div class="mobile-box b4-5 em09 lucida-grande bold center noselect">Características do produto</div>
+        <div class="mobile-box b4-5 lucida-grande bold center noselect">Categorias e variações</div>
         <div class="mobile-box b10 center"><img class="size-20 icon noselect" src="/images/icon/expand.png"
             onclick="lib.displayDiv('create-variation-box', this, '/images/icon/expand.png', '/images/icon/retract.png');">
         </div>

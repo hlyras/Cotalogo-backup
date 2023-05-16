@@ -1,0 +1,56 @@
+<script>
+  document.getElementById("category-filter-form").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    let category = {
+      name: event.target.elements.namedItem("name").value
+    };
+
+    let categories = await API.response(Category.filter, category);
+    if (!categories) { return false; }
+
+    lib.display("category-box", '');
+    lib.display("category-detail-box", 'none');
+
+    categoryFilter(categories);
+  });
+
+  const categoryFilter = (categories) => {
+    let filter_div = document.getElementById("category-filter-div");
+    filter_div.innerHTML = "";
+
+    if (categories.length) {
+      categories.forEach(category => {
+        let category_div = lib.element.create("div", { class: "box b1 container box-hover padding-5 margin-top-5 border" });
+
+        category_div.appendChild(lib.element.icon('10', 20, "/images/icon/open.png", `categoryDetail(${category.id})`));
+        category_div.appendChild(lib.element.create("div", { class: "mobile-box b7-10 lucida-grande em09 bold center" }, category.name));
+        category_div.appendChild(lib.element.icon('b10', 20, "/images/icon/edit.png", `categoryEdit(${category.id})`));
+        category_div.appendChild(lib.element.icon('b10', 20, "/images/icon/trash.png", `categoryDelete(${category.id})`));
+        filter_div.appendChild(category_div);
+      });
+    } else {
+      let category_div = lib.element.create("div", { class: "box b1 lucida-grande bold center padding-5" }, "Nenhuma categoria cadastrada");
+      filter_div.appendChild(category_div);
+    };
+  };
+
+  const categoryEdit = async (category_id) => {
+    let category = await API.response(Category.filter, { id: category_id });
+    if (!category) { return false; }
+
+    document.getElementById("category-create-form").elements.namedItem("id").value = category[0].id;
+    document.getElementById("category-create-form").elements.namedItem("name").value = category[0].name;
+    document.getElementById("category-create-form").elements.namedItem("name").focus();
+
+    lib.display("category-detail-box", 'none');
+  };
+
+  const categoryDelete = async (category_id) => {
+    let r = confirm('Deseja realmente excluir a variação?');
+    if (r) {
+      if (!await API.response(Category.delete, category_id)) { return false; };
+      document.getElementById("category-filter-form").submit.click();
+    }
+  };
+</script>

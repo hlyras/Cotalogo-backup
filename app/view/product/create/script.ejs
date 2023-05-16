@@ -1,6 +1,4 @@
 <script>
-  // form de código busca por nome ou código do produto e desce dropdown
-  // com isso o produto pode ser enconrado pelo nome caso não se lembre do código de um produto específico
   document.getElementById("product-create-form").addEventListener("submit", async e => {
     e.preventDefault();
 
@@ -13,8 +11,10 @@
     let variation_box = document.getElementById("create-variation-box");
     console.log(Array.from(variation_box.querySelectorAll("select")));
     Array.from(variation_box.querySelectorAll("select")).map(input => {
-      product.append(`${`variations`}`, input.value);
+      product.append(`${'variations'}`, input.value);
     });
+
+    console.log(product.getAll('variations'));
 
     const input = document.getElementById('files');
     if (!input.files.length) {
@@ -24,6 +24,8 @@
     for (let i in input.files) {
       product.append('file', input.files[i]);
     };
+
+    console.log(product);
 
     let response = await API.response(Product.save, product);
     if (!response) { return false; }
