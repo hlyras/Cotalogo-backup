@@ -178,11 +178,15 @@ productController.filter = async (req, res) => {
 		let params = { keys: [], values: [] };
 		let strict_params = { keys: [], values: [] };
 
+		console.log(product);
+
 		lib.Query.fillParam('product.user_id', req.user.id, strict_params);
-		lib.Query.fillParam('product.code', product.code, strict_params);
+		lib.Query.fillParam('product.code', product.code, params);
 		lib.Query.fillParam('product.name', product.name, params);
 
 		let products_response = await Product.filter([], [], params, strict_params, []);
+
+		console.log(products_response);
 
 		// Verificar se os produtos contém todas as variações
 		let products = [];
