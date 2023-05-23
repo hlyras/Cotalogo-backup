@@ -26,7 +26,14 @@ catalogController.create = async (req, res) => {
   if (lib.string.hasForbidden(catalog.url.slice(1))) { return res.send({ msg: "Não é permitido utilizar estes caracteres." }); }
 
   try {
+    let strict_params = { keys: [], values: [] };
+    lib.Query.fillParam('catalog.user_id', req.user.id, strict_params);
+    lib.Query.fillParam('catalog.url', req.body.url, strict_params);
+    let catalogs = await Catalog.filter([], [], [], strict_params, []);
+
     if (!catalog.id) {
+      if (catalogs.length) { return res.send({ msg: "Você já utilizou essa URL em outro catálogo" }); }
+
       let response = await catalog.create();
       if (response.err) { return res.send({ msg: response.err }); }
 
@@ -37,7 +44,9 @@ catalogController.create = async (req, res) => {
 
       if (catalog_response.user_id != catalog.user_id) {
         return res.send({ msg: "Você não tem permissão para atualizar o catálogo." });
-      };
+      } else {
+        if (catalogs.length && catalogs[0].id != catalog_response.id) { return res.send({ msg: "Você já utilizou essa URL em outro catálogo" }); }
+      }
 
       let response = await catalog.update();
       if (response.err) { return res.send({ msg: response.err }); }
@@ -54,11 +63,8 @@ catalogController.filter = async (req, res) => {
   try {
     let params = { keys: [], values: [] };
     let strict_params = { keys: [], values: [] };
-
     lib.Query.fillParam('catalog.user_id', req.user.id, strict_params);
-    lib.Query.fillParam('catalog.name', req.body.name, params);
     lib.Query.fillParam('catalog.url', req.body.url, params);
-
     let catalogs = await Catalog.filter([], [], params, strict_params, []);
 
     res.send({ catalogs });

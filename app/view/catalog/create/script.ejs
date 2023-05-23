@@ -33,7 +33,6 @@
     e.target.id.value = ``;
     e.target.url.value = `cotalogo.com/${business_name}/`;
 
-
     lib.display("catalog-create-form", "none");
     lib.display("catalog-detail-box", "none");
     lib.display("catalog-filter-container", "");
@@ -44,6 +43,7 @@
 
     document.getElementById("catalog-create-label").innerHTML = "Novo catálogo";
     document.getElementById("catalog-create-form").submit.value = "Criar catálogo";
+    lib.display("catalog-update-cancel", "none");
 
     document.getElementById("catalog-filter-form").submit.click();
   });
@@ -61,8 +61,16 @@
 
     document.getElementById("catalog-create-form").id.value = catalog.id;
     document.getElementById("catalog-create-form").url.value = `cotalogo.com/${business_name}${catalog.url}`;
-
     document.getElementById("catalog-create-label").innerHTML = "Atualizar catálogo";
     document.getElementById("catalog-create-form").submit.value = "Atualizar catálogo";
+    lib.display("catalog-update-cancel", "");
+  };
+
+  function catalogUpdateCancel() {
+    document.getElementById("catalog-create-form").id.value = "";
+    document.getElementById("catalog-create-form").url.value = `cotalogo.com/${business_name}/`;
+    document.getElementById("catalog-create-label").innerHTML = "Novo catálogo";
+    document.getElementById("catalog-create-form").submit.value = "Criar catálogo";
+    lib.display("catalog-update-cancel", "none");
   };
 </script>
