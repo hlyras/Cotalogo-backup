@@ -31,6 +31,8 @@
   };
 
   async function imageDelete(id, parent) {
+    if (!confirm("Deseja realmente excluir a imagem?")) { return; }
+
     let response = await API.response(Product.image.delete, id);
     if (!response) { return false; }
 

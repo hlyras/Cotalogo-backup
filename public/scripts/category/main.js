@@ -9,7 +9,6 @@ Category.save = async (category) => {
   response = await response.json();
 
   if (API.verifyResponse(response)) { return false };
-  alert(response.done);
 
   return response;
 };

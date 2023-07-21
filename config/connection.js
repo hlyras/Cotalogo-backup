@@ -10,6 +10,7 @@ const pool = mysql.createPool({
 	password: dbconfig.development.database.password
 });
 
+
 const db = async (query) => {
 	return new Promise(async (resolve, reject) => {
 		pool.getConnection((err, connection) => {

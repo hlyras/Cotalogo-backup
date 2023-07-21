@@ -34,23 +34,4 @@
       filter_div.appendChild(category_div);
     };
   };
-
-  const categoryEdit = async (category_id) => {
-    let category = await API.response(Category.filter, { id: category_id });
-    if (!category) { return false; }
-
-    document.getElementById("category-create-form").elements.namedItem("id").value = category[0].id;
-    document.getElementById("category-create-form").elements.namedItem("name").value = category[0].name;
-    document.getElementById("category-create-form").elements.namedItem("name").focus();
-
-    lib.display("category-detail-box", 'none');
-  };
-
-  const categoryDelete = async (category_id) => {
-    let r = confirm('Deseja realmente excluir a variação?');
-    if (r) {
-      if (!await API.response(Category.delete, category_id)) { return false; };
-      document.getElementById("category-filter-form").submit.click();
-    }
-  };
 </script>

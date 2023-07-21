@@ -9,7 +9,7 @@
   <%- include('./help/variation.ejs') %>
   <%- include('./../partials/sidebar.ejs') %>
   <section class="container h-center">
-    <div id="category-box" class="box b2-3 container ground border-st radius-5 padding-5">
+    <div id="category-box" class="box b2-3 container ground border-st radius-5 padding-10">
       <%- include('./create/form.ejs') %>
       <%- include('./filter/box.ejs') %>
     </div>
@@ -18,6 +18,7 @@
   <%- include('./../partials/loader.ejs') %>
 </body>
 <footer>
+  <%- include('./../partials/msg.ejs') %>
   <%- include('./../partials/footer.ejs') %>
   <script src="/scripts/product/main.js"></script>
   <script src="/scripts/category/main.js"></script>

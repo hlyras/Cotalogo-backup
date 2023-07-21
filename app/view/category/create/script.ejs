@@ -3,16 +3,65 @@
     event.preventDefault();
 
     let category = {
-      id: event.target.elements.namedItem("id").value,
-      name: event.target.elements.namedItem("name").value
+      id: event.target.id.value,
+      name: event.target.name.value
     };
 
     let response = await API.response(Category.save, category);
     if (!response) { return false; }
 
-    event.target.elements.namedItem("id").value = "";
-    event.target.elements.namedItem("name").value = "";
+    lib.message("Categoria atualizada com sucesso!");
+
+    event.target.id.value = "";
+    event.target.name.value = "";
+
+    lib.addCss(document.getElementById("category-create-form").submit, ['b1']);
+    lib.removeCss(document.getElementById("category-create-form").submit, ['b2-3']);
+
+    lib.display("category-cancel-btn", "none");
+
+    document.getElementById("category-create-form").submit.innerHTML = "Cadastrar categoria";
 
     document.getElementById("category-filter-form").submit.click();
   });
+
+  const categoryEdit = async (category_id) => {
+    let category = await API.response(Category.filter, { id: category_id });
+    if (!category) { return false; }
+
+    document.getElementById("category-create-form").id.value = category[0].id;
+    document.getElementById("category-create-form").name.value = category[0].name;
+    document.getElementById("category-create-form").name.focus();
+
+    document.getElementById("category-create-form").submit.innerHTML = "Atualizar categoria";
+
+    lib.addCss(document.getElementById("category-create-form").submit, ['b2-3']);
+    lib.removeCss(document.getElementById("category-create-form").submit, ['b1']);
+
+    lib.display("category-cancel-btn", "");
+
+    lib.display("category-detail-box", 'none');
+  };
+
+  const categoryDelete = async (category_id) => {
+    let r = confirm('Deseja realmente excluir a variação?');
+    if (r) {
+      if (!await API.response(Category.delete, category_id)) { return false; };
+      document.getElementById("category-filter-form").submit.click();
+    }
+  };
+
+  const categoryUpdateCancel = () => {
+    document.getElementById("category-create-form").id.value = "";
+    document.getElementById("category-create-form").name.value = "";
+
+    lib.addCss(document.getElementById("category-create-form").submit, ['b1']);
+    lib.removeCss(document.getElementById("category-create-form").submit, ['b2-3']);
+
+    lib.display("category-cancel-btn", "none");
+
+    document.getElementById("category-create-form").submit.innerHTML = "Cadastrar categoria";
+  };
+
+  document.getElementById('category-create-form').name.focus();
 </script>

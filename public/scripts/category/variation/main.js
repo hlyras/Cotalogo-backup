@@ -9,7 +9,6 @@ Variation.save = async (variation) => {
   response = await response.json();
 
   if (API.verifyResponse(response)) { return false };
-  alert(response.done);
 
   return response;
 };

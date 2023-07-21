@@ -1,13 +1,17 @@
-<form id="category-create-form" class="box a1 container ground">
-  <div class="mobile-box a11-12 lucida-grande bold center">Criar categoria</div>
-  <div class="box b12 container center">
-    <img class='mobile-box size-20 icon pointer noselect' onclick="lib.display('variation-help', '')"
+<form id="category-create-form" class="box a1 container">
+  <div class="mobile-box a10"></div>
+  <div class="mobile-box a4-5 lucida-grande bold center">Criar categoria</div>
+  <div class="mobile-box b10 container center">
+    <img class='image-prop size-20 icon pointer noselect center' onclick="lib.display('variation-help', '')"
       src="/images/icon/help.png">
   </div>
   <input type="hidden" name="id" value="">
-  <input type="text" name="name"
-    class="mobile-box b8-9 lucida-grande bold border-st radius-5 padding-5 margin-top-5 center"
+  <input type="text" name="name" class="box b2-3 lucida-grande bold border-bottom-lg-st padding-5 margin-top-10 center"
     placeholder="Nome da Categoria" autocomplete="off">
-  <button type="submit" name="submit" class="mobile-box b9 input-generic noborder margin-top-5"><img
-      class='size-20 icon pointer noselect' src="/images/icon/increase.png"></button>
+  <button type="submit" name="submit"
+    class="mobile-box b1 btn-act lucida-grande bold noborder radius-5 padding-10 margin-top-5 pointer">Cadastrar
+    categoria</button>
+  <div id="category-cancel-btn" onclick="categoryUpdateCancel()"
+    class="mobile-box b3 btn-cancel lucida-grande bold noborder radius-5 padding-10 margin-top-5 pointer center"
+    style="display: none;">Cancelar</div>
 </form>

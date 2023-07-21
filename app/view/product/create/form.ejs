@@ -64,15 +64,17 @@
 
 <div id="product-create-container" class="box b1 container">
   <div class="mobile-box b10 container margin-top-2">
-    <img class='mobile-box size-25 center icon pointer noselect' onclick="lib.display('code-help', '')"
-      src="/images/icon/help.png">
+    <div class="mobile-box icon-b center" data-tooltip="Ajuda">
+      <img class='mobile-box size-25 center icon pointer noselect' onclick="lib.display('code-help', '')"
+        src="/images/icon/help.png">
+    </div>
   </div>
-  <div class="mobile-box b4-5 em12 lucida-grande bold center">Novo Produto</div>
-  <div class="mobile-box b10 center icon-b border-st"
-    data-tooltip="Descrição um pouco maior porque precisa ser bem explicado, mas tudo tem limite e esse tamanho já trará problemas">
+  <div id="create-form-span" class="mobile-box b4-5 em12 lucida-grande bold center">Novo Produto</div>
+  <div class="mobile-box center">
     <img id="product-create-expander" class="size-20 noselect icon" src="/images/icon/expand.png"
       onclick="lib.displayDiv('product-create-form', this, '/images/icon/expand.png', '/images/icon/retract.png');">
   </div>
+
   <!-- <div class="mobile-box b10 center"><img id="product-create-expander" class="size-20 icon noselect"
       src="/images/icon/expand.png"
       onclick="lib.displayDiv('product-create-form', this, '/images/icon/expand.png', '/images/icon/retract.png');">
@@ -125,42 +127,3 @@
       value="Cadastrar produto">
   </form>
 </div>
-
-<script>
-  const icons = document.querySelectorAll('icon-b');
-
-  icons.forEach(icon => {
-    icon.addEventListener('mouseenter', () => {
-      const tooltip = document.createElement('span');
-      tooltip.classList.add('tooltip');
-      tooltip.textContent = icon.getAttribute('data-tooltip');
-      icon.parentNode.appendChild(tooltip);
-      positionTooltip(icon, tooltip);
-    });
-
-    icon.addEventListener('mouseleave', () => {
-      const tooltip = icon.parentNode.querySelector('.tooltip');
-      tooltip.remove();
-    });
-  });
-
-  function positionTooltip(icon, tooltip) {
-    const iconRect = icon.getBoundingClientRect();
-    const tooltipRect = tooltip.getBoundingClientRect();
-
-    let tooltipTop = iconRect.top - tooltipRect.height - 5;
-    let tooltipLeft = iconRect.left + iconRect.width / 2 - tooltipRect.width / 2;
-
-    const windowWidth = window.innerWidth;
-    const tooltipRight = tooltipLeft + tooltipRect.width;
-
-    if (tooltipLeft < 0) {
-      tooltipLeft = 0;
-    } else if (tooltipRight > windowWidth) {
-      tooltipLeft = windowWidth - tooltipRect.width;
-    }
-
-    tooltip.style.top = tooltipTop + 'px';
-    tooltip.style.left = tooltipLeft + 'px';
-  }
-</script>

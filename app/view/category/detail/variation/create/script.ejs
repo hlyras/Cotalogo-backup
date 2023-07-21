@@ -11,9 +11,11 @@
     let response = await API.response(Variation.save, variation);
     if (!response) { return false; }
 
-    event.target.elements.namedItem("id").value = "";
-    event.target.elements.namedItem("name").value = "";
-
-    document.getElementById("variation-filter-form").submit.click();
+    lib.message(response.done, () => {
+      event.target.elements.namedItem("id").value = "";
+      event.target.elements.namedItem("name").value = "";
+  
+      document.getElementById("variation-filter-form").submit.click();
+    });
   });
 </script>

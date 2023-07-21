@@ -13,7 +13,7 @@
 
     let variation_create_title = document.getElementById("category-create-title");
     variation_create_title.innerHTML = "";
-    variation_create_title.appendChild(lib.element.create("div", { class: "mobile-box b9-10" }, `Cadastrar ${category.name}`));
+    variation_create_title.appendChild(lib.element.create("div", { class: "mobile-box a4-5 lucida-grande bold center" }, `Cadastrar ${category.name}`));
     document.getElementById("variation-create-form").elements.namedItem("category-id").value = category.id;
     document.getElementById("variation-create-form").elements.namedItem("name").placeholder = `${category.name}`;
 

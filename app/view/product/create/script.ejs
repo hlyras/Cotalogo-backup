@@ -9,26 +9,21 @@
     product.append('description', e.target.description.value);
 
     let variation_box = document.getElementById("create-variation-box");
-    console.log(Array.from(variation_box.querySelectorAll("select")));
     Array.from(variation_box.querySelectorAll("select")).map(input => {
       product.append(`${'variations'}`, input.value);
     });
 
-    console.log(product.getAll('variations'));
-
     const input = document.getElementById('files');
-    if (!input.files.length) {
-      if (!confirm("Tem certeza que não deseja incluir imagens do produto?")) { return false; }
-    }
+    // if (!input.files.length) {
+    //   if (!confirm("Tem certeza que não deseja incluir imagens do produto?")) { return false; }
+    // }
 
-    for (let i in input.files) {
-      product.append('file', input.files[i]);
-    };
-
-    console.log(product);
+    for (let i in input.files) { product.append('file', input.files[i]); };
 
     let response = await API.response(Product.save, product);
     if (!response) { return false; }
+
+    lib.msg(response.done);
 
     e.target.id.value = "";
     e.target.code.value = "";
@@ -44,6 +39,7 @@
     lib.display("product-image-box", "none");
 
     e.target.submit.value = "Cadastrar produto";
+    document.getElementById("create-form-span").innerHTML = "Novo produto";
 
     document.getElementById("product-filter-form").submit.click();
   });
@@ -51,6 +47,8 @@
   async function productEdit(id) {
     let product = await API.response(Product.findById, id);
     if (!product) { return false };
+
+    document.getElementById("create-form-span").innerHTML = "Atualizar produto";
 
     lib.display("product-image-box", "");
     drawImages(product.images);
