@@ -30,23 +30,4 @@
       filter_div.appendChild(variation_div);
     };
   };
-
-  const variationEdit = async (variation_id) => {
-    let variation = await API.response(Variation.filter, { id: variation_id });
-    if (!variation) { return false; }
-
-    document.getElementById("variation-create-form").elements.namedItem("id").value = variation[0].id;
-    document.getElementById("variation-create-form").elements.namedItem("name").value = variation[0].name;
-    document.getElementById("variation-create-form").elements.namedItem("name").focus();
-
-    lib.display("variation-create-form", '');
-  };
-
-  const variationDelete = async (variation_id) => {
-    let r = confirm('Deseja realmente excluir a variação?');
-    if (r) {
-      if (!await API.response(Variation.delete, variation_id)) { return false; };
-      document.getElementById("variation-filter-form").submit.click();
-    }
-  };
 </script>

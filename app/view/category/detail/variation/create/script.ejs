@@ -12,10 +12,40 @@
     if (!response) { return false; }
 
     lib.message(response.done, () => {
-      event.target.elements.namedItem("id").value = "";
-      event.target.elements.namedItem("name").value = "";
-  
-      document.getElementById("variation-filter-form").submit.click();
+      event.target.name.focus();
     });
+
+    console.log('passou');
+
+    event.target.elements.namedItem("id").value = "";
+    event.target.elements.namedItem("name").value = "";
+
+    document.getElementById("variation-filter-form").submit.click();
   });
+
+  const variationEdit = async (variation_id) => {
+    let variation = await API.response(Variation.filter, { id: variation_id });
+    if (!variation) { return false; }
+
+    document.getElementById("variation-create-form").elements.namedItem("id").value = variation[0].id;
+    document.getElementById("variation-create-form").elements.namedItem("name").value = variation[0].name;
+    document.getElementById("variation-create-form").elements.namedItem("name").focus();
+
+    lib.display("variation-create-form", '');
+  };
+
+  const variationDelete = (variation_id) => {
+    lib.confirm('Deseja realmente excluir a variação?', async r => {
+      if (r) {
+        let response = await API.response(Variation.delete, variation_id);
+        if (!response) { return false; };
+
+        console.log(response);
+
+        lib.message(response, () => {
+          document.getElementById("variation-filter-form").submit.click();
+        });
+      }
+    });
+  };
 </script>

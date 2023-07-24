@@ -14,9 +14,6 @@
     });
 
     const input = document.getElementById('files');
-    // if (!input.files.length) {
-    //   if (!confirm("Tem certeza que não deseja incluir imagens do produto?")) { return false; }
-    // }
 
     for (let i in input.files) { product.append('file', input.files[i]); };
 

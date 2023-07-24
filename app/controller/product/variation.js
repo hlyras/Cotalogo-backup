@@ -54,11 +54,17 @@ const variationController = {
 		}
 	},
 	delete: async (req, res) => {
+		if (!req.user) {
+			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+		};
+
 		let strict_params = { keys: [], values: [] };
 		lib.Query.fillParam('variation.id', req.params.id, strict_params);
-		let verifyVariation = await Variation.filter([], [], [], strict_params, [])
+		let verifyVariation = await Variation.filter([], [], [], strict_params, []);
 
-		if (verifyVariation[0].user_id != req.user.id) { return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" }); }
+		if (verifyVariation[0] && verifyVariation[0].user_id != req.user.id) {
+			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+		}
 
 		try {
 			await Variation.delete(req.params.id);

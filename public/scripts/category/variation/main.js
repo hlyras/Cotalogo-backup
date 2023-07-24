@@ -31,7 +31,6 @@ Variation.delete = async (variation_id) => {
   response = await response.json();
 
   if (API.verifyResponse(response)) { return false };
-  alert(response.done);
 
-  return true;
+  return response.done;
 };

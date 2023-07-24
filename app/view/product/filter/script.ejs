@@ -28,6 +28,8 @@
     let filter_div = document.getElementById("product-filter-div");
     filter_div.innerHTML = "";
 
+    console.log(products);
+
     if (products.length) {
       let div_header = lib.element.create("div", { class: "box b1 container border em07 center" });
 
@@ -61,6 +63,14 @@
 
         let div_info = lib.element.create("div", { class: "mobile-box b1 container opacity-out-07 transition-04-04 h-center" });
         div_info.append(lib.element.create("div", { class: "box b1 em11 lucida-grande bold margin-top-5 center" }, products[i].name));
+
+        let variation_div = lib.element.create("div", { class: "box b1 container padding-10" });
+
+        products[i].variations.forEach(variation => {
+          variation_div.append(lib.element.createInfo("b2 lucida-grande bold margin-top-5 center", variation.category_name, variation.variation_name));
+          div_info.append(variation_div);
+        });
+
         div_info.append(lib.element.icon('b2', 20, "/images/icon/edit.png", `productEdit(${products[i].id})`));
         div_info.append(lib.element.icon('b2', 20, "/images/icon/trash.png", `productDelete(${products[i].id})`));
         div_product.append(div_info);
