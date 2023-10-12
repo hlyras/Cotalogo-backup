@@ -1,0 +1,24 @@
+<html>
+
+<head>
+  <%- include('./../../partials/head.ejs') %>
+</head>
+
+<body>
+  <%- include('./../../partials/userHeader.ejs') %>
+  <%- include('./../../partials/sidebar.ejs') %>
+
+  <div class="box a1 container border">
+    <%- include('./filter/form.ejs') %>
+  </div>
+
+  <%- include('./../../partials/loader.ejs') %>
+</body>
+<footer>
+  <%- include('./../../partials/footer.ejs') %>
+  <script src="/scripts/product/main.js"></script>
+  <script src="/scripts/product/image.js"></script>
+  <%- include('./filter/script.ejs') %>
+</footer>
+
+</html>

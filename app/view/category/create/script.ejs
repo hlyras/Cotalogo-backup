@@ -1,22 +1,63 @@
 <script>
+  document.getElementById("category-create-form").type.addEventListener("change", async e => {
+    e.preventDefault();
+
+    switch (e.target.value) {
+      case 'text':
+        console.log('Text.');
+        break;
+      case 'int':
+        console.log('Int.');
+        break;
+      case 'float-1':
+        console.log('0,0');
+        break;
+      case 'float-2':
+        console.log('0,00');
+        break;
+      case 'float-3':
+        console.log('0,000');
+        break;
+      case 'float-4':
+        console.log('0,0000');
+        break;
+      case 'float-5':
+        console.log('0,00000');
+        break;
+      case 'float-6':
+        console.log('0,000000');
+        break;
+      case 'float-7':
+        console.log('0,0000000');
+        break;
+      case 'float-8':
+        console.log('0,00000000');
+        break;
+      default:
+        console.log(`Sorry, we are out of.`);
+    }
+  });
+
   document.getElementById("category-create-form").addEventListener("submit", async event => {
     event.preventDefault();
 
     let category = {
       id: event.target.id.value,
-      name: event.target.name.value
+      name: event.target.name.value,
+      type: event.target.type.value
     };
 
     let response = await API.response(Category.save, category);
     if (!response) { return false; }
 
-    lib.message("Categoria atualizada com sucesso!");
+    lib.message(response.done);
 
     event.target.id.value = "";
     event.target.name.value = "";
+    event.target.type.value = "";
 
     lib.addCss(document.getElementById("category-create-form").submit, ['b1']);
-    lib.removeCss(document.getElementById("category-create-form").submit, ['b2-3']);
+    lib.removeCss(document.getElementById("category-create-form").submit, ['b2']);
 
     lib.display("category-cancel-btn", "none");
 
@@ -31,11 +72,12 @@
 
     document.getElementById("category-create-form").id.value = category[0].id;
     document.getElementById("category-create-form").name.value = category[0].name;
+    document.getElementById("category-create-form").type.value = category[0].type;
     document.getElementById("category-create-form").name.focus();
 
-    document.getElementById("category-create-form").submit.innerHTML = "Atualizar categoria";
+    document.getElementById("category-create-form").submit.innerHTML = "Atualizar";
 
-    lib.addCss(document.getElementById("category-create-form").submit, ['b2-3']);
+    lib.addCss(document.getElementById("category-create-form").submit, ['b2']);
     lib.removeCss(document.getElementById("category-create-form").submit, ['b1']);
 
     lib.display("category-cancel-btn", "");
@@ -56,7 +98,7 @@
     document.getElementById("category-create-form").name.value = "";
 
     lib.addCss(document.getElementById("category-create-form").submit, ['b1']);
-    lib.removeCss(document.getElementById("category-create-form").submit, ['b2-3']);
+    lib.removeCss(document.getElementById("category-create-form").submit, ['b2']);
 
     lib.display("category-cancel-btn", "none");
 

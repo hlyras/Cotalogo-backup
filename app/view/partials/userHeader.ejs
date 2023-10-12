@@ -11,7 +11,7 @@
             <a class="mobile-box"><img class='noselect icon size-30 padding-5'
                     onclick="window.location.href='/user/account'" src="/images/icon/admin-white.png"></a>
             <a class="mobile-box"><img class="noselect icon size-30 padding-5"
-                    onclick="let r = confirm('deseja sair?');if(r==true){window.location.href='/user/logout'}"
+                    onclick="lib.confirm('Deseja sair?', (r) => { if(r==true){ window.location.href='/user/logout' } })"
                     src="/images/icon/logout-white.png"></a>
             <% } %>
         </div>

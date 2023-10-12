@@ -2,6 +2,7 @@ const User = require('../../model/user');
 const userController = require('../user');
 
 const Category = require('../../model/product/category');
+const Category_type = require('../../model/product/category_type');
 
 const lib = require('jarmlib');
 const Variation = require('../../model/product/variation');
@@ -9,11 +10,18 @@ const Variation = require('../../model/product/variation');
 const categoryController = {};
 
 categoryController.index = async (req, res) => {
-	res.render("category/index", { user: req.user });
+	try {
+		let category_types = await Category_type.filter([], [], [], [], []);
+		res.render("category/index", { user: req.user, category_types });
+	} catch (err) {
+		console.log(err);
+		res.send({ msg: "Ocorreu um erro, por favor recarregue a página." });
+	}
 };
 
 categoryController.save = async (req, res) => {
 	let category = new Category(req.body);
+	category.type = req.body.type;
 	category.user_id = req.user.id;
 
 	try {
@@ -25,18 +33,18 @@ categoryController.save = async (req, res) => {
 		} else {
 			let strict_params = { keys: [], values: [] };
 			lib.Query.fillParam('category.id', category.id, strict_params);
-			let verifyCategory = await Category.filter([], [], [], strict_params, [])
+			let verifyCategory = await Category.filter([], [], [], strict_params, []);
 
 			if (verifyCategory[0].user_id != req.user.id) { return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" }); }
 
 			let response = await category.update();
 			if (response.err) { return res.send({ msg: response.err }); }
 
-			res.send({ done: "Categoria atualizada com sucesso!" })
+			res.send({ done: "Categoria atualizada com sucesso!" });
 		}
 	} catch (err) {
 		console.log(err);
-		res.send({ msg: "Ocorreu um erro ao cadastrar a cor, aguarde um momento ou recarregue a página." });
+		res.send({ msg: "Ocorreu um erro ao cadastrar a categoria, recarregue a página e tente novamente." });
 	}
 };
 

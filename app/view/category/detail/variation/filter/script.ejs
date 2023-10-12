@@ -19,7 +19,7 @@
 
     if (variations.length) {
       variations.forEach(variation => {
-        let variation_div = lib.element.create("div", { class: "box b1 container box-hover padding-5 margin-top-5 border" });
+        let variation_div = lib.element.create("div", { class: "box b1 container border-lg-st padding-5 margin-top-5" });
         variation_div.appendChild(lib.element.create("div", { class: "mobile-box b8-10 lucida-grande em09 bold center" }, variation.name));
         variation_div.appendChild(lib.element.icon('b10', 20, "/images/icon/edit.png", `variationEdit(${variation.id})`));
         variation_div.appendChild(lib.element.icon('b10', 20, "/images/icon/trash.png", `variationDelete(${variation.id})`));

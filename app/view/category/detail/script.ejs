@@ -3,6 +3,8 @@
     let category = (await API.response(Category.filter, { id: category_id }))[0];
     if (!category) { return false; }
 
+    console.log(category);
+
     let variations = await API.response(Variation.filter, { category_id });
     if (!variations) { return false; }
 

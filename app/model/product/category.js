@@ -3,8 +3,9 @@ const lib = require('jarmlib');
 
 const Category = function (category) {
 	this.id = category.id;
-	this.user_id = 0;
 	this.name = category.name;
+	this.type = category.type;
+	this.user_id = 0;
 
 	this.save = () => {
 		if (!this.name || this.name.length < 1 || this.name.length > 100) { return { err: "Nome inválido" }; }

@@ -1,11 +1,13 @@
 <!-- <input type="text" name="code" class="box b1 lucida-grande em12 bold border-bottom-lg-st padding-5 center nofocus"
   placeholder="SKU" autocomplete="off" maxlength="12"> -->
 
-<div id="product-dropdown-box" class="box b1 container dropdown">
-  <input type="text" id="product-dropdown-input" name="code" data-id=""
-    class="box b1 lucida-grande em12 bold border-bottom-lg-st padding-5 center nofocus" oninput="productDropdown(this)"
-    placeholder="SKU" role="presentation" autocomplete="off">
-  <div id="product-dropdown-content" class="ground dropdown-content border"></div>
+<div class="mobile-box tooltip center" data-tooltip="Código do produto">
+  <div id="product-dropdown-box" class="box b1 container dropdown">
+    <input type="text" id="product-dropdown-input" name="code" data-id=""
+      class="box b1 lucida-grande em12 bold border-bottom-lg-st padding-5 center nofocus"
+      oninput="productDropdown(this)" placeholder="SKU" role="presentation" autocomplete="off">
+    <div id="product-dropdown-content" class="ground dropdown-content border"></div>
+  </div>
 </div>
 
 <%- include('./script.ejs') %>

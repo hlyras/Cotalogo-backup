@@ -17,8 +17,6 @@
     let products = await API.response(Product.filter, product);
     if (!products) { return false; }
 
-    lib.display("product-detail-box", 'none');
-
     const pagination = { pageSize: 10, page: 0 };
     (function () { lib.carousel.execute("product-filter-box", productFilter, products, pagination); }());
   });
@@ -30,16 +28,24 @@
 
     if (products.length) {
       for (let i = pagination.page * pagination.pageSize; i < products.length && i < (pagination.page + 1) * pagination.pageSize; i++) {
-        let div_product = lib.element.create("div", { class: "box width-300 margin-5 container margin-top-10 padding-10 pointer border radius-5 noselect pointer h-center" });
+        let div_product = lib.element.create("div", {
+          class: "box a3 container margin-top-10 pointer noselect pointer h-center"
+        });
 
         let product_carousel = lib.element.create("div", { id: `product-${products[i].id}`, class: "carousel-container h-center" });
-        let carousel_slides = lib.element.create("div", { class: `box carousel-slides h-center` });
+        let carousel_slides = lib.element.create("div", {
+          style: "background-color: #fff;",
+          class: `carousel-slides h-center`
+        });
         product_carousel.append(carousel_slides);
 
         for (let y in products[i].images) {
-          let carousel_slide = lib.element.create("div", { class: `carousel-slide height-200` });
+          let carousel_slide = lib.element.create("div", {
+            style: "background-color: #fff;",
+            class: `carousel-slide max-height-300`
+          });
           carousel_slide.append(lib.element.create("img", {
-            class: "image-prop max-height-200",
+            class: "image-prop max-height-300",
             src: products[i].images[y].url,
             draggable: false
           }));
@@ -48,7 +54,7 @@
         div_product.append(product_carousel);
 
         !products[i].images.length && carousel_slides.appendChild(lib.element.create("img", {
-          class: "image-prop height-200",
+          class: "image-prop max-height-400",
           src: '/images/product/no-product.png',
           draggable: false
         }));
