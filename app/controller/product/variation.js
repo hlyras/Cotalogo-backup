@@ -1,7 +1,8 @@
 const User = require('../../model/user');
 const userController = require('../user');
 
-const Variation = require('../../model/product/variation');
+const Category = require('../../model/product/category/main');
+Category.variation = require('../../model/product/category/variation');
 
 const lib = require('jarmlib');
 
@@ -10,7 +11,7 @@ const variationController = {
 		res.render("product/variation", { user: req.user });
 	},
 	save: async (req, res) => {
-		let variation = new Variation(req.body);
+		let variation = new Category.variation(req.body);
 		variation.user_id = req.user.id;
 
 		try {
@@ -22,7 +23,7 @@ const variationController = {
 			} else {
 				let strict_params = { keys: [], values: [] };
 				lib.Query.fillParam('variation.id', variation.id, strict_params);
-				let verifyVariation = await Variation.filter([], [], [], strict_params, [])
+				let verifyVariation = await Category.variation.filter([], [], [], strict_params, [])
 
 				if (verifyVariation[0].user_id != req.user.id) { return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" }); }
 
@@ -46,7 +47,7 @@ const variationController = {
 		lib.Query.fillParam('variation.name', req.body.name, params);
 
 		try {
-			let variations = await Variation.filter([], [], params, strict_params, []);
+			let variations = await Category.variation.filter([], [], params, strict_params, []);
 			res.send({ variations });
 		} catch (err) {
 			console.log(err);
@@ -60,7 +61,7 @@ const variationController = {
 
 		let strict_params = { keys: [], values: [] };
 		lib.Query.fillParam('variation.id', req.params.id, strict_params);
-		let verifyVariation = await Variation.filter([], [], [], strict_params, []);
+		let verifyVariation = await Category.variation.filter([], [], [], strict_params, []);
 
 		if (verifyVariation[0] && verifyVariation[0].user_id != req.user.id) {
 			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });

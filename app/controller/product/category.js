@@ -1,17 +1,17 @@
 const User = require('../../model/user');
 const userController = require('../user');
 
-const Category = require('../../model/product/category');
-const Category_type = require('../../model/product/category_type');
+const Category = require('../../model/product/category/main');
+Category.type = require('../../model/product/category/type');
+Category.variation = require('../../model/product/category/variation');
 
 const lib = require('jarmlib');
-const Variation = require('../../model/product/variation');
 
 const categoryController = {};
 
 categoryController.index = async (req, res) => {
 	try {
-		let category_types = await Category_type.filter([], [], [], [], []);
+		let category_types = await Category.type.filter([], [], [], [], []);
 		res.render("category/index", { user: req.user, category_types });
 	} catch (err) {
 		console.log(err);

@@ -1,67 +1,54 @@
 <script>
+  document.getElementById("variation-help").addEventListener("click", async e => {
+    e.preventDefault();
+
+    console.log(e);
+  });
+
   document.getElementById("category-create-form").type.addEventListener("change", async e => {
     e.preventDefault();
 
-    switch (e.target.value) {
-      case 'text':
-        console.log('Text.');
-        break;
-      case 'int':
-        console.log('Int.');
-        break;
-      case 'float-1':
-        console.log('0,0');
-        break;
-      case 'float-2':
-        console.log('0,00');
-        break;
-      case 'float-3':
-        console.log('0,000');
-        break;
-      case 'float-4':
-        console.log('0,0000');
-        break;
-      case 'float-5':
-        console.log('0,00000');
-        break;
-      case 'float-6':
-        console.log('0,000000');
-        break;
-      case 'float-7':
-        console.log('0,0000000');
-        break;
-      case 'float-8':
-        console.log('0,00000000');
-        break;
-      default:
-        console.log(`Sorry, we are out of.`);
+    let category_form = document.getElementById("category-create-form");
+
+    if (e.target.value == "text") {
+      lib.display("range_div", "none");
+    } else if (e.target.value == "int") {
+      lib.display('range_div', '');
+    } else {
+      lib.display('range_div', '');
     }
   });
 
-  document.getElementById("category-create-form").addEventListener("submit", async event => {
-    event.preventDefault();
+  document.getElementById("category-create-form").addEventListener("submit", async e => {
+    e.preventDefault();
 
     let category = {
-      id: event.target.id.value,
-      name: event.target.name.value,
-      type: event.target.type.value
+      id: e.target.id.value,
+      name: e.target.name.value
     };
+
+    if (e.target.type.value == "text") { }
+
+    // e.target.range_min.value && e.target.range_max.value
+    console.log(category);
+
+    return;
 
     let response = await API.response(Category.save, category);
     if (!response) { return false; }
 
     lib.message(response.done);
 
-    event.target.id.value = "";
-    event.target.name.value = "";
-    event.target.type.value = "";
+    e.target.id.value = "";
+    e.target.name.value = "";
+    e.target.type.value = "";
 
-    lib.addCss(document.getElementById("category-create-form").submit, ['b1']);
-    lib.removeCss(document.getElementById("category-create-form").submit, ['b2']);
+    lib.addCss(e.target.submit, ['b1']);
+    lib.removeCss(e.target.submit, ['b2']);
 
     lib.display("category-cancel-btn", "none");
 
-    document.getElementById("category-create-form").submit.innerHTML = "Cadastrar categoria";
+    e.target.submit.innerHTML = "Cadastrar categoria";
 
     document.getElementById("category-filter-form").submit.click();
   });
@@ -70,15 +57,17 @@
     let category = await API.response(Category.filter, { id: category_id });
     if (!category) { return false; }
 
-    document.getElementById("category-create-form").id.value = category[0].id;
-    document.getElementById("category-create-form").name.value = category[0].name;
-    document.getElementById("category-create-form").type.value = category[0].type;
-    document.getElementById("category-create-form").name.focus();
+    const category_form = document.getElementById("category-create-form");
 
-    document.getElementById("category-create-form").submit.innerHTML = "Atualizar";
+    category_form.id.value = category[0].id;
+    category_form.name.value = category[0].name;
+    category_form.type.value = category[0].type;
+    category_form.name.focus();
 
-    lib.addCss(document.getElementById("category-create-form").submit, ['b2']);
-    lib.removeCss(document.getElementById("category-create-form").submit, ['b1']);
+    category_form.submit.innerHTML = "Atualizar";
+
+    lib.addCss(category_form.submit, ['b2']);
+    lib.removeCss(category_form.submit, ['b1']);
 
     lib.display("category-cancel-btn", "");
 

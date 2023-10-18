@@ -2,37 +2,34 @@
   <div class="mobile-box a10"></div>
   <div class="mobile-box a4-5 lucida-grande bold center">Nova categoria</div>
   <div class="mobile-box b10 container center">
-    <img class='image-prop size-20 icon pointer noselect center'
-      onclick="lib.popup(document.getElementById('variation-help'))" src="/images/icon/help.png">
+    <img id="variation-help" class='image-prop size-20 icon pointer noselect center' src="/images/icon/help.png">
   </div>
   <input type="hidden" name="id" value="">
-  <input type="text" name="name"
-    class="box b1 lucida-grande bold em11 border-bottom-lg-st padding-5 margin-top-10 center"
+  <input type="text" name="name" class="box b1 lucida-grande bold border padding-7 margin-top-10 center"
     placeholder="Nome da Categoria (ex: Cor)" autocomplete="off">
-  <div class="box b3 tooltip center" data-tooltip="Escolha se a variação é um número ou não.">
+  <div class="box b1 tooltip center" data-tooltip="Escolha se a variação é um número ou não.">
     <select name="type"
-      class="box b1 lucida-grande bold em09 hide-disabled border radius-5 padding-7 margin-top-5 center">
+      class="box b1 lucida-grande bold em09 hide-disabled border radius-5 padding-6 margin-top-5 center">
       <option value="" selected disabled>Tipo de variação</option>
       <% for(let i in category_types) { %>
       <option value="<%= category_types[i].type %>"><%= category_types[i].name %></option>
       <% } %>
     </select>
-    <input type="hidden" name="" value="">
   </div>
-  <input name="range" class="box b3 lucida-grande bold em09 hide-disabled border radius-5 padding-7 margin-top-5 center"
-    role="presentation" autocomplete="off" />
-  <div class="box b3 container">
+  <div id="range_div" class="box b1 container" style="display: none;">
+    <input type="number" name="range_min"
+      class="box b2 lucida-grande bold border radius-5 padding-7 margin-top-5 center" placeholder="min"
+      role="presentation" autocomplete="off">
+    <input type="number" name="range_max"
+      class="box b2 lucida-grande bold border radius-5 padding-7 margin-top-5 center" placeholder="max"
+      role="presentation" autocomplete="off">
+  </div>
+  <div class="box b1 container">
     <button type="submit" name="submit"
-      class="mobile-box b1 btn-act lucida-grande bold noborder radius-5 padding-10 margin-top-5 pointer">Cadastrar
+      class="mobile-box b1 btn-act lucida-grande bold noborder radius-5 padding-8 margin-top-5 pointer">Cadastrar
       categoria</button>
     <div id="category-cancel-btn" onclick="categoryUpdateCancel()"
-      class="mobile-box b2 btn-cancel lucida-grande em09 bold noborder radius-5 padding-10 margin-top-5 pointer center"
+      class="mobile-box b2 btn-cancel lucida-grande em09 bold noborder radius-5 padding-8 margin-top-5 pointer center"
       style="display: none;">Cancelar</div>
   </div>
 </form>
-
-<!-- 
-
-  Ao selecionar uma despesa que não seja texto abrir a opção de 
-
- -->

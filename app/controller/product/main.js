@@ -3,8 +3,9 @@ const userController = require('../user');
 
 const Product = require('../../model/product/main');
 Product.image = require('../../model/product/image');
-const Category = require('../../model/product/category');
-const Variation = require('../../model/product/variation');
+
+const Category = require('../../model/product/category/main');
+Category.variation = require('../../model/product/category/variation');
 
 const imageController = require('./image');
 
@@ -20,9 +21,9 @@ productController.index = async (req, res) => {
 
 		for (let i in categories) {
 			let variation_strict_params = { keys: [], values: [] };
-			lib.Query.fillParam("variation.category_id", categories[i].id, variation_strict_params);
-			lib.Query.fillParam("variation.user_id", req.user.id, variation_strict_params);
-			let variations = await Variation.filter([], [], [], variation_strict_params, []);
+			lib.Query.fillParam("category_variation.category_id", categories[i].id, variation_strict_params);
+			lib.Query.fillParam("category_variation.user_id", req.user.id, variation_strict_params);
+			let variations = await Category.variation.filter([], [], [], variation_strict_params, []);
 			if (variations.length) { categories[i].variations = variations; }
 		}
 
@@ -56,9 +57,9 @@ productController.save = async (req, res) => {
 			// Verify if variations belongs to the user
 			for (let i in product.variations) {
 				let variation_strict_params = { keys: [], values: [] };
-				lib.Query.fillParam('variation.user_id', req.user.id, variation_strict_params);
-				lib.Query.fillParam('variation.id', product.variations[i], variation_strict_params);
-				let variation_response = await Variation.filter([], [], [], variation_strict_params, []);
+				lib.Query.fillParam('category_variation.user_id', req.user.id, variation_strict_params);
+				lib.Query.fillParam('category_variation.id', product.variations[i], variation_strict_params);
+				let variation_response = await Category.variation.filter([], [], [], variation_strict_params, []);
 				if (!(variation_response).length) { return res.send({ unauthorized: "Variações inválidas, tente cadastrar novamente!" }); }
 			};
 
@@ -96,9 +97,9 @@ productController.save = async (req, res) => {
 			// Verify if variations belongs to the user
 			for (let i in product.variations) {
 				let variation_strict_params = { keys: [], values: [] };
-				lib.Query.fillParam('variation.user_id', req.user.id, variation_strict_params);
-				lib.Query.fillParam('variation.id', product.variations[i], variation_strict_params);
-				let variation_response = await Variation.filter([], [], [], variation_strict_params, []);
+				lib.Query.fillParam('category_variation.user_id', req.user.id, variation_strict_params);
+				lib.Query.fillParam('category_variation.id', product.variations[i], variation_strict_params);
+				let variation_response = await Category.variation.filter([], [], [], variation_strict_params, []);
 				if (!(variation_response).length) { return res.send({ msg: "Variações inválidas, tente cadastrar novamente!" }); }
 			};
 
@@ -186,8 +187,6 @@ productController.filter = async (req, res) => {
 
 		let products_response = await Product.filter([], [], params, strict_params, []);
 
-		console.log(products_response);
-
 		// Verificar se os produtos contém todas as variações
 		let products = [];
 		for (let i in products_response) {
@@ -206,13 +205,13 @@ productController.filter = async (req, res) => {
 			let variation_props = [
 				"category.id category_id",
 				"category.name category_name",
-				"variation.id variation_id",
-				"variation.name variation_name"
+				"category_variation.id variation_id",
+				"category_variation.name variation_name"
 			];
 
 			let variation_inners = [
-				["cms_cotalogo.variation variation", "product_variation.variation_id", "variation.id"],
-				["cms_cotalogo.category category", "category.id", "variation.category_id"]
+				["cms_cotalogo.category_variation", "product_variation.variation_id", "category_variation.id"],
+				["cms_cotalogo.category", "category.id", "category_variation.category_id"]
 			];
 
 			let variation_strict_params = { keys: [], values: [] };
