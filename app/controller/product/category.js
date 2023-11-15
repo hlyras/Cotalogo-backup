@@ -22,7 +22,10 @@ categoryController.index = async (req, res) => {
 categoryController.save = async (req, res) => {
 	let category = new Category(req.body);
 	category.type = req.body.type;
+	category.scope = req.body.scope;
 	category.user_id = req.user.id;
+
+	// console.log(category);
 
 	try {
 		if (!category.id) {
@@ -61,7 +64,7 @@ categoryController.filter = async (req, res) => {
 		res.send({ categories });
 	} catch (err) {
 		console.log(err);
-		res.send({ msg: "Ocorreu um erro ao filtrar as variações" })
+		res.send({ msg: "Ocorreu um erro ao filtrar as variações" });
 	}
 };
 

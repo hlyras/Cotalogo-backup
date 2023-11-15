@@ -21,59 +21,51 @@ const User = function (user) {
 		this.password = bcrypt.hashSync(this.password, null, null);
 
 		let obj = lib.convertTo.object(this);
+		let { query, values } = lib.Query.save(obj, 'cms_cotalogo.user');
 
-		let query = lib.Query.save(obj, 'cms_cotalogo.user');
-		return db(query);
-
-		// let query = "INSERT INTO cms_cotalogo.user (name, business, email, password, access) values ('"
-		// 	+ this.name + "', '"
-		// 	+ this.business + "', '"
-		// 	+ this.email + "', '"
-		// 	+ this.password + "', '"
-		// 	+ this.access + "')";
-		// return db(query);
+		return db(query, values);
 	};
 
 	this.token = (token) => {
-		let query = "UPDATE cms_cotalogo.user SET token='" + token + "' WHERE id='" + this.id + "';";
-		return db(query);
+		let query = `UPDATE cms_cotalogo.user SET token = ? WHERE id = ?;`;
+		return db(query, [token, this.id]);
 	}
 };
 
 User.filter = (props, inners, params, strict_params, order_params) => {
-	let query = new lib.Query().select().props(props).table("cms_cotalogo.user user")
-		.inners(inners).params(params).strictParams(strict_params).order(order_params).build().query;
-	return db(query);
+	let { query, values } = new lib.Query().select().props(props).table("cms_cotalogo.user user")
+		.inners(inners).params(params).strictParams(strict_params).order(order_params).build();
+	return db(query, values);
 };
 
 User.findById = id => {
-	let query = `SELECT * FROM cms_cotalogo.user WHERE id='${id}';`;
-	return db(query);
+	let query = `SELECT * FROM cms_cotalogo.user WHERE id = ?;`;
+	return db(query, [id]);
 };
 
 User.findByToken = token => {
-	let query = "SELECT id FROM cms_cotalogo.user WHERE token='" + token + "';";
-	return db(query);
+	let query = `SELECT id FROM cms_cotalogo.user WHERE token = ?;`;
+	return db(query, [token]);
 };
 
 User.destroyToken = token => {
-	let query = "UPDATE cms_cotalogo.user SET token='' WHERE token='" + token + "';";
-	return db(query);
+	let query = `UPDATE cms_cotalogo.user SET token = ? WHERE token = ?;`;
+	return db(query, [null, token]);
 };
 
 User.confirmEmail = (id) => {
-	let query = "UPDATE cms_cotalogo.user SET status='Active' WHERE id='" + id + "';";
-	return db(query);
+	let query = `UPDATE cms_cotalogo.user SET status = ? WHERE id = ?;`;
+	return db(query, ['Active', id]);
 };
 
 User.findByEmail = email => {
-	let query = "SELECT * FROM cms_cotalogo.user WHERE email='" + email + "';";
-	return db(query);
+	let query = `SELECT * FROM cms_cotalogo.user WHERE email = ?;`;
+	return db(query, [email]);
 };
 
 User.findByBusiness = business => {
-	let query = `SELECT * FROM cms_cotalogo.user WHERE business='${business}';`;
-	return db(query);
+	let query = `SELECT * FROM cms_cotalogo.user WHERE business = ?`;
+	return db(query, [business]);
 };
 
 module.exports = User;

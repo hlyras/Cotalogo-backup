@@ -9,34 +9,37 @@ const Image = function () {
   this.keycode;
 
   this.save = () => {
-    let query = `INSERT INTO cms_cotalogo.product_image (user_id, product_id, etag, url, keycode) VALUES (${this.user_id},${this.product_id},'${this.etag}','${this.url}','${this.keycode}');`;
-    return db(query);
+    if (!this.user_id) { return { err: "Imagem sem usuário válido" }; };
+    if (!this.product_id) { return { err: "Imagem sem usuário válido" }; };
+    if (!this.etag) { return { err: "Imagem sem etag válido" }; };
+    if (!this.url) { return { err: "Imagem sem url válido" }; };
+    if (!this.keycode) { return { err: "Imagem sem keycode válido" }; };
+
+    let obj = lib.convertTo.object(this);
+    let { query, values } = lib.Query.save(obj, 'cms_cotalogo.product_image');
+
+    return db(query, values);
   };
 };
 
 Image.findById = async (id) => {
-  let query = "SELECT * FROM cms_cotalogo.product_image WHERE id='" + id + "';";
-  return db(query);
+  let query = `SELECT * FROM cms_cotalogo.product_image WHERE id = ?;`;
+  return db(query, [id]);
 };
 
 Image.findByProductId = async (product_id) => {
-  let query = "SELECT * FROM cms_cotalogo.product_image WHERE product_id='" + product_id + "';";
-  return db(query);
-};
-
-Image.list = (product_id) => {
-  let query = `SELECT * FROM cms_cotalogo.product_image WHERE product_id=${product_id};`;
-  return db(query);
+  let query = `SELECT * FROM cms_cotalogo.product_image WHERE product_id = ?;`;
+  return db(query, [product_id]);
 };
 
 Image.delete = (id) => {
-  let query = `DELETE FROM cms_cotalogo.product_image WHERE id=${id};`;
-  return db(query);
+  let query = `DELETE FROM cms_cotalogo.product_image WHERE id = ?;`;
+  return db(query, [id]);
 };
 
 Image.deleteByProductId = (product_id) => {
-  let query = `DELETE FROM cms_cotalogo.product_image WHERE product_id=${product_id};`;
-  return db(query);
+  let query = `DELETE FROM cms_cotalogo.product_image WHERE product_id = ?;`;
+  return db(query, [product_id]);
 };
 
 module.exports = Image;

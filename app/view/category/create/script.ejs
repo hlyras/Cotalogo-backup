@@ -1,22 +1,62 @@
 <script>
+  document.getElementById("category-create-form").scope_min.addEventListener("blur", async e => {
+    e.preventDefault();
+
+    if (lib.isValidNumber(e.target.value)) {
+      if (e.target.parentNode.parentNode.scope_max.value < e.target.value) {
+        e.target.parentNode.parentNode.scope_max.value = e.target.value;
+      }
+      e.target.parentNode.parentNode.scope_max.min = e.target.value;
+    }
+  });
+
+  document.getElementById("category-create-form").scope_max.addEventListener("blur", async e => {
+    e.preventDefault();
+
+    if (lib.isValidNumber(e.target.value)) {
+      if (e.target.parentNode.parentNode.scope_min.value > e.target.value) {
+        e.target.parentNode.parentNode.scope_min.value = e.target.value;
+      }
+      e.target.parentNode.parentNode.scope_min.max = e.target.value;
+    }
+  });
+
   document.getElementById("variation-help").addEventListener("click", async e => {
     e.preventDefault();
 
     console.log(e);
   });
 
+  function setCategoryScope(select_input) {
+    select_input.parentNode.parentNode.scope_min.value = '';
+    select_input.parentNode.parentNode.scope_max.value = '';
+
+    if (select_input.value == "text") {
+      lib.display("scope_div", "none");
+    } else if (select_input.value == "int") {
+      lib.display('scope_div', '');
+
+      select_input.parentNode.parentNode.scope_min.step = '1';
+      select_input.parentNode.parentNode.scope_max.step = '1';
+    } else {
+      lib.display('scope_div', '');
+
+      let scope = lib.splitTextBy(select_input.value, '-')[1];
+      let step = '0.'
+      for (let i = 1; i <= scope; i++) {
+        if (i != scope) { step += `0`; }
+        else { step += `1` }
+      };
+
+      select_input.parentNode.parentNode.scope_min.step = step;
+      select_input.parentNode.parentNode.scope_max.step = step;
+    }
+  }
+
   document.getElementById("category-create-form").type.addEventListener("change", async e => {
     e.preventDefault();
 
-    let category_form = document.getElementById("category-create-form");
-
-    if (e.target.value == "text") {
-      lib.display("range_div", "none");
-    } else if (e.target.value == "int") {
-      lib.display('range_div', '');
-    } else {
-      lib.display('range_div', '');
-    }
+    setCategoryScope(e.target);
   });
 
   document.getElementById("category-create-form").addEventListener("submit", async e => {
@@ -24,15 +64,20 @@
 
     let category = {
       id: e.target.id.value,
-      name: e.target.name.value
+      name: e.target.name.value,
+      type: e.target.type.value,
+      scope: ''
     };
 
-    if (e.target.type.value == "text") { }
+    if (category.type != "text") {
+      if (lib.isValidNumber(e.target.scope_min.value) && lib.isValidNumber(e.target.scope_max.value)) {
+        category.scope = `${e.target.scope_min.value}-${e.target.scope_max.value}`;
+      }
+    }
 
-    // e.target.range_min.value && e.target.range_max.value
     console.log(category);
 
-    return;
+    // return;
 
     let response = await API.response(Category.save, category);
     if (!response) { return false; }
@@ -42,6 +87,8 @@
     e.target.id.value = "";
     e.target.name.value = "";
     e.target.type.value = "";
+    e.target.scope_min.value = "";
+    e.target.scope_max.value = "";
 
     lib.addCss(e.target.submit, ['b1']);
     lib.removeCss(e.target.submit, ['b2']);
@@ -63,6 +110,12 @@
     category_form.name.value = category[0].name;
     category_form.type.value = category[0].type;
     category_form.name.focus();
+
+    setCategoryScope(category_form.type);
+    if (category[0].scope) {
+      category_form.scope_min.value = lib.splitTextBy(category[0].scope, '-')[0];
+      category_form.scope_max.value = lib.splitTextBy(category[0].scope, '-')[1];
+    }
 
     category_form.submit.innerHTML = "Atualizar";
 

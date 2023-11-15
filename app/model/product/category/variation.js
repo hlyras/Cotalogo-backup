@@ -11,9 +11,9 @@ const Variation = function (variation) {
 		if (!this.name || this.name.length < 1 || this.name.length > 100) { return { err: "Nome inválido" }; }
 
 		let obj = lib.convertTo.object(this);
-		let query = lib.Query.save(obj, 'cms_cotalogo.category_variation');
+		let { query, values } = lib.Query.save(obj, 'cms_cotalogo.category_variation');
 
-		return db(query);
+		return db(query, values);
 	};
 
 	this.update = () => {
@@ -21,26 +21,26 @@ const Variation = function (variation) {
 		if (!this.name || this.name.length < 1 || this.name.length > 100) { return { err: "Nome inválido" }; }
 
 		let obj = lib.convertTo.object(this);
-		let query = lib.Query.update(obj, 'cms_cotalogo.category_variation', 'id');
+		let { query, values } = lib.Query.update(obj, 'cms_cotalogo.category_variation', 'id');
 
-		return db(query);
+		return db(query, values);
 	};
 };
 
 Variation.filter = (props, inners, params, strict_params, order_params) => {
-	let query = new lib.Query().select().props(props).table("cms_cotalogo.category_variation")
-		.inners(inners).params(params).strictParams(strict_params).order(order_params).build().query;
-	return db(query);
+	let { query, values } = new lib.Query().select().props(props).table("cms_cotalogo.category_variation")
+		.inners(inners).params(params).strictParams(strict_params).order(order_params).build();
+	return db(query, values);
 };
 
 Variation.delete = async (variation_id) => {
-	let query = `DELETE FROM cms_cotalogo.category_variation WHERE id='${variation_id}';`;
-	return db(query);
+	let query = `DELETE FROM cms_cotalogo.category_variation WHERE id = ?;`;
+	return db(query, [variation_id]);
 };
 
 Variation.deleteByCategoryId = async (category_id) => {
-	let query = `DELETE FROM cms_cotalogo.category_variation WHERE category_id='${category_id}';`;
-	return db(query);
+	let query = `DELETE FROM cms_cotalogo.category_variation WHERE category_id = ?;`;
+	return db(query, [category_id]);
 };
 
 module.exports = Variation;
