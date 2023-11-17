@@ -62,10 +62,12 @@
   document.getElementById("category-create-form").addEventListener("submit", async e => {
     e.preventDefault();
 
+    console.log(e.target.id);
+
     let category = {
-      id: e.target.id.value,
-      name: e.target.name.value,
-      type: e.target.type.value,
+      id: e.target.id.value || null,
+      name: e.target.name.value || null,
+      type: e.target.type.value || null,
       scope: ''
     };
 
@@ -74,10 +76,6 @@
         category.scope = `${e.target.scope_min.value}-${e.target.scope_max.value}`;
       }
     }
-
-    console.log(category);
-
-    // return;
 
     let response = await API.response(Category.save, category);
     if (!response) { return false; }

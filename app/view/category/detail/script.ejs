@@ -3,13 +3,6 @@
     let category = (await API.response(Category.filter, { id: category_id }))[0];
     if (!category) { return false; }
 
-    console.log(category);
-
-    let variations = await API.response(Variation.filter, { category_id });
-    if (!variations) { return false; }
-
-    category.variations = variations;
-
     lib.display("category-box", 'none');
     lib.display("category-detail-box", '');
 
@@ -29,5 +22,5 @@
   function closeDetail() {
     lib.display("category-box", "");
     document.getElementById("category-filter-form").submit.click();
-  }
+  };
 </script>

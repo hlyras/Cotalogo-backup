@@ -20,12 +20,13 @@ categoryController.index = async (req, res) => {
 };
 
 categoryController.save = async (req, res) => {
-	let category = new Category(req.body);
+	console.log(req.body);
+	let category = new Category();
+	category.id = req.body.id;
+	category.name = req.body.name;
 	category.type = req.body.type;
 	category.scope = req.body.scope;
 	category.user_id = req.user.id;
-
-	// console.log(category);
 
 	try {
 		if (!category.id) {
@@ -77,7 +78,7 @@ categoryController.delete = async (req, res) => {
 
 	try {
 		await Category.delete(req.params.id);
-		await Variation.deleteByCategoryId(req.params.id);
+		await Category.variation.deleteByCategoryId(req.params.id);
 		// need delete all variations included in products
 		res.send({ done: "Categoria excluída com sucesso!" });
 	} catch (err) {

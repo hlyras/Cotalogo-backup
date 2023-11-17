@@ -1,12 +1,12 @@
 const db = require('../../../../config/connection');
 const lib = require('jarmlib');
 
-const Category = function (category) {
-	this.id = category.id;
-	this.name = category.name;
-	this.type = category.type;
-	this.scope = category.scope;
-	this.user_id = 0;
+const Category = function () {
+	this.id;
+	this.name;
+	this.type;
+	this.scope;
+	this.user_id;
 
 	this.save = () => {
 		if (!this.name || this.name.length < 1 || this.name.length > 100) { return { err: "Nome inválido" }; }
@@ -20,7 +20,6 @@ const Category = function (category) {
 
 	this.update = () => {
 		if (!this.id) { return { err: "O id da cor é inválido" }; }
-		if (!this.name || this.name.length < 1 || this.name.length > 100) { return { err: "Nome inválido" }; }
 
 		let obj = lib.convertTo.object(this);
 		let { query, values } = lib.Query.update(obj, 'cms_cotalogo.category', 'id');
