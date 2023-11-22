@@ -1,3 +1,20 @@
+<style>
+  @keyframes rotateAnimation {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(45deg);
+    }
+  }
+
+  .rotating-image {
+    transition: transform 0.5s ease;
+    /* Adiciona uma transição para uma animação mais suave */
+  }
+</style>
+
 <form id="category-filter-form" class="box a1 container" style="display:none">
   <input type="text" name="name"
     class="mobile-box b8-9 lucida-grande bold padding-10 border radius-5 center margin-top-5"

@@ -1,0 +1,42 @@
+<script>
+  async function scopeCreateForm(category_id) {
+    let category = (await API.response(Category.filter, { id: category_id }))[0];
+
+    let scope_form = lib.element.create("form", { class: "box b1 container" });
+    let scope_min = lib.element.create("input", {
+      type: "number",
+      id: `category-${category.id}-min`,
+      class: "box b2 lucida-grande bold border radius-5 padding-7 margin-top-5 center",
+      placeholder: "max",
+      role: "presentation",
+      autocomplete: "off"
+    });
+
+    let scope_max = lib.element.create("input", {
+      type: "number",
+      id: `category-${category.id}-max`,
+      class: "box b2 lucida-grande bold border radius-5 padding-7 margin-top-5 center",
+      placeholder: "max",
+      role: "presentation",
+      autocomplete: "off"
+    });
+
+    setCategoryScope(category.type, scope_min, scope_max);
+    scope_min.value = lib.splitTextBy(category.scope, '-')[0] || null;
+    scope_max.value = lib.splitTextBy(category.scope, '-')[1] || null;
+
+    scope_min.onblur = function (e) {
+      scopeMinBlur(e.target.value, scope_min, scope_max);
+      scopeMinUpdate(category.id, scope_min, scope_max)
+    };
+    scope_max.onblur = function (e) {
+      scopeMaxBlur(e.target.value, scope_max, scope_min);
+      scopeMaxUpdate(category.id, scope_max, scope_min)
+    };
+
+    scope_form.append(scope_min);
+    scope_form.append(scope_max);
+
+    return scope_form;
+  };
+</script>

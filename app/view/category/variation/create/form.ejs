@@ -1,0 +1,43 @@
+<script>
+  async function variationCreateForm(category_id) {
+    let category = (await API.response(Category.filter, { id: category_id }))[0];
+
+    let variation_form = lib.element.create("form", {
+      id: `variation-${category.id}-create-form`,
+      class: "box b1 container",
+      style: "display:none;transition: display 1s ease;"
+    });
+
+    variation_form.append(lib.element.create("input", {
+      name: "id",
+      type: "hidden"
+    }));
+
+    variation_form.append(lib.element.create("input", {
+      name: "category_id",
+      type: "hidden",
+      value: category_id
+    }));
+
+    variation_form.append(lib.element.create("input", {
+      name: "name",
+      class: "mobile-box b3-5 lucida-grande bold border-bottom-lg-st margin-top-3 padding-5 center",
+      placeholder: `Cadastrar ${category.name}`,
+      role: "presentation",
+      autocomplete: "off"
+    }));
+
+    variation_form.append(lib.element.create("button", {
+      name: "submit",
+      class: "mobile-box b2-5 btn-act lucida-grande bold padding-3 noborder radius-5 margin-top-5 center pointer"
+    }, "Confirmar"));
+
+    variation_form.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      await variationCreate(e, category_id);
+    });
+
+    return variation_form;
+  };
+</script>

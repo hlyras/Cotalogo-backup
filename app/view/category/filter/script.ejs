@@ -8,7 +8,12 @@
     let variations = await API.response(Category.variation.filter, {});
     if (!variations) { return false; }
 
-    console.log(variations);
+    categories.forEach(category => {
+      category.variations = [];
+      variations.forEach(variation => {
+        if (category.id == variation.category_id) { category.variations.push(variation); }
+      });
+    });
 
     lib.display("category-box", '');
     lib.display("category-detail-box", 'none');
@@ -24,15 +29,43 @@
       return filter_div.append(lib.element.create("div", { class: "box b1 lucida-grande bold center padding-15" }, "Nenhuma categoria cadastrada"));
     }
 
-    categories.forEach(category => {
-      let category_div = lib.element.create("div", { class: "box b1 container border-lg-st padding-5 margin-top-5" });
+    categories.forEach(async category => {
+      let category_div = lib.element.create("div", { class: "box b1 container border-st padding-5 margin-top-5" });
 
-      category_div.appendChild(lib.element.create("div", { class: "mobile-box b4-5 lucida-grande em09 bold center" }, category.name));
+      let category_display = lib.element.create("img", {
+        id: `category-${category.id}-display`,
+        class: "size-20 rotating-image opacity-out-06 center pointer",
+        src: '/images/icon/increase.png'
+      });
+      category_div.appendChild(category_display);
+
+      category_div.appendChild(lib.element.create("div", { class: "mobile-box b7-10 lucida-grande bold padding-2" }, category.name));
       category_div.appendChild(lib.element.icon('b10', 20, "/images/icon/edit.png", `categoryEdit(${category.id})`));
       category_div.appendChild(lib.element.icon('b10', 20, "/images/icon/trash.png", `categoryDelete(${category.id})`));
       filter_div.appendChild(category_div);
 
+      if (category.type == "text") {
+        let variation_form = await variationCreateForm(category.id);
+        category_div.append(variation_form);
 
+        category_display.onclick = function () {
+          lib.element.rotate(category_display, 135);
+          lib.displayDiv(variation_form, category_display);
+        };
+
+        let variation_box = await variationFilterRender(category.id, lib.element.create("div", { id: `category-${category.id}-variation-box`, class: "box b1 container padding-left-30" }));
+        category_div.append(variation_box);
+      } else {
+        let scope_form = await scopeCreateForm(category.id);
+        category_div.append(scope_form);
+
+        category_display.onclick = function () {
+          lib.element.rotate(category_display, 135);
+          lib.displayDiv(scope_form, category_display);
+        };
+
+        lib.element.rotate(category_display, 135);
+      }
     });
   };
 </script>

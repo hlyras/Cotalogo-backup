@@ -1,14 +1,16 @@
-const db = require('../../../../config/connection');
+const db = require('../../../config/connection');
 const lib = require('jarmlib');
 
-const Variation = function (variation) {
-	this.id = parseInt(variation.id);
-	this.user_id = 0;
-	this.category_id = parseInt(variation.category_id);
-	this.name = variation.name;
+const Variation = function () {
+	this.id;
+	this.user_id;
+	this.category_id;
+	this.name;
 
 	this.save = () => {
 		if (!this.name || this.name.length < 1 || this.name.length > 100) { return { err: "Nome inválido" }; }
+		if (!this.user_id) { return { err: "Usuário inválido" }; }
+		if (!this.category_id) { return { err: "categoria inválida" }; }
 
 		let obj = lib.convertTo.object(this);
 		let { query, values } = lib.Query.save(obj, 'cms_cotalogo.category_variation');
@@ -17,8 +19,7 @@ const Variation = function (variation) {
 	};
 
 	this.update = () => {
-		if (!this.id) { return { err: "O id da cor é inválido" }; }
-		if (!this.name || this.name.length < 1 || this.name.length > 100) { return { err: "Nome inválido" }; }
+		if (!this.id) { return { err: "O id da variação é inválido" }; }
 
 		let obj = lib.convertTo.object(this);
 		let { query, values } = lib.Query.update(obj, 'cms_cotalogo.category_variation', 'id');

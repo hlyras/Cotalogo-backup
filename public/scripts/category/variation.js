@@ -1,7 +1,7 @@
-const Variation = {};
+Category.variation = {};
 
-Variation.save = async (variation) => {
-  let response = await fetch("/product/variation/save", {
+Category.variation.save = async (variation) => {
+  let response = await fetch("/category/variation/save", {
     method: "POST",
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(variation)
@@ -13,8 +13,8 @@ Variation.save = async (variation) => {
   return response;
 };
 
-Variation.filter = async variation => {
-  let response = await fetch("/product/variation/filter", {
+Category.variation.filter = async variation => {
+  let response = await fetch("/category/variation/filter", {
     method: "POST",
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(variation)
@@ -26,8 +26,8 @@ Variation.filter = async variation => {
   return response.variations;
 };
 
-Variation.delete = async (variation_id) => {
-  let response = await fetch("/product/variation/delete/" + variation_id, { method: 'DELETE' });
+Category.variation.delete = async (variation_id) => {
+  let response = await fetch("/category/variation/delete/" + variation_id, { method: 'DELETE' });
   response = await response.json();
 
   if (API.verifyResponse(response)) { return false };

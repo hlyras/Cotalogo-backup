@@ -1,8 +1,8 @@
 const User = require('../../model/user');
 const userController = require('../user');
 
-const Category = require('../../model/product/category/main');
-Category.variation = require('../../model/product/category/variation');
+const Category = require('../../model/category/main');
+Category.variation = require('../../model/category/variation');
 
 const lib = require('jarmlib');
 

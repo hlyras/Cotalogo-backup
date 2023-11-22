@@ -1,0 +1,23 @@
+<script>
+  async function variationCreate(e) {
+    let variation = {
+      id: e.target.id.value || null,
+      category_id: e.target.category_id.value || null,
+      name: e.target.name.value || null
+    };
+
+    let response = await API.response(Category.variation.save, variation);
+    if (!response) { return false; }
+
+    await variationFilterRender(variation.category_id);
+
+    e.target.id.value = null;
+    e.target.name.value = null;
+
+    if (e.target.cancel) {
+      lib.addCss(e.target.submit, ['b2-5']);
+      lib.removeCss(e.target.submit, ['b3-10']);
+      e.target.cancel.remove();
+    }
+  };
+</script>

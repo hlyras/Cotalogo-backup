@@ -9,7 +9,7 @@
 
   <%- include('./../partials/sidebar.ejs') %>
   <section class="container h-center">
-    <div id="category-box" class="box b2-5 container ground border-st radius-5 padding-10">
+    <div id="category-box" class="box b2 container ground border-st radius-5 padding-10">
       <%- include('./create/form.ejs') %>
       <%- include('./filter/box.ejs') %>
     </div>
@@ -22,12 +22,16 @@
   <%- include('./../partials/footer.ejs') %>
   <script src="/scripts/product/main.js"></script>
   <script src="/scripts/category/main.js"></script>
-  <script src="/scripts/category/variation/main.js"></script>
+  <script src="/scripts/category/variation.js"></script>
   <%- include('./create/script.ejs') %>
   <%- include('./filter/script.ejs') %>
   <%- include('./detail/script.ejs') %>
-  <%- include('./detail/variation/create/script.ejs') %>
-  <%- include('./detail/variation/filter/script.ejs') %>
+  <%- include('./variation/create/form.ejs') %>
+  <%- include('./variation/create/script.ejs') %>
+  <%- include('./variation/filter/form.ejs') %>
+  <%- include('./variation/filter/script.ejs') %>
+  <%- include('./variation/scope/form.ejs') %>
+  <%- include('./variation/scope/script.ejs') %>
 
   <script>
     document.getElementById("category-filter-form").submit.click();

@@ -4,8 +4,8 @@ const userController = require('../user');
 const Product = require('../../model/product/main');
 Product.image = require('../../model/product/image');
 
-const Category = require('../../model/product/category/main');
-Category.variation = require('../../model/product/category/variation');
+const Category = require('../../model/category/main');
+Category.variation = require('../../model/category/variation');
 
 const imageController = require('./image');
 

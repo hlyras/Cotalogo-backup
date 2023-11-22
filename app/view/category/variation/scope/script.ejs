@@ -1,0 +1,24 @@
+<script>
+  async function scopeMinUpdate(category_id, scope_min, scope_max) {
+    let category = { id: category_id }
+
+    if (lib.isValidNumber(scope_min.value) && lib.isValidNumber(scope_max.value)) {
+      category.scope = `${scope_min.value}-${scope_max.value}`;
+    }
+
+    let response = await API.response(Category.update, category);
+  };
+
+  async function scopeMaxUpdate(category_id, scope_max, scope_min) {
+    let category = { id: category_id }
+
+    if (lib.isValidNumber(scope_min.value) && lib.isValidNumber(scope_max.value)) {
+      category.scope = `${scope_min.value}-${scope_max.value}`;
+    } else if (scope_min.value == "" && scope_max.value == "") {
+      category.scope = "";
+    }
+
+    let response = await API.response(Category.update, category);
+    console.log(response);
+  };
+</script>

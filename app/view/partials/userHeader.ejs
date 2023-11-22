@@ -1,13 +1,15 @@
 <section class="container" style="background-color:#000;color:var(--solid)">
-    <div class="mobile-box a5 center"></div>
-    <div class="mobile-box a3-5 em15 bold lucida-grande padding-3 center noselect pointer"
+    <div class="mobile-box a3 center"></div>
+    <div class="mobile-box a3 em15 bold lucida-grande padding-3 center noselect pointer"
         onclick="window.location.href='/'"><%= user.business %></div>
-    <div class="mobile-box b5 container">
+    <div class="mobile-box b3 container">
         <div class="mobile-box container right padding-5">
             <% if(!user){ %>
             <div class="mobile-box bold lucida-grande padding-3 margin-right-3 noselect pointer icon"
                 style="color:#fff;" onclick="window.location.href = '/login'">Acessar</div>
             <% } else { %>
+            <a class="mobile-box"><img class='noselect icon size-30 padding-5'
+                    onclick="window.location.href='/user/account'" src="/images/icon/help-white.png"></a>
             <a class="mobile-box"><img class='noselect icon size-30 padding-5'
                     onclick="window.location.href='/user/account'" src="/images/icon/admin-white.png"></a>
             <a class="mobile-box"><img class="noselect icon size-30 padding-5"

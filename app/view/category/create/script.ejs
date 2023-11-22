@@ -1,24 +1,32 @@
 <script>
+  function scopeMinBlur(target_value, scope_min, scope_max) {
+    if (lib.isValidNumber(target_value)) {
+      if (scope_max.value < target_value) {
+        scope_max.value = target_value;
+      }
+      scope_max.min = target_value;
+    }
+  };
+
+  function scopeMaxBlur(target_value, scope_max, scope_min) {
+    if (lib.isValidNumber(target_value)) {
+      if (scope_min.value > target_value) {
+        scope_min.value = target_value;
+      }
+      scope_min.max = target_value;
+    }
+  };
+
   document.getElementById("category-create-form").scope_min.addEventListener("blur", async e => {
     e.preventDefault();
 
-    if (lib.isValidNumber(e.target.value)) {
-      if (e.target.parentNode.parentNode.scope_max.value < e.target.value) {
-        e.target.parentNode.parentNode.scope_max.value = e.target.value;
-      }
-      e.target.parentNode.parentNode.scope_max.min = e.target.value;
-    }
+    scopeMinBlur(e.target.value, e.target, e.target.parentNode.parentNode.scope_max);
   });
 
   document.getElementById("category-create-form").scope_max.addEventListener("blur", async e => {
     e.preventDefault();
 
-    if (lib.isValidNumber(e.target.value)) {
-      if (e.target.parentNode.parentNode.scope_min.value > e.target.value) {
-        e.target.parentNode.parentNode.scope_min.value = e.target.value;
-      }
-      e.target.parentNode.parentNode.scope_min.max = e.target.value;
-    }
+    scopeMaxBlur(e.target.value, e.target, e.target.parentNode.parentNode.scope_min);
   });
 
   document.getElementById("variation-help").addEventListener("click", async e => {
@@ -27,36 +35,36 @@
     console.log(e);
   });
 
-  function setCategoryScope(select_input) {
-    select_input.parentNode.parentNode.scope_min.value = '';
-    select_input.parentNode.parentNode.scope_max.value = '';
-
-    if (select_input.value == "text") {
+  function setCategoryScope(select_value, scope_min, scope_max) {
+    if (select_value == "text") {
       lib.display("scope_div", "none");
-    } else if (select_input.value == "int") {
+    } else if (select_value == "int") {
       lib.display('scope_div', '');
 
-      select_input.parentNode.parentNode.scope_min.step = '1';
-      select_input.parentNode.parentNode.scope_max.step = '1';
+      scope_min.step = '1';
+      scope_max.step = '1';
     } else {
       lib.display('scope_div', '');
 
-      let scope = lib.splitTextBy(select_input.value, '-')[1];
+      let scope = lib.splitTextBy(select_value, '-')[1];
       let step = '0.'
       for (let i = 1; i <= scope; i++) {
         if (i != scope) { step += `0`; }
         else { step += `1` }
       };
 
-      select_input.parentNode.parentNode.scope_min.step = step;
-      select_input.parentNode.parentNode.scope_max.step = step;
+      scope_min.step = step;
+      scope_max.step = step;
     }
   }
 
   document.getElementById("category-create-form").type.addEventListener("change", async e => {
     e.preventDefault();
 
-    setCategoryScope(e.target);
+    let scope_min = e.target.parentNode.parentNode.scope_min;
+    let scope_max = e.target.parentNode.parentNode.scope_max;
+
+    setCategoryScope(e.target.value, scope_min, scope_max);
   });
 
   document.getElementById("category-create-form").addEventListener("submit", async e => {
@@ -109,7 +117,7 @@
     category_form.type.value = category[0].type;
     category_form.name.focus();
 
-    setCategoryScope(category_form.type);
+    setCategoryScope(category_form.type, scope_min, scope_max);
     if (category[0].scope) {
       category_form.scope_min.value = lib.splitTextBy(category[0].scope, '-')[0];
       category_form.scope_max.value = lib.splitTextBy(category[0].scope, '-')[1];
