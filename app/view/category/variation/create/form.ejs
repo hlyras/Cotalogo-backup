@@ -38,6 +38,23 @@
       await variationCreate(e, category_id);
     });
 
+    let cancel_btn = lib.element.create("button", {
+      name: "cancel",
+      class: "mobile-box b10 btn-cancel lucida-grande bold em11 noborder radius-5 margin-top-5 center pointer",
+      style: "display: none"
+    }, 'x');
+
+    cancel_btn.addEventListener("click", e => {
+      e.preventDefault();
+      variation_form.id.value = null;
+      variation_form.name.value = null;
+      lib.addCss(variation_form.submit, ['b2-5']);
+      lib.removeCss(variation_form.submit, ['b3-10']);
+      e.target.style.display = "none";
+    });
+
+    variation_form.append(cancel_btn);
+
     return variation_form;
   };
 </script>

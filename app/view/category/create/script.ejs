@@ -36,6 +36,9 @@
   });
 
   function setCategoryScope(select_value, scope_min, scope_max) {
+    scope_min.value = "";
+    scope_max.value = "";
+
     if (select_value == "text") {
       lib.display("scope_div", "none");
     } else if (select_value == "int") {
@@ -117,7 +120,8 @@
     category_form.type.value = category[0].type;
     category_form.name.focus();
 
-    setCategoryScope(category_form.type, scope_min, scope_max);
+    setCategoryScope(category_form.type.value, category_form.scope_min, category_form.scope_max);
+
     if (category[0].scope) {
       category_form.scope_min.value = lib.splitTextBy(category[0].scope, '-')[0];
       category_form.scope_max.value = lib.splitTextBy(category[0].scope, '-')[1];

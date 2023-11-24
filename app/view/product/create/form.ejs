@@ -13,13 +13,10 @@
 
   <form id="product-create-form" class="box b1 container padding-10" style="display:none;">
     <input type="hidden" name="id" value="">
-    <div class="box b4 container margin-top-25">
-      <%- include('./code/dropdown.ejs') %>
-    </div>
-    <div class="box b3-4 container margin-top-25">
-      <input type="text" name="name" class="box b1 lucida-grande em12 bold border-bottom-lg-st padding-5 center nofocus"
-        placeholder="Nome do Produto" autocomplete="off" maxlength="100">
-    </div>
+    <input type="text" name="code" class="box b4 lucida-grande em12 bold border-bottom-lg-st padding-5 center nofocus"
+      placeholder="SKU/Código" autocomplete="off" maxlength="10">
+    <input type="text" name="name" class="box b3-4 lucida-grande em12 bold border-bottom-lg-st padding-5 center nofocus"
+      placeholder="Nome do Produto" autocomplete="off" maxlength="100">
 
     <div class="box b1 container border-lg-st padding-10 margin-top-10 radius-5">
       <div class="box b1 container">

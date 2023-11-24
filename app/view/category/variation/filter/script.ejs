@@ -37,20 +37,7 @@
     lib.addCss(create_form.submit, ['b3-10']);
     lib.removeCss(create_form.submit, ['b2-5']);
 
-    let cancel_btn = lib.element.create("button", {
-      name: "cancel",
-      class: "mobile-box b10 btn-cancel lucida-grande bold em11 noborder radius-5 margin-top-5 center pointer"
-    }, 'x');
-
-    cancel_btn.addEventListener("click", e => {
-      create_form.id.value = null;
-      create_form.name.value = null;
-      lib.addCss(create_form.submit, ['b2-5']);
-      lib.removeCss(create_form.submit, ['b3-10']);
-      e.target.remove();
-    });
-
-    create_form.append(cancel_btn);
+    create_form.cancel.style.display = "";
   };
 
   async function variationDelete(variation_id) {
