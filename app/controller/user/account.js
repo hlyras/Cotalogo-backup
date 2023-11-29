@@ -28,7 +28,7 @@ accountController.genCob = async (req, res) => {
     valor: {
       original: `${parseFloat(req.body.value).toFixed(2)}`
     },
-    chave: "596eaf56-e3c0-4f88-8791-355d1bb6dd6e",
+    chave: "hhlyras2011@gmail.com",
     solicitacaoPagador: "Informe o número ou identificador do pedido."
   };
 

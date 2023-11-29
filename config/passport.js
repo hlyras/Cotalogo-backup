@@ -11,9 +11,9 @@ passport.use(
     passwordField: 'password',
     passReqToCallback: true
   },
-    async (req, username, password, done) => {
-      let user = await User.findByEmail(username);
-      if (!user.length) { user = await User.findByBusiness(username); }
+    async (req, email, password, done) => {
+      let user = await User.findAll({ where: { email: email } });
+      if (!user.length) { user = await User.findAll({ where: { business: 'João' } }); }
 
       if (!user.length) {
         return done(null, false, req.flash('loginMessage', 'Usuário não encontrado.'));

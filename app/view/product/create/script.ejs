@@ -1,21 +1,39 @@
 <script>
+  //        <% for (let i in categories) { %>
+  //          <% if (categories[i].variations) { %>
+  //          <div class="box b1 container margin-top-10 border-lg-st radius-5 padding-1">
+  //            <div class="mobile-box a2 lucida-grande em08 bold v-center padding-5"><%= categories[i].name %></div>
+  //             <select name="category<%= categories[i].id %>" class="mobille-box a2 input-generic radius-5 center">
+  //               <option selected value="">Não incluir</option>
+  //               <% for(let j in categories[i].variations) { %>
+  //               <option value="<%= categories[i].variations[j].id %>"><%= categories[i].variations[j].name %></option>
+  //              <% } %>
+  //            </select>
+  //          </div>
+  //          <% } %>
+  //       <% } %>
+
   document.getElementById("product-create-form").addEventListener("submit", async e => {
     e.preventDefault();
 
     let product = new FormData();
-    product.append('id', e.target.id.value);
-    product.append('code', e.target.code.value);
-    product.append('name', e.target.name.value);
-    product.append('description', e.target.description.value);
+    product.append('id', e.target.id.value || null);
+    product.append('code', e.target.code.value || null);
+    product.append('name', e.target.name.value || null);
+    product.append('description', e.target.description.value || null);
 
     let variation_box = document.getElementById("create-variation-box");
-    Array.from(variation_box.querySelectorAll("select")).map(input => {
-      product.append(`${'variations'}`, input.value);
+    let arr = Array.from(variation_box.querySelectorAll("select")).map(input => {
+      input.value && product.append('variations', input.value);
     });
+
+    console.log(arr);
 
     const input = document.getElementById('files');
 
     for (let i in input.files) { product.append('file', input.files[i]); };
+
+    console.log(product);
 
     let response = await API.response(Product.save, product);
     if (!response) { return false; }
