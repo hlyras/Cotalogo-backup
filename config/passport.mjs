@@ -1,8 +1,18 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt-nodejs');
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import bcrypt from 'bcrypt-nodejs';
+// import { Strategy } from 'passport-local';
 
-const User = require('../app/model/user');
+// Criando uma instância da estratégia Local
+// const LocalStrategy = new Strategy();
+
+// import { findAll } from '../app/model/user';
+
+// const passport = require('passport');
+// const LocalStrategy = require('passport-local').Strategy;
+// const bcrypt = require('bcrypt-nodejs');
+
+import User from '../app/model/user';
 
 passport.use(
   'local',
@@ -31,4 +41,4 @@ passport.use(
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser(async (user, done) => done(null, user));
 
-module.exports = passport;
+export default passport;

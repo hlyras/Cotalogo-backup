@@ -1,6 +1,6 @@
 const { DataTypes, Op } = require('sequelize');
 const sequelize = require('../../config/connection');
-const lib = require('jarmlib');
+const ORM = require('../../app/lib/orm').default;
 
 const User = sequelize.define('User', {
 	id: {
@@ -35,13 +35,13 @@ const User = sequelize.define('User', {
 
 User.filter = async function (props, inners, conditions, order) {
 	console.log('props:', props, 'inners:', inners, 'conditions:', conditions, 'order:', order);
-	let query = lib.Select({ props, inners, conditions, order }, Op);
-	return await User.findAll({ raw: true, query }); s
+	let query = ORM.select({ props, inners, conditions, order }, Op);
+	return await User.findAll({ raw: true, query });
 };
 
 setTimeout(async () => {
 	let conditions = [];
-	lib.Query.fill({ field: 'id', operator: 'in', value: [1, 2], Op }, conditions);
+	ORM.fill({ field: 'id', operator: 'in', value: [1, 2], Op }, conditions);
 	// lib.Query.fill({ field: 'name', operator: 'like', value: 'John' }, conditions);
 	// lib.Query.fill({ field: 'age', operator: 'strict', value: 25 }, conditions);
 	// lib.Query.fill({ field: 'birth', operator: 'between', value: [1980, 2000] }, conditions);

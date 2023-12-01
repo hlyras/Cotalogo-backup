@@ -1,18 +1,17 @@
 // app/controller/user.js
-const User = require('../../model/user');
+import { findAll } from '../../model/user';
 
 // Exemplo de consulta usando Sequelize
 async function getUsers() {
   try {
-    const users = await User.findAll();
+    const users = await findAll();
     console.log(users);
   } catch (error) {
     console.error(error);
   }
-}
+};
 
-// module.exports = getUsers;
-
+export default getUsers;
 // const User = require('../../model/user');
 
 // const userController = {};

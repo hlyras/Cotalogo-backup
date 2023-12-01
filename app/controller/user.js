@@ -1,8 +1,8 @@
-const User = require('../model/user');
+import { findByToken, confirmEmail as _confirmEmail, destroyToken, list as _list, findById, findByEmail, updateInfo as _updateInfo, updatePassword as _updatePassword } from '../model/user';
 
-const JWT = require('jsonwebtoken');
+import { verify as _verify } from 'jsonwebtoken';
 
-const bcrypt = require('bcrypt-nodejs');
+import { hashSync } from 'bcrypt-nodejs';
 
 const userController = {
 	index: (req, res) => {
@@ -13,18 +13,18 @@ const userController = {
 		res.redirect('/login');
 	},
 	confirmEmail: async (req, res, next) => {
-		JWT.verify(req.params.token, 'secretKey', async (err, authData) => {
+		_verify(req.params.token, 'secretKey', async (err, authData) => {
 			if (err) {
 				return res.render('user/email-confirmation', { msg: "O código é inválido, tente novamente ou solicite um novo código", user: req.user })
 			} else {
-				let user = await User.findByToken(req.params.token);
+				let user = await findByToken(req.params.token);
 				if (!user.length) {
 					return res.render('user/email-confirmation', { msg: "O código é inválido, tente novamente ou solicite um novo código", user: req.user });
 				}
 
 				if (authData.data.user_id == user[0].id) {
-					await User.confirmEmail(user[0].id);
-					await User.destroyToken(req.params.token);
+					await _confirmEmail(user[0].id);
+					await destroyToken(req.params.token);
 					return res.render('user/email-confirmation', { msg: "Seu Email Foi confirmado com sucesso!", user: req.user })
 				} else {
 					return res.render('user/email-confirmation', { msg: "O código é inválido, tente novamente ou solicite um novo código", user: req.user });
@@ -51,7 +51,7 @@ const userController = {
 			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
 		};
 		try {
-			let users = await User.list();
+			let users = await _list();
 			res.send({ users: users });
 		} catch (err) {
 			console.log(err);
@@ -64,7 +64,7 @@ const userController = {
 		};
 
 		try {
-			let user = await User.findById(req.body.user_id);
+			let user = await findById(req.body.user_id);
 			res.send({ user });
 		} catch (err) {
 			console.log(err);
@@ -83,10 +83,10 @@ const userController = {
 
 		try {
 			if (user.email) {
-				var row = await User.findByEmail(user.email);
+				var row = await findByEmail(user.email);
 				if (row.length) { return res.send({ msg: "Este e-mail já está cadastrado." }) };
 			};
-			row = await User.updateInfo(user);
+			row = await _updateInfo(user);
 			res.send({ done: "Informações atualizadas com sucesso.", user });
 		} catch (err) {
 			console.log(err);
@@ -100,15 +100,15 @@ const userController = {
 
 		let user = {
 			id: req.user.id,
-			password: bcrypt.hashSync(req.body.user.password, null, null),
-			password_confirm: bcrypt.hashSync(req.body.user.password_confirm, null, null),
+			password: hashSync(req.body.user.password, null, null),
+			password_confirm: hashSync(req.body.user.password_confirm, null, null),
 		}
 
 		if (!req.body.user.password || req.body.user.password.length < 4) { return res.send({ msg: 'Senha inválida.' }); };
 		if (req.body.user.password !== req.body.user.password_confirm) { return res.send({ msg: 'As senhas não correspondem.' }); }
 
 		try {
-			let row = await User.updatePassword(user);
+			let row = await _updatePassword(user);
 			res.send({ done: "Senha alterada com sucesso.", user });
 		} catch (err) {
 			console.log(err);
@@ -117,4 +117,4 @@ const userController = {
 	}
 };
 
-module.exports = userController;
+export default userController;

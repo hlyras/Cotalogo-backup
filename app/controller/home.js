@@ -41,4 +41,4 @@ homeController.logout = (req, res) => {
 	res.redirect('/');
 };
 
-module.exports = homeController;
+export default homeController;

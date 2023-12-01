@@ -1,6 +1,9 @@
-var app = require('../app');
+import app from '../app.mjs';
 var PORT = process.env.PORT || 3001;
 
+// var app = require('../app');
+// var PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => {
-	console.log('API on port '+ PORT);
+	console.log('API on port ' + PORT);
 });

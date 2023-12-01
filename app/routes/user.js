@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const lib = require('jarmlib');
 
-const passport = require('../../config/passport');
+const passport = require('../../config/passport').default;
 
 const userController = require("../controller/user/main");
 // userController.auth = require("../controller/user/auth");

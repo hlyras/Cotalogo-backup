@@ -1,22 +1,22 @@
-const User = require('./../../model/user');
+import User, { findByEmail, findByBusiness, findByToken, confirmEmail, destroyToken } from './../../model/user';
 
-const JWT = require('jsonwebtoken');
+import { verify } from 'jsonwebtoken';
 
-const Mailer = require('./../../../config/mailer');
-const ejs = require("ejs");
-const Token = require('./../../../config/token');
-const path = require('path');
-const { ServiceCatalog } = require('aws-sdk');
+import { sendMail } from './../../../config/mailer';
+import { renderFile } from "ejs";
+import { generate } from './../../../config/token';
+import { join } from 'path';
+import { ServiceCatalog } from 'aws-sdk';
 
-const Catalog = require('../../model/catalog/main');
+import Catalog from '../../model/catalog/main';
 
 const authController = {};
 
 authController.signup = async (req, res, next) => {
   const user = new User(req.body);
 
-  if ((await User.findByEmail(user.email)).length) { return res.send({ msg: 'Este E-mail já está sendo utilizado.' }); }
-  if ((await User.findByBusiness(user.business)).length) { return res.send({ msg: 'Este nome de empresa já está sendo utilizado.' }); }
+  if ((await findByEmail(user.email)).length) { return res.send({ msg: 'Este E-mail já está sendo utilizado.' }); }
+  if ((await findByBusiness(user.business)).length) { return res.send({ msg: 'Este nome de empresa já está sendo utilizado.' }); }
 
   try {
     let response = await user.save();
@@ -39,11 +39,11 @@ authController.signup = async (req, res, next) => {
       },
     };
 
-    const token = await Token.generate(JWTData);
+    const token = await generate(JWTData);
 
     await user.token(token);
 
-    const data = await ejs.renderFile(path.join(__dirname + "../../../../app/view/email-template/confirm-signup.ejs"), { title: 'Confirmação de email', user, token });
+    const data = await renderFile(join(__dirname + "../../../../app/view/email-template/confirm-signup.ejs"), { title: 'Confirmação de email', user, token });
 
     const option = {
       from: "Cotalogo.com <suporte@cotalogo.com>",
@@ -52,7 +52,7 @@ authController.signup = async (req, res, next) => {
       html: data
     };
 
-    Mailer.sendMail(option, (err, info) => {
+    sendMail(option, (err, info) => {
       if (err) { console.log(err); }
       else { console.log('Message sent: ' + info.response); }
     });
@@ -94,18 +94,18 @@ authController.verifyAccess = async (req, res, access) => {
 };
 
 authController.confirmEmail = async (req, res, next) => {
-  JWT.verify(req.params.token, 'secretKey', async (err, authData) => {
+  verify(req.params.token, 'secretKey', async (err, authData) => {
     if (err) {
       return res.render('user/email-confirmation', { msg: "O código é inválido, tente novamente ou solicite um novo código", user: req.user })
     } else {
-      let user = await User.findByToken(req.params.token);
+      let user = await findByToken(req.params.token);
       if (!user.length) {
         return res.render('user/email-confirmation', { msg: "O código é inválido, tente novamente ou solicite um novo código", user: req.user });
       }
 
       if (authData.data.user_id == user[0].id) {
-        await User.confirmEmail(user[0].id);
-        await User.destroyToken(req.params.token);
+        await confirmEmail(user[0].id);
+        await destroyToken(req.params.token);
         return res.render('user/email-confirmation', { msg: "Seu Email Foi confirmado com sucesso!", user: req.user })
       } else {
         return res.render('user/email-confirmation', { msg: "O código é inválido, tente novamente ou solicite um novo código", user: req.user });
@@ -120,4 +120,4 @@ authController.logout = (req, res) => {
   });
 };
 
-module.exports = authController;
+export default authController;

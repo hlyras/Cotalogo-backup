@@ -2,6 +2,7 @@
   "name": "comercial_model",
   "version": "1.0.0",
   "description": "A monolitic nodejs-ejs-mysql framework model for free lancers.",
+  "type": "module",
   "scripts": {
     "start": "node ./bin/www"
   },

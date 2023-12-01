@@ -1,16 +1,16 @@
-const User = require('../../model/user');
+import { filter } from '../../model/user';
 
-const lib = require('jarmlib');
+import { Query } from 'jarmlib';
 
-const GNAPI = require('../../api/gerencianet');
+import GNAPI from '../../api/gerencianet';
 
 const accountController = {};
 
 accountController.index = async (req, res) => {
   let props = ["user.id", "user.name", "user.business", "user.email", "user.status", "user.balance"];
   let strict_params = { keys: [], values: [] };
-  lib.Query.fillParam("user.id", req.user.id, strict_params);
-  let user = await User.filter(props, [], [], strict_params, []);
+  Query.fillParam("user.id", req.user.id, strict_params);
+  let user = await filter(props, [], [], strict_params, []);
 
   res.render('user/account/index', { user: user[0] });
 };
@@ -43,7 +43,7 @@ accountController.webhooks = async (req, res) => {
   res.send(200);
 };
 
-module.exports = accountController;
+export default accountController;
 
 // const GNAPI = require('../api/gerencianet');
 
