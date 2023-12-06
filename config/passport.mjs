@@ -1,18 +1,8 @@
+import User from '../app/model/user/main.mjs'
+
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcrypt-nodejs';
-// import { Strategy } from 'passport-local';
-
-// Criando uma instância da estratégia Local
-// const LocalStrategy = new Strategy();
-
-// import { findAll } from '../app/model/user';
-
-// const passport = require('passport');
-// const LocalStrategy = require('passport-local').Strategy;
-// const bcrypt = require('bcrypt-nodejs');
-
-import User from '../app/model/user';
 
 passport.use(
   'local',
@@ -22,8 +12,9 @@ passport.use(
     passReqToCallback: true
   },
     async (req, email, password, done) => {
-      let user = await User.findAll({ where: { email: email } });
-      if (!user.length) { user = await User.findAll({ where: { business: 'João' } }); }
+      let user = await User.findAll({ raw: true, where: { email: email } });
+
+      if (!user.length) { user = await User.findAll({ where: { business: email } }); }
 
       if (!user.length) {
         return done(null, false, req.flash('loginMessage', 'Usuário não encontrado.'));

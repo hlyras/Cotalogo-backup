@@ -7,7 +7,7 @@
       <div class="mobile-box container right padding-5">
         <% if(!user){ %>
         <div class="mobile-box lucida-grande em09 underline-link radius-5 padding-10 noselect pointer"
-          style="color:#fff;" onclick="window.location.href = '/login'">Login</div>
+          style="color:#fff;" onclick="window.location.href = '/user/login'">Login</div>
         <% } else { %>
         <a><img class="mobile-box noselect icon size-30 padding-5"
             onclick="lib.confirm('Deseja sair?', (r) => { if(r==true){ window.location.href='/user/logout' } })"
