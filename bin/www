@@ -1,4 +1,4 @@
-import app from '../app.mjs';
+import app from '../app.js';
 var PORT = process.env.PORT || 3001;
 
 // var app = require('../app');
