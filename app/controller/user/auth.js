@@ -6,6 +6,7 @@ import Mailer from '../../../config/mailer.js';
 import ejs from 'ejs';
 import Token from '../../../config/token.js';
 import path from 'path';
+import __dirname from '../../../config/__dirname.js';
 
 import Catalog from '../../model/catalog/main.js';
 
@@ -42,7 +43,7 @@ authController.signup = async (req, res, next) => {
 
     await user.token(token);
 
-    const data = await ejs.renderFile(path.join(__dirname + "../../../../app/view/email-template/confirm-signup.ejs"), { title: 'Confirmação de email', user, token });
+    const data = await ejs.renderFile('./app/view/email-template/confirm-signup.ejs', { title: 'Confirmação de email', user, token });
 
     const option = {
       from: "Cotalogo.com <suporte@cotalogo.com>",

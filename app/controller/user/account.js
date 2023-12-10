@@ -33,7 +33,7 @@ accountController.genCob = async (req, res) => {
   const cobResponse = await reqGN.post('/v2/cob', dataCob);
   const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
 
-  res.send({ qrcodeImage: qrcodeResponse.data.imagemQrcode });
+  res.send({ qrcodeData: qrcodeResponse.data });
 };
 
 accountController.webhooks = async (req, res) => {

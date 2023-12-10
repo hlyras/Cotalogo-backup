@@ -4,7 +4,8 @@
   "description": "A monolitic nodejs-ejs-mysql framework model for free lancers.",
   "type": "module",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
   },
   "dependencies": {
     "@types/bcrypt-nodejs": "^0.0.31",
@@ -49,6 +50,7 @@
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.2.0"
+    "eslint-plugin-promise": "^5.2.0",
+    "nodemon": "^3.0.2"
   }
 }
