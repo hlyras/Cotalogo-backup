@@ -1,6 +1,6 @@
 import db from '../../../config/connection.js';
 import lib from '../../lib/main.js';
-import bcrypt from 'bcrypt-nodejs';
+import bcrypt from 'bcrypt';
 
 const User = function (user) {
   this.id;

@@ -40,11 +40,6 @@ productController.save = async (req, res) => {
 	product.description = req.body.description;
 	product.variations = req.body.variations.length > 1 ? [...req.body.variations] : [product.variations];
 
-	console.log(req.body.variations.length);
-	console.log(req.body);
-	console.log(product);
-	console.log(product.variations);
-
 	try {
 		if (!product.id) {
 			// Verify code duplicity

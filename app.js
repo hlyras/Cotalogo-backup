@@ -1,10 +1,6 @@
+
 import express from 'express';
 import session from 'express-session';
-import path from 'path';
-import __dirname from './config/__dirname.js';
-
-import 'dotenv/config';
-
 import bodyParser from 'body-parser';
 import flash from 'connect-flash';
 import passport from './config/passport.js';
@@ -15,12 +11,10 @@ app.use(flash());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// app.use(express.favicon(__dirname + '/public/images/favicon/favicon-black.ico'));
-app.set('views', path.join(__dirname, 'app/view'));
+app.set('views', 'app/view');
 app.set('view engine', 'ejs');
 
-// app.use(express.static('public'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 app.use(session({
   secret: 'vidyapathaisalwaysrunning',

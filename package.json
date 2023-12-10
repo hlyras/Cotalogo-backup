@@ -1,56 +1,39 @@
 {
-  "name": "comercial_model",
+  "name": "cotalogo",
   "version": "1.0.0",
-  "description": "A monolitic nodejs-ejs-mysql framework model for free lancers.",
+  "description": "Catálogo para empresas",
   "type": "module",
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
-  },
-  "dependencies": {
-    "@types/bcrypt-nodejs": "^0.0.31",
-    "@types/dotenv": "^8.2.0",
-    "aws-sdk": "^2.1304.0",
-    "axios": "^1.2.6",
-    "babel-plugin-dotenv": "^0.1.1",
-    "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.19.0",
-    "connect": "^3.7.0",
-    "connect-flash": "^0.1.1",
-    "dotenv": "^8.6.0",
-    "ejs": "^3.1.8",
-    "express": "^4.18.2",
-    "express-session": "^1.16.1",
-    "gerencianet": "^1.0.3",
-    "jarmlib": "^1.0.57",
-    "jsonwebtoken": "^9.0.0",
-    "multer": "^1.4.4",
-    "multer-s3": "^3.0.1",
-    "mysql": "^2.17.1",
-    "mysql2": "^3.6.5",
-    "nodemailer": "^6.7.2",
-    "passport": "^0.6.0",
-    "passport-local": "^1.0.0",
-    "sequelize": "^6.35.1",
-    "sharp": "^0.31.3"
+    "start": "node ./bin/www"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hlyras/comercial_model.git"
+    "url": "git+https://github.com/hlyras/Cotalogo.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hlyras/comercial_model/issues"
+    "url": "https://github.com/hlyras/Cotalogo/issues"
   },
-  "homepage": "https://github.com/hlyras/comercial_model#readme",
-  "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.2.0",
-    "nodemon": "^3.0.2"
+  "homepage": "https://github.com/hlyras/Cotalogo#readme",
+  "dependencies": {
+    "@img/sharp-win32-x64": "^0.33.0",
+    "@types/dotenv": "^8.2.0",
+    "aws-sdk": "^2.1515.0",
+    "axios": "^1.6.2",
+    "bcrypt": "^5.1.1",
+    "connect-flash": "^0.1.1",
+    "ejs": "^3.1.9",
+    "esm": "^3.2.25",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.9.7",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "sharp": "^0.33.0"
   }
 }

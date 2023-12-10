@@ -5,7 +5,7 @@ import JWT from 'jsonwebtoken';
 import Mailer from '../../../config/mailer.js';
 import ejs from 'ejs';
 import Token from '../../../config/token.js';
-import path from 'path';
+
 import __dirname from '../../../config/__dirname.js';
 
 import Catalog from '../../model/catalog/main.js';

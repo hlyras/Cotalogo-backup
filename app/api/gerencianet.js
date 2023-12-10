@@ -1,8 +1,11 @@
 import axios from 'axios';
 import fs from 'fs';
-import path from 'path';
+
 import https from 'https';
-import __dirname from '../../config/__dirname.js';
+
+import 'dotenv/config';
+
+console.log(process.env.GN_CERT);
 
 const cert = fs.readFileSync(`./app/certs/${process.env.GN_CERT}`);
 
