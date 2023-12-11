@@ -1,5 +1,5 @@
-import fs from 'fs';
-import sharp from 'sharp';
+const fs = require("fs");
+const sharp = require("sharp");
 
 async function compressImage(file, size) {
     const newPath = file.path.split('.')[0] + '.png';
@@ -10,4 +10,6 @@ async function compressImage(file, size) {
     return newPath;
 };
 
-export { compressImage };
+module.exports = {
+    compressImage
+};

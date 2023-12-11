@@ -1,17 +1,15 @@
-import JWT from 'jsonwebtoken';
+const JWT = require('jsonwebtoken');
 
 const generate = data => (
-  new Promise((resolve) => {
-    JWT.sign(data, process.env.SECRET_KEY, (err, token) => {
-      if (err) {
-        console.error(err);
-      }
+  new Promise((resolve, reject) => {
+    JWT.sign(data, process.env.JWT_SECRET_KEY, (err, token) => {
+      if (err) { reject(console.error(err)); }
 
       resolve(token);
     });
   })
 );
 
-export default {
-  generate
+module.exports = {
+  generate,
 };

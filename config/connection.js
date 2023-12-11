@@ -1,5 +1,5 @@
-import mysql from 'mysql';
-import dbconfig from './database.js';
+const mysql = require('mysql');
+const dbconfig = require('./database');
 
 // environments: development | production
 const pool = mysql.createPool({
@@ -9,6 +9,7 @@ const pool = mysql.createPool({
 	user: dbconfig.development.database.user,
 	password: dbconfig.development.database.password
 });
+
 
 const db = async (query, values) => {
 	return new Promise(async (resolve, reject) => {
@@ -26,4 +27,4 @@ const db = async (query, values) => {
 	});
 };
 
-export default db;
+module.exports = db;

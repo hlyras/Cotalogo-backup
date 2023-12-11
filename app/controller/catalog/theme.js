@@ -1,7 +1,7 @@
-import Category from '../../model/category/main.js';
-import CategoryVariation from '../../model/category/variation.js';
+const Category = require('../../model/category/main');
+Category.variation = require('../../model/category/variation');
 
-import lib from '../../lib/main.js';
+const lib = require('jarmlib');
 
 const themeController = {};
 
@@ -15,9 +15,9 @@ themeController.index = async (req, res) => {
       let variation_strict_params = { keys: [], values: [] };
       lib.Query.fillParam("variation.category_id", categories[i].id, variation_strict_params);
       lib.Query.fillParam("variation.user_id", req.user.id, variation_strict_params);
-      let variations = await CategoryVariation.filter([], [], [], variation_strict_params, []);
+      let variations = await Category.variation.filter([], [], [], variation_strict_params, []);
       if (variations.length) { categories[i].variations = variations; }
-    }
+    };
 
     res.render("catalog/theme/index", { user: req.user, categories });
   } catch (err) {
@@ -26,4 +26,4 @@ themeController.index = async (req, res) => {
   };
 };
 
-export default themeController;
+module.exports = themeController;

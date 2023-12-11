@@ -1,32 +1,37 @@
-import User from '../../model/user/main.js';
+const User = require('./../../model/user/main');
+const JWT = require('jsonwebtoken');
+const Mailer = require('./../../../config/mailer');
+const ejs = require("ejs");
+const Token = require('./../../../config/token');
+const bcrypt = require('bcrypt');
+const path = require('path');
 
-import JWT from 'jsonwebtoken';
-
-import Mailer from '../../../config/mailer.js';
-import ejs from 'ejs';
-import Token from '../../../config/token.js';
-
-import __dirname from '../../../config/__dirname.js';
-
-import Catalog from '../../model/catalog/main.js';
+const Catalog = require('../../model/catalog/main');
 
 const authController = {};
 
-authController.signup = async (req, res, next) => {
-  const user = new User(req.body);
+authController.signup = async (req, res) => {
+  const user = new User();
+  user.email = req.body.email;
+  user.business = req.body.business;
+  user.password = req.body.password;
+  user.access = "adm";
+  user.balance = 0;
+  user.status = "Pending";
 
   if ((await User.findByEmail(user.email)).length) { return res.send({ msg: 'Este E-mail já está sendo utilizado.' }); }
   if ((await User.findByBusiness(user.business)).length) { return res.send({ msg: 'Este nome de empresa já está sendo utilizado.' }); }
 
   try {
     let response = await user.save();
-    if (response.err) { return res.send({ msg: response.err }); } //signupMessage', response.err));
+    if (response.err) { return res.send({ msg: response.err }); }
 
     user.id = response.insertId;
 
     let catalog = new Catalog();
     catalog.user_id = user.id;
     catalog.url = '/';
+
     let catalog_response = await catalog.create();
     if (catalog_response.err) { return res.send({ msg: catalog_response.err }); }
 
@@ -34,16 +39,17 @@ authController.signup = async (req, res, next) => {
       // exp: Math.floor((Date.now()/1000) + (60*60)) * 1000,
       iss: 'cotalogo-api',
       data: {
-        user_id: user.id,
-        business: user.business
-      },
+        id: user.id,
+        business: user.business,
+        password: user.password
+      }
     };
 
     const token = await Token.generate(JWTData);
-
     await user.token(token);
 
-    const data = await ejs.renderFile('./app/view/email-template/confirm-signup.ejs', { title: 'Confirmação de email', user, token });
+    const data = await ejs.renderFile(path.join(__dirname + "../../../../app/view/email-template/confirm-signup.ejs"),
+      { title: 'Confirmação de email', user, token });
 
     const option = {
       from: "Cotalogo.com <suporte@cotalogo.com>",
@@ -52,27 +58,20 @@ authController.signup = async (req, res, next) => {
       html: data
     };
 
-    Mailer.sendMail(option, (err, info) => {
-      if (err) { console.log(err); }
-      else { console.log('Message sent: ' + info.response); }
-    });
+    Mailer.sendMail(option);
 
-    await new Promise((resolve, reject) => {
-      req.logIn({ id: user.id, business: user.business }, err => {
-        if (err) { return res.send({ msg: "Ocorreu um erro inesperado ao realizar login" }); }
-        return res.status(200).send({ done: 'Login realizado com sucesso' });
-      });
+    req.logIn({ id: user.id, business: user.business }, err => {
+      if (err) { return res.send({ msg: "Sua conta foi criada com sucesso! Porém ocorreu um erro ao realizar seu login." }) }
+      res.send({ done: `Parabéns, sua conta foi criada com sucesso!` });
     });
   } catch (err) {
     console.log(err);
     return res.send({ msg: "Ocorreu um erro ao realizar o cadastro, atualize a página, caso o problema persista por favor contate o suporte." });
   }
 
-  res.send({ done: "Sua conta foi criada com sucesso!" });
 };
 
 authController.authorize = (req, res, next) => {
-  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) { return next() };
   res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
 };
@@ -94,21 +93,37 @@ authController.verifyAccess = async (req, res, access) => {
 };
 
 authController.confirmEmail = async (req, res, next) => {
-  JWT.verify(req.params.token, 'secretKey', async (err, authData) => {
+  JWT.verify(req.params.token, process.env.JWT_SECRET_KEY, async (err, authUserData) => {
     if (err) {
-      return res.render('user/email-confirmation', { msg: "O código é inválido, tente novamente ou solicite um novo código", user: req.user })
+      return res.render('user/email-confirmation', {
+        msg: "O código é inválido, tente novamente ou solicite um novo código"
+      });
     } else {
-      let user = await User.findByToken(req.params.token);
-      if (!user.length) {
-        return res.render('user/email-confirmation', { msg: "O código é inválido, tente novamente ou solicite um novo código", user: req.user });
+      let user = (await User.findByToken(req.params.token))[0];
+
+      if (!user) {
+        return res.render('user/email-confirmation', {
+          msg: "O código é inválido, tente novamente ou solicite um novo código"
+        });
       }
 
-      if (authData.data.user_id == user[0].id) {
-        await User.confirmEmail(user[0].id);
-        await User.destroyToken(req.params.token);
-        return res.render('user/email-confirmation', { msg: "Seu Email Foi confirmado com sucesso!", user: req.user })
+      const authUser = new User();
+      authUser.id = authUserData.data.id;
+      authUser.password = authUserData.data.password;
+
+      if (authUserData.data.id == user.id && authUser.password == user.password) {
+        authUser.password = user.password;
+        authUser.status = "Active";
+        authUser.token = "";
+        authUser.balance = 20;
+        await authUser.update();
+
+        req.logIn({ id: user.id, business: user.business }, err => {
+          if (err) { return res.send({ msg: "Ocorreu um erro ao realizar login!" }); }
+          return res.render('user/email-confirmation', { msg: "Seu Email Foi confirmado com sucesso! Bem vindo ao Cotalogo!", user: req.user });
+        });
       } else {
-        return res.render('user/email-confirmation', { msg: "O código é inválido, tente novamente ou solicite um novo código", user: req.user });
+        return res.render('user/email-confirmation', { msg: "O código é inválido, tente novamente ou solicite um novo código" });
       }
     }
   });
@@ -120,4 +135,4 @@ authController.logout = (req, res) => {
   });
 };
 
-export default authController;
+module.exports = authController;

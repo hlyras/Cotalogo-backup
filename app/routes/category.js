@@ -1,20 +1,19 @@
-import { Router } from 'express';
-const router = Router();
-import toHttps from './toHttps.js';
+const router = require("express").Router();
+const lib = require('jarmlib');
 
-import UserAuth from '../controller/user/auth.js';
+const UserAuth = require("../controller/user/auth");
 
-import Category from '../controller/category/main.js';
-import CategoryVariation from '../controller/category/variation.js';
+const Category = require("../controller/category/main");
+const CategoryVariation = require("../controller/category/variation");
 
-router.get('/', toHttps, UserAuth.verify, Category.index);
-router.post('/save', toHttps, UserAuth.authorize, Category.save);
-router.put('/update', toHttps, UserAuth.authorize, Category.update);
-router.post('/filter', toHttps, UserAuth.authorize, Category.filter);
-router.delete('/delete/:id', toHttps, UserAuth.authorize, Category.delete);
+router.get('/', lib.route.toHttps, UserAuth.verify, Category.index);
+router.post('/save', lib.route.toHttps, UserAuth.authorize, Category.save);
+router.put('/update', lib.route.toHttps, UserAuth.authorize, Category.update);
+router.post('/filter', lib.route.toHttps, UserAuth.authorize, Category.filter);
+router.delete('/delete/:id', lib.route.toHttps, UserAuth.authorize, Category.delete);
 
-router.post('/variation/save', toHttps, UserAuth.authorize, CategoryVariation.save);
-router.post('/variation/filter', toHttps, UserAuth.authorize, CategoryVariation.filter);
-router.delete('/variation/delete/:id', toHttps, UserAuth.authorize, CategoryVariation.delete);
+router.post('/variation/save', lib.route.toHttps, UserAuth.authorize, CategoryVariation.save);
+router.post('/variation/filter', lib.route.toHttps, UserAuth.authorize, CategoryVariation.filter);
+router.delete('/variation/delete/:id', lib.route.toHttps, UserAuth.authorize, CategoryVariation.delete);
 
-export default router;
+module.exports = router;

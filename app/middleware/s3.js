@@ -1,5 +1,5 @@
-import aws from 'aws-sdk';
-import fs from 'fs';
+const aws = require("aws-sdk");
+const fs = require("fs");
 
 const s3 = new aws.S3({ endpoint: process.env.S3_ENDPOINT });
 
@@ -26,7 +26,7 @@ async function deleteFileS3(keycode) {
   return s3.deleteObject(deleteParams).promise();
 };
 
-export {
+module.exports = {
   uploadFileS3,
   deleteFileS3
 };

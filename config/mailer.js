@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
-import mailConfig from './mail.js';
+const nodemailer = require("nodemailer");
+const mailConfig = require("./mail");
 
-export default nodemailer.createTransport(mailConfig);
+module.exports = nodemailer.createTransport(mailConfig);

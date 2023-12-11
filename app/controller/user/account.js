@@ -1,6 +1,8 @@
-import User from '../../model/user/main.js';
-import lib from '../../lib/main.js';
-import GNAPI from '../../api/gerencianet.js';
+const User = require('../../model/user/main');
+
+const lib = require('jarmlib');
+
+const GNAPI = require('../../api/gerencianet');
 
 const accountController = {};
 
@@ -26,14 +28,14 @@ accountController.genCob = async (req, res) => {
     valor: {
       original: `${parseFloat(req.body.value).toFixed(2)}`
     },
-    chave: "596eaf56-e3c0-4f88-8791-355d1bb6dd6e",
+    chave: "hhlyras2011@gmail.com",
     solicitacaoPagador: "Informe o número ou identificador do pedido."
   };
 
   const cobResponse = await reqGN.post('/v2/cob', dataCob);
   const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
 
-  res.send({ qrcodeData: qrcodeResponse.data });
+  res.send({ qrcodeImage: qrcodeResponse.data.imagemQrcode });
 };
 
 accountController.webhooks = async (req, res) => {
@@ -41,4 +43,4 @@ accountController.webhooks = async (req, res) => {
   res.send(200);
 };
 
-export default accountController;
+module.exports = accountController;

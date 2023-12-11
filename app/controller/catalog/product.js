@@ -1,14 +1,14 @@
-import Product from '../../model/product/main.js';
+const Product = require('../../model/product/main');
 
-import Catalog from '../../model/catalog/main.js';
-import CatalogProduct from '../../model/catalog/product.js';
+const Catalog = require('../../model/catalog/main');
+Catalog.product = require('../../model/catalog/product');
 
-import lib from '../../lib/main.js';
+const lib = require('jarmlib');
 
 const productController = {};
 
 productController.insert = async (req, res) => {
-  const product = new CatalogProduct();
+  const product = new Catalog.product();
   product.user_id = req.user.id;
   product.catalog_id = req.body.catalog_id;
   product.product_id = req.body.product_id;
@@ -25,7 +25,7 @@ productController.insert = async (req, res) => {
     let strict_params = { keys: [], values: [] };
     lib.Query.fillParam('catalog_product.product_id', product.product_id, strict_params);
     lib.Query.fillParam('catalog_product.catalog_id', product.catalog_id, strict_params);
-    let catalog_products = await CatalogProduct.filter([], [], [], strict_params, []);
+    let catalog_products = await Catalog.product.filter([], [], [], strict_params, []);
     if (catalog_products.length) { return res.send({ msg: "Você já incluiu este produto neste catálogo." }); }
 
     let response = await product.insert();
@@ -55,7 +55,7 @@ productController.filter = async (req, res) => {
 
     let order = [["product.code", "ASC"]];
 
-    let products = await CatalogProduct.filter(props, inners, params, strict_params, order);
+    let products = await Catalog.product.filter(props, inners, params, strict_params, order);
 
     res.send({ products });
   } catch (err) {
@@ -64,4 +64,4 @@ productController.filter = async (req, res) => {
   }
 };
 
-export default productController;
+module.exports = productController;

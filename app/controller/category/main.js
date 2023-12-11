@@ -1,14 +1,14 @@
-import Category from '../../model/category/main.js';
-import CategoryType from '../../model/category/type.js';
-import CategoryVariation from '../../model/category/variation.js';
+const Category = require('../../model/category/main');
+Category.type = require('../../model/category/type');
+Category.variation = require('../../model/category/variation');
 
-import lib from '../../lib/main.js';
+const lib = require('jarmlib');
 
 const categoryController = {};
 
 categoryController.index = async (req, res) => {
   try {
-    let category_types = await CategoryType.filter([], [], [], [], []);
+    let category_types = await Category.type.filter([], [], [], [], []);
     res.render("category/index", { user: req.user, category_types });
   } catch (err) {
     console.log(err);
@@ -101,7 +101,8 @@ categoryController.delete = async (req, res) => {
 
   try {
     await Category.delete(req.params.id);
-    await CategoryVariation.deleteByCategoryId(req.params.id);
+    await Category.variation.deleteByCategoryId(req.params.id);
+    // need delete all variations included in products
     res.send({ done: "Categoria excluída com sucesso!" });
   } catch (err) {
     console.log(err);
@@ -109,4 +110,4 @@ categoryController.delete = async (req, res) => {
   }
 };
 
-export default categoryController;
+module.exports = categoryController;

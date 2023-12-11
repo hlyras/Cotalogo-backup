@@ -1,5 +1,5 @@
-import db from '../../../config/connection.js';
-import lib from '../../lib/main.js';
+const db = require('../../../config/connection');
+const lib = require('jarmlib');
 
 const Product = function (product) {
 	this.id;
@@ -41,4 +41,4 @@ Product.filter = (props, inners, params, strict_params, order_params) => {
 	return db(query, values);
 };
 
-export default Product;
+module.exports = Product;

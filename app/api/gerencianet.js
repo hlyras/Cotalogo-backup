@@ -1,13 +1,10 @@
-import axios from 'axios';
-import fs from 'fs';
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
+const https = require("https");
 
-import https from 'https';
-
-import 'dotenv/config';
-
-console.log(process.env.GN_CERT);
-
-const cert = fs.readFileSync(`./app/certs/${process.env.GN_CERT}`);
+const cert = fs.readFileSync(path.resolve(__dirname, `../certs/${process.env.GN_CERT}`));
+// const credentials = Buffer.from(`${process.env.GN_CLIENT_ID}:${process.env.GN_CLIENT_SECRET}`).toString('base64');
 
 const agent = new https.Agent({
   pfx: cert,
@@ -43,4 +40,4 @@ const GNAPI = async (credentials) => {
   });
 };
 
-export default GNAPI;
+module.exports = GNAPI;

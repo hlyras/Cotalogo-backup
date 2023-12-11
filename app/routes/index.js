@@ -1,19 +1,13 @@
-import { Router } from 'express';
-const router = Router();
-import toHttps from './toHttps.js';
+const router = require("express").Router();
+const lib = require('jarmlib');
 
-import homeController from '../controller/home.js';
+const homeController = require("../controller/home");
 
-import UserRouter from './user.js';
-import ProductRouter from './product.js';
-import CategoryRouter from './category.js';
-import CatalogRouter from './catalog.js';
+router.get("/", lib.route.toHttps, homeController.index);
 
-router.get("/", toHttps, homeController.index);
+router.use("/user", require("./user"));
+router.use("/product", require("./product"));
+router.use("/category", require("./category"));
+router.use("/catalog", require("./catalog"));
 
-router.use("/user", UserRouter);
-router.use("/product", ProductRouter);
-router.use("/category", CategoryRouter);
-router.use("/catalog", CatalogRouter);
-
-export default router;
+module.exports = router;

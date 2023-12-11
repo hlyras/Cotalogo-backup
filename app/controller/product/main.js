@@ -1,12 +1,12 @@
-import Product from '../../model/product/main.js';
-import ProductImage from '../../model/product/image.js';
+const Product = require('../../model/product/main');
+Product.image = require('../../model/product/image');
 
-import Category from '../../model/category/main.js';
-import CategoryVariation from '../../model/category/variation.js';
+const Category = require('../../model/category/main');
+Category.variation = require('../../model/category/variation');
 
-import imageController from './image.js';
+const imageController = require('./image');
 
-import lib from '../../lib/main.js';
+const lib = require('jarmlib');
 
 const productController = {};
 
@@ -20,7 +20,7 @@ productController.index = async (req, res) => {
 			let variation_strict_params = { keys: [], values: [] };
 			lib.Query.fillParam("category_variation.category_id", categories[i].id, variation_strict_params);
 			lib.Query.fillParam("category_variation.user_id", req.user.id, variation_strict_params);
-			let variations = await CategoryVariation.filter([], [], [], variation_strict_params, []);
+			let variations = await Category.variation.filter([], [], [], variation_strict_params, []);
 			if (variations.length) { categories[i].variations = variations; }
 		}
 
@@ -40,6 +40,11 @@ productController.save = async (req, res) => {
 	product.description = req.body.description;
 	product.variations = req.body.variations.length > 1 ? [...req.body.variations] : [product.variations];
 
+	console.log(req.body.variations.length);
+	console.log(req.body);
+	console.log(product);
+	console.log(product.variations);
+
 	try {
 		if (!product.id) {
 			// Verify code duplicity
@@ -56,7 +61,7 @@ productController.save = async (req, res) => {
 				let variation_strict_params = { keys: [], values: [] };
 				lib.Query.fillParam('category_variation.user_id', req.user.id, variation_strict_params);
 				lib.Query.fillParam('category_variation.id', product.variations[i], variation_strict_params);
-				let variation_response = await CategoryVariation.filter([], [], [], variation_strict_params, []);
+				let variation_response = await Category.variation.filter([], [], [], variation_strict_params, []);
 				if (!(variation_response).length) { return res.send({ unauthorized: "Variações inválidas, tente cadastrar novamente!" }); }
 			};
 
@@ -96,7 +101,7 @@ productController.save = async (req, res) => {
 				let variation_strict_params = { keys: [], values: [] };
 				lib.Query.fillParam('category_variation.user_id', req.user.id, variation_strict_params);
 				lib.Query.fillParam('category_variation.id', product.variations[i], variation_strict_params);
-				let variation_response = await CategoryVariation.filter([], [], [], variation_strict_params, []);
+				let variation_response = await Category.variation.filter([], [], [], variation_strict_params, []);
 				if (!(variation_response).length) { return res.send({ msg: "Variações inválidas, tente cadastrar novamente!" }); }
 			};
 
@@ -188,12 +193,14 @@ productController.filter = async (req, res) => {
 		let products = [];
 		for (let i in products_response) {
 			let variation = { length: 0, response: [] };
+			// Buscar as variações que o produto possuir
 			for (let j in product.variations) {
 				let variation_strict_params = { keys: [], values: [] };
 				lib.Query.fillParam('product_variation.user_id', req.user.id, variation_strict_params);
 				lib.Query.fillParam('product_variation.product_id', products_response[i].id, variation_strict_params);
 				lib.Query.fillParam('product_variation.variation_id', product.variations[j], variation_strict_params);
 				variation.response = await Product.variation.filter([], [], [], variation_strict_params, []);
+				// Cada varição existente soma 1
 				if ((variation.response).length) { variation.length++; };
 			};
 
@@ -211,12 +218,14 @@ productController.filter = async (req, res) => {
 
 			let variation_strict_params = { keys: [], values: [] };
 
+			// busca a categoria e as variações pelo id do produto
 			lib.Query.fillParam('product_variation.product_id', products_response[i].id, variation_strict_params);
 
 			products_response[i].variations = await Product.variation.filter(variation_props, variation_inners, [], variation_strict_params, []);
 
+			// Somente incluir o produto na busca caso tenha todas as variações
 			if (variation.length == product.variations.length) {
-				products_response[i].images = await ProductImage.findByProductId(products_response[i].id);
+				products_response[i].images = await Product.image.findByProductId(products_response[i].id);
 				products.push(products_response[i]);
 			}
 		};
@@ -242,9 +251,9 @@ productController.findById = async (req, res) => {
 	lib.Query.fillParam('product_variation.product_id', req.params.id, variation_strict_params);
 	product.variations = await Product.variation.filter([], variation_inners, [], variation_strict_params, []);
 
-	product.images = await ProductImage.findByProductId(req.params.id);
+	product.images = await Product.image.findByProductId(req.params.id);
 
 	res.send({ product });
 };
 
-export default productController;
+module.exports = productController;

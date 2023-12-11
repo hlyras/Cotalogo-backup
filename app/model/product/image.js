@@ -1,8 +1,7 @@
-import db from '../../../config/connection.js';
-import lib from '../../lib/main.js';
+const db = require('../../../config/connection');
 
 const Image = function () {
-  this.id;
+  this.id = 0;
   this.user_id;
   this.product_id;
   this.etag;
@@ -43,4 +42,4 @@ Image.deleteByProductId = (product_id) => {
   return db(query, [product_id]);
 };
 
-export default Image;
+module.exports = Image;

@@ -1,5 +1,5 @@
-import db from '../../../config/connection.js';
-import lib from '../../lib/main.js';
+const db = require('../../../config/connection');
+const lib = require('jarmlib');
 
 const Catalog = function () {
   this.id = 0;
@@ -39,4 +39,4 @@ Catalog.findById = (id) => {
   return db(query, [id]);
 };
 
-export default Catalog;
+module.exports = Catalog;

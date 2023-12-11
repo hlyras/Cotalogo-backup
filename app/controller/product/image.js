@@ -1,9 +1,10 @@
-import { uploadFileS3, deleteFileS3 } from "../../middleware/s3.js";
-import { compressImage } from "../../middleware/sharp.js";
+const { uploadFileS3, deleteFileS3 } = require("../../middleware/s3");
+const { compressImage } = require("../../middleware/sharp");
 
-import fs from 'fs';
+const fs = require("fs");
 
-import ProductImage from '../../model/product/image.js'
+const Product = require('../../model/product/main');
+Product.image = require('../../model/product/image');
 
 const imageController = {};
 
@@ -15,7 +16,7 @@ imageController.upload = async (user_id, file, product_id) => {
     fs.promises.unlink(newPath);
     file.mimetype != 'image/png' && fs.promises.unlink(file.path);
 
-    let image = new ProductImage();
+    let image = new Product.image();
     image.user_id = user_id;
     image.product_id = product_id;
     image.etag = imageData.ETag.replaceAll(`"`, "");
@@ -32,10 +33,10 @@ imageController.upload = async (user_id, file, product_id) => {
 
 imageController.deleteByProductId = async (product_id) => {
   try {
-    const images = await ProductImage.list(product_id);
+    const images = await Product.image.list(product_id);
 
     for (let i in images) {
-      await ProductImage.delete(images[i].id);
+      await Product.image.delete(images[i].id);
       if (images[i].keycode) { await deleteFileS3(images[i].keycode); }
     };
 
@@ -49,13 +50,13 @@ imageController.deleteByProductId = async (product_id) => {
 imageController.delete = async (req, res) => {
 
   try {
-    const image = (await ProductImage.findById(req.params.id))[0];
+    const image = (await Product.image.findById(req.params.id))[0];
 
     if (image.user_id != req.user.id) {
       return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
     }
 
-    await ProductImage.delete(image.id);
+    await Product.image.delete(image.id);
     if (image.keycode) { await deleteFileS3(image.keycode); }
 
     res.send({ done: 'Imagem deletada com sucesso!' });
@@ -65,4 +66,4 @@ imageController.delete = async (req, res) => {
   }
 };
 
-export default imageController;
+module.exports = imageController;

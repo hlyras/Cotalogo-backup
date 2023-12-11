@@ -1,8 +1,8 @@
-import User from '../app/model/user/main.js'
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
 
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
-import bcrypt from 'bcrypt';
+const User = require('../app/model/user/main');
 
 passport.use(
   'local',
@@ -11,20 +11,19 @@ passport.use(
     passwordField: 'password',
     passReqToCallback: true
   },
-    async (req, email, password, done) => {
-      let user = await User.findByEmail(email);
+    async (req, username, password, done) => {
+      let user = (await User.findByEmail(username))[0];
+      if (!user) { user = (await User.findByBusiness(username))[0]; }
 
-      if (!user.length) { user = await User.findByBusiness(email); }
-
-      if (!user.length) {
+      if (!user) {
         return done(null, false, req.flash('loginMessage', 'Usuário não encontrado.'));
       };
 
-      if (user.length) {
-        if (!bcrypt.compareSync(password, user[0].password)) {
+      if (user) {
+        if (!bcrypt.compareSync(password, user.password)) {
           return done(null, false, req.flash('loginMessage', 'Senha inválida.'));
         };
-        return done(null, { id: user[0].id, business: user[0].business });
+        return done(null, { id: user.id, business: user.business });
       };
     })
 );
@@ -32,4 +31,4 @@ passport.use(
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser(async (user, done) => done(null, user));
 
-export default passport;
+module.exports = passport;

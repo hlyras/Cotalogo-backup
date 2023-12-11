@@ -1,27 +1,36 @@
-import db from '../../../config/connection.js';
-import lib from '../../lib/main.js';
-import bcrypt from 'bcrypt';
+const db = require('../../../config/connection');
+const lib = require('jarmlib');
+const bcrypt = require('bcrypt');
 
-const User = function (user) {
+const User = function () {
   this.id;
-  this.email = user.email;
-  this.business = user.business;
-  this.password = user.password;
-  this.name = user.name;
-  this.access = '30days';
-  this.balance = 0;
-  this.token = "";
+  this.email;
+  this.business;
+  this.password;
+  this.name;
+  this.access;
+  this.balance;
+  this.token;
 
   this.save = () => {
-    if (!this.business || this.business.length < 1 || lib.string.hasForbidden(user.business)) { return { err: "O nome da empresa é inválido!" }; }
+    if (!this.business || this.business.length < 1 || lib.string.hasForbidden(this.business)) { return { err: "O nome da empresa é inválido!" }; }
     if (!lib.validateEmail(this.email)) { return { err: "Email inválido!" }; }
     if (!this.password) { return { err: "Senha inválida!" }; }
     if (this.password.length < 8) { return { err: "A senha deve conter mais de 8 caracteres." }; }
 
-    this.password = bcrypt.hashSync(this.password, null, null);
+    this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10));
 
     let obj = lib.convertTo.object(this);
     let { query, values } = lib.Query.save(obj, 'cms_cotalogo.user');
+
+    return db(query, values);
+  };
+
+  this.update = () => {
+    if (!this.id) { return { err: "O id do usuário é inválido" }; }
+
+    let obj = lib.convertTo.object(this);
+    let { query, values } = lib.Query.update(obj, 'cms_cotalogo.user', 'id');
 
     return db(query, values);
   };
@@ -44,7 +53,7 @@ User.findById = id => {
 };
 
 User.findByToken = token => {
-  let query = `SELECT id FROM cms_cotalogo.user WHERE token = ?;`;
+  let query = `SELECT id, business, password FROM cms_cotalogo.user WHERE token = ?;`;
   return db(query, [token]);
 };
 
@@ -68,54 +77,4 @@ User.findByBusiness = business => {
   return db(query, [business]);
 };
 
-export default User;
-
-// import { DataTypes, Op } from 'sequelize'
-// import sequelize from '../../../config/sequelize.js'
-// import ORM from '../../lib/orm.js'
-
-// const User = sequelize.define('User', {
-//   id: {
-//     type: DataTypes.INTEGER,
-//     primaryKey: true,
-//     autoIncrement: true,
-//   },
-//   email: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-//   business: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-//   password: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-//   name: DataTypes.STRING,
-//   access: DataTypes.STRING,
-//   balance: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//     defaultValue: 0.00
-//   },
-//   token: DataTypes.STRING,
-// }, {
-//   tableName: 'user',
-//   timestamps: false,
-// });
-
-// User.filter = async function (props, inners, conditions, order) {
-//   let query = ORM.select({ props, inners, conditions, order }, Op);
-//   return await User.findAll({ raw: true, query });
-// };
-
-// setTimeout(async () => {
-//   let conditions = [];
-//   ORM.fill({ field: 'id', operator: 'in', value: [1, 2], Op }, conditions);
-
-//   let users = await User.filter([], [], conditions, []);
-//   console.log(users);
-// }, 1000);
-
-// export default User;
+module.exports = User;

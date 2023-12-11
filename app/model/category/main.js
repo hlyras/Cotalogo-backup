@@ -1,5 +1,5 @@
-import db from '../../../config/connection.js';
-import lib from '../../lib/main.js';
+const db = require('../../../config/connection');
+const lib = require('jarmlib');
 
 const Category = function () {
 	this.id;
@@ -40,4 +40,4 @@ Category.delete = async (category_id) => {
 	return db(query, [category_id]);
 };
 
-export default Category;
+module.exports = Category;

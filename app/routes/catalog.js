@@ -1,22 +1,21 @@
-import { Router } from 'express';
-const router = Router();
-import toHttps from './toHttps.js';
+const router = require("express").Router();
+const lib = require('jarmlib');
 
-import UserAuth from '../controller/user/auth.js';
+const UserAuth = require("../controller/user/auth");
 
-import Catalog from '../controller/catalog/main.js';
-import CatalogProduct from '../controller/catalog/product.js';
-import CatalogTheme from '../controller/catalog/theme.js';
+const catalogController = require("../controller/catalog/main");
+const CatalogProduct = require("../controller/catalog/product");
+const CatalogTheme = require("../controller/catalog/theme");
 
-router.get('/', toHttps, UserAuth.verify, Catalog.index);
-router.post('/create', toHttps, UserAuth.verify, Catalog.create);
-router.post('/filter', toHttps, UserAuth.verify, Catalog.filter);
-router.get('/id/:id', toHttps, UserAuth.verify, Catalog.findById);
-// router.delete('/delete/:id', toHttps, UserAuth.verify, Catalog.delete);
+router.get('/', lib.route.toHttps, UserAuth.verify, catalogController.index);
+router.post('/create', lib.route.toHttps, UserAuth.verify, catalogController.create);
+router.post('/filter', lib.route.toHttps, UserAuth.verify, catalogController.filter);
+router.get('/id/:id', lib.route.toHttps, UserAuth.verify, catalogController.findById);
+// router.delete('/delete/:id', lib.route.toHttps, UserAuth.verify, catalogController.delete);
 
-router.post('/product/insert', toHttps, UserAuth.verify, CatalogProduct.insert);
-router.post('/product/filter', toHttps, UserAuth.verify, CatalogProduct.filter);
+router.post('/product/insert', lib.route.toHttps, UserAuth.verify, CatalogProduct.insert);
+router.post('/product/filter', lib.route.toHttps, UserAuth.verify, CatalogProduct.filter);
 
-router.get('/theme', toHttps, UserAuth.verify, CatalogTheme.index);
+router.get('/theme', lib.route.toHttps, UserAuth.verify, CatalogTheme.index);
 
-export default router;
+module.exports = router;

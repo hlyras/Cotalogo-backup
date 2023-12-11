@@ -1,72 +1,50 @@
 const ORM = {};
 
-ORM.select = function ({ props, inners, conditions, order, limit }, Op) {
-  const queryObject = {
-    attributes: props && props.length > 0 ? props : undefined,
-    include: inners || [],
-    where: {},
-    order: order || [],
-    limit: limit || undefined,
-  };
-
-  if (conditions && conditions.length > 0) {
-    conditions.forEach(condition => {
-      const { field, operator, value } = condition;
-
-      if (!field) { return; }
-
-      if (value !== null && value !== undefined && value !== '') {
-        if (operator === 'like' || operator === 'strict') {
-          queryObject.where[field] = { [Op[operator]]: value };
-        } else if (operator === 'between' && Array.isArray(value) && value.length === 2) {
-          const [start, end] = value;
-          if (start !== null && start !== undefined && start !== '' && end !== null && end !== undefined && end !== '') {
-            queryObject.where[field] = { [Op[operator]]: [start, end] };
+async function (params, props, inners, orderBy, limit) {
+  try {
+    const whereCondition = Object.fromEntries(
+      Object.entries(params || {})
+        .filter(([key, { value }]) => value != null)
+        .map(([key, { value, comparisonType }]) => {
+          switch (comparisonType) {
+            case 'strict':
+              return [key, value];
+            case 'like':
+              return [key, { [Op.like]: `%${value}%` }];
+            case 'between':
+              return [key, { [Op.between]: value }];
+            // Adicione mais casos conforme necessário
+            default:
+              return null;
           }
-        } else if (operator === 'greater' || operator === 'less') {
-          queryObject.where[field] = { [Op[operator]]: value };
-        } else if (operator === 'in' && Array.isArray(value) && value.length > 0) {
-          queryObject.where[field] = { [Op[operator]]: value };
-        } else if (operator === 'or' && Array.isArray(value) && value.length > 0) {
-          const orConditions = value.map(orCondition => {
-            const orField = orCondition.field;
-            const orValue = orCondition.value;
-            return { [orField]: { [Op.strict]: orValue } };
-          });
-          queryObject.where[field] = { [Op.or]: orConditions };
-        }
-      }
-    });
-  }
+        })
+        .filter(entry => entry !== null)
+    );
 
-  return queryObject;
-};
+    const includeModels = inners.map(model => ({
+      model,
+      required: model.required || false, // Define como false por padrão para LEFT JOIN
+    }));
 
-ORM.fill = function ({ field, operator, value, Op }, conditions) {
-  if (!field) {
-    // Certifique-se de ter um campo válido para construir a condição
-    return;
-  }
+    const queryOptions = {
+      where: whereCondition,
+      attributes: props || undefined,
+      include: includeModels,
+      order: orderBy ? [orderBy] : undefined, // Adiciona opção de ordenação
+      limit: limit || undefined, // Adiciona opção de limite
+    };
 
-  if (value !== null && value !== undefined) {
-    if (operator === 'in' && Array.isArray(value) && value.length > 0) {
-      conditions.push({ [field]: { [Op.in]: value } });
-    } else if (operator === 'like' || operator === 'strict') {
-      conditions.push({ [field]: { [Op[operator]]: value } });
-    } else if (operator === 'between' && Array.isArray(value) && value.length === 2) {
-      const [start, end] = value;
-      if (start !== null && start !== undefined && end !== null && end !== undefined) {
-        conditions.push({ [field]: { [Op.between]: [start, end] } });
-      }
-    } else if ((operator === 'greater' || operator === 'less') && Number.isFinite(value)) {
-      conditions.push({ [field]: { [Op[operator]]: value } });
-    } else if (operator === 'or' && Array.isArray(value) && value.length > 0) {
-      const orConditions = value.map(orValue => {
-        return { [field]: { [Op.or]: orValue } };
-      });
-      conditions.push(...orConditions);
+    if (Object.keys(whereCondition).length === 0) {
+      const result = await User.findAll(queryOptions);
+      return result;
     }
-  }
-};
 
-export default ORM;
+    const result = await User.findAll(queryOptions);
+
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}

@@ -1,5 +1,5 @@
-import db from '../../../config/connection.js';
-import lib from '../../lib/main.js';
+const db = require('../../../config/connection');
+const lib = require('jarmlib');
 
 const Variation = function (variation) {
   this.id;
@@ -30,4 +30,4 @@ Variation.delete = (variation_id, product_id) => {
   return db(query, [variation_id, product_id]);
 };
 
-export default Variation;
+module.exports = Variation;

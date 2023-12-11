@@ -1,5 +1,6 @@
-import lib from '../../lib/main.js';
-import Catalog from '../../model/catalog/main.js';
+const Catalog = require('../../model/catalog/main');
+
+const lib = require('jarmlib');
 
 const catalogController = {};
 
@@ -66,7 +67,7 @@ catalogController.filter = async (req, res) => {
     res.send({ catalogs });
   } catch (err) {
     console.log(err);
-    res.send({ msg: "Ocorreu um erro ao filtrar os catálogos" });
+    res.send({ msg: "Ocorreu um erro ao filtrar os catálogos" })
   }
 };
 
@@ -80,4 +81,4 @@ catalogController.findById = async (req, res) => {
   }
 };
 
-export default catalogController;
+module.exports = catalogController;
