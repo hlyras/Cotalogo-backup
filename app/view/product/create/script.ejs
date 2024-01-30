@@ -1,18 +1,4 @@
 <script>
-  //        <% for (let i in categories) { %>
-  //          <% if (categories[i].variations) { %>
-  //          <div class="box b1 container margin-top-10 border-lg-st radius-5 padding-1">
-  //            <div class="mobile-box a2 lucida-grande em08 bold v-center padding-5"><%= categories[i].name %></div>
-  //             <select name="category<%= categories[i].id %>" class="mobille-box a2 input-generic radius-5 center">
-  //               <option selected value="">Não incluir</option>
-  //               <% for(let j in categories[i].variations) { %>
-  //               <option value="<%= categories[i].variations[j].id %>"><%= categories[i].variations[j].name %></option>
-  //              <% } %>
-  //            </select>
-  //          </div>
-  //          <% } %>
-  //       <% } %>
-
   document.getElementById("product-create-form").addEventListener("submit", async e => {
     e.preventDefault();
 
@@ -26,8 +12,6 @@
     let arr = Array.from(variation_box.querySelectorAll("select")).map(input => {
       input.value && product.append('variations', input.value);
     });
-
-    console.log(arr);
 
     const input = document.getElementById('files');
 

@@ -1,14 +1,14 @@
 const db = require('../../../config/connection');
 
 const Image = function () {
-  this.id = 0;
+  this.id;
   this.user_id;
   this.product_id;
   this.etag;
   this.url;
   this.keycode;
 
-  this.save = () => {
+  this.create = () => {
     if (!this.user_id) { return { err: "Imagem sem usuário válido" }; };
     if (!this.product_id) { return { err: "Imagem sem usuário válido" }; };
     if (!this.etag) { return { err: "Imagem sem etag válido" }; };

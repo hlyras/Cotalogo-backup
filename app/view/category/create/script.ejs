@@ -1,4 +1,75 @@
 <script>
+  (async () => {
+    const category_create_form = await categoryCreateForm();
+
+    const category_types = await API.response(CategoryType.filter, {});
+    category_types.forEach(category_type => {
+      category_create_form.type.append(lib.element.create("option", { value: category_type.id }, category_type.name));
+    });
+
+    document.getElementById("category-create-box").append(category_create_form);
+
+    category_create_form.scope_min.addEventListener("blur", async e => {
+      e.preventDefault();
+
+      scopeMinBlur(e.target.value, e.target, e.target.parentNode.parentNode.scope_max);
+    });
+
+    category_create_form.scope_max.addEventListener("blur", async e => {
+      e.preventDefault();
+
+      scopeMaxBlur(e.target.value, e.target, e.target.parentNode.parentNode.scope_min);
+    });
+
+    category_create_form.type.addEventListener("change", async e => {
+      e.preventDefault();
+
+      let scope_min = e.target.parentNode.parentNode.scope_min;
+      let scope_max = e.target.parentNode.parentNode.scope_max;
+
+      setCategoryScope(e.target.value, scope_min, scope_max);
+    });
+
+    category_create_form.addEventListener("submit", async e => {
+      e.preventDefault();
+
+      let category = {
+        id: e.target.id.value || null,
+        name: e.target.name.value || null,
+        type: e.target.type.value || null,
+        scope: ''
+      };
+
+      if (category.type != "text") {
+        if (lib.isValidNumber(e.target.scope_min.value) && lib.isValidNumber(e.target.scope_max.value)) {
+          category.scope = `${e.target.scope_min.value}-${e.target.scope_max.value}`;
+        }
+      }
+
+      let response = await API.response(Category.save, category);
+      if (!response) { return false; }
+
+      lib.message(response.done);
+
+      e.target.id.value = "";
+      e.target.name.value = "";
+      e.target.type.value = "";
+      e.target.scope_min.value = "";
+      e.target.scope_max.value = "";
+
+      lib.addCss(e.target.submit, ['b1']);
+      lib.removeCss(e.target.submit, ['b2']);
+
+      lib.display("category-cancel-btn", "none");
+
+      e.target.submit.innerHTML = "Cadastrar categoria";
+
+      document.getElementById("category-filter-form").submit.click();
+    });
+
+    document.getElementById('category-create-form').name.focus();
+  })();
+
   function scopeMinBlur(target_value, scope_min, scope_max) {
     if (lib.isValidNumber(target_value)) {
       if (scope_max.value < target_value) {
@@ -16,24 +87,6 @@
       scope_min.max = target_value;
     }
   };
-
-  document.getElementById("category-create-form").scope_min.addEventListener("blur", async e => {
-    e.preventDefault();
-
-    scopeMinBlur(e.target.value, e.target, e.target.parentNode.parentNode.scope_max);
-  });
-
-  document.getElementById("category-create-form").scope_max.addEventListener("blur", async e => {
-    e.preventDefault();
-
-    scopeMaxBlur(e.target.value, e.target, e.target.parentNode.parentNode.scope_min);
-  });
-
-  document.getElementById("variation-help").addEventListener("click", async e => {
-    e.preventDefault();
-
-    console.log(e);
-  });
 
   function setCategoryScope(select_value, scope_min, scope_max) {
     scope_min.value = "";
@@ -60,54 +113,6 @@
       scope_max.step = step;
     }
   }
-
-  document.getElementById("category-create-form").type.addEventListener("change", async e => {
-    e.preventDefault();
-
-    let scope_min = e.target.parentNode.parentNode.scope_min;
-    let scope_max = e.target.parentNode.parentNode.scope_max;
-
-    setCategoryScope(e.target.value, scope_min, scope_max);
-  });
-
-  document.getElementById("category-create-form").addEventListener("submit", async e => {
-    e.preventDefault();
-
-    console.log(e.target.id);
-
-    let category = {
-      id: e.target.id.value || null,
-      name: e.target.name.value || null,
-      type: e.target.type.value || null,
-      scope: ''
-    };
-
-    if (category.type != "text") {
-      if (lib.isValidNumber(e.target.scope_min.value) && lib.isValidNumber(e.target.scope_max.value)) {
-        category.scope = `${e.target.scope_min.value}-${e.target.scope_max.value}`;
-      }
-    }
-
-    let response = await API.response(Category.save, category);
-    if (!response) { return false; }
-
-    lib.message(response.done);
-
-    e.target.id.value = "";
-    e.target.name.value = "";
-    e.target.type.value = "";
-    e.target.scope_min.value = "";
-    e.target.scope_max.value = "";
-
-    lib.addCss(e.target.submit, ['b1']);
-    lib.removeCss(e.target.submit, ['b2']);
-
-    lib.display("category-cancel-btn", "none");
-
-    e.target.submit.innerHTML = "Cadastrar categoria";
-
-    document.getElementById("category-filter-form").submit.click();
-  });
 
   const categoryEdit = async (category_id) => {
     let category = await API.response(Category.filter, { id: category_id });
@@ -156,6 +161,4 @@
 
     document.getElementById("category-create-form").submit.innerHTML = "Cadastrar categoria";
   };
-
-  document.getElementById('category-create-form').name.focus();
 </script>

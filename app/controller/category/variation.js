@@ -7,7 +7,7 @@ const variationController = {
   index: async (req, res) => {
     res.render("product/variation", { user: req.user });
   },
-  save: async (req, res) => {
+  create: async (req, res) => {
     let variation = new Category.variation();
     variation.id = req.body.id;
     variation.user_id = req.user.id;
@@ -16,14 +16,14 @@ const variationController = {
 
     try {
       if (!variation.id) {
-        let response = await variation.save();
+        let response = await variation.create();
         if (response.err) { return res.send({ msg: response.err }); }
 
         res.send({ done: "Variação cadastrada com sucesso!" })
       } else {
         let strict_params = { keys: [], values: [] };
         lib.Query.fillParam('category_variation.id', variation.id, strict_params);
-        let verifyVariation = await Category.variation.filter([], [], [], strict_params, []);
+        let verifyVariation = await Category.variation.filter({ strict_params });
 
         if (verifyVariation[0].user_id != req.user.id) { return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" }); }
 
@@ -47,7 +47,7 @@ const variationController = {
     lib.Query.fillParam('category_variation.name', req.body.name, params);
 
     try {
-      let variations = await Category.variation.filter([], [], params, strict_params, []);
+      let variations = await Category.variation.filter({ params, strict_params });
       res.send({ variations });
     } catch (err) {
       console.log(err);
@@ -61,7 +61,7 @@ const variationController = {
 
     let strict_params = { keys: [], values: [] };
     lib.Query.fillParam('category_variation.id', req.params.id, strict_params);
-    let verifyVariation = await Category.variation.filter([], [], [], strict_params, []);
+    let verifyVariation = await Category.variation.filter({ strict_params });
 
     if (verifyVariation[0] && verifyVariation[0].user_id != req.user.id) {
       return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });

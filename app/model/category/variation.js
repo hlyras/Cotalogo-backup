@@ -7,7 +7,7 @@ const Variation = function () {
 	this.category_id;
 	this.name;
 
-	this.save = () => {
+	this.create = () => {
 		if (!this.name || this.name.length < 1 || this.name.length > 100) { return { err: "Nome inválido" }; }
 		if (!this.user_id) { return { err: "Usuário inválido" }; }
 		if (!this.category_id) { return { err: "categoria inválida" }; }
@@ -28,15 +28,15 @@ const Variation = function () {
 	};
 };
 
-Variation.filter = (props, inners, params, strict_params, order_params) => {
+Variation.filter = ({ props, inners, params, strict_params, order_params }) => {
 	let { query, values } = new lib.Query().select().props(props).table("cms_cotalogo.category_variation")
 		.inners(inners).params(params).strictParams(strict_params).order(order_params).build();
 	return db(query, values);
 };
 
-Variation.delete = async (variation_id) => {
+Variation.delete = async (id) => {
 	let query = `DELETE FROM cms_cotalogo.category_variation WHERE id = ?;`;
-	return db(query, [variation_id]);
+	return db(query, [id]);
 };
 
 Variation.deleteByCategoryId = async (category_id) => {

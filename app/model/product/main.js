@@ -8,7 +8,7 @@ const Product = function (product) {
 	this.name;
 	this.description;
 
-	this.save = () => {
+	this.create = () => {
 		if (!this.code) { return { err: "Código inválido" }; }
 		if (!this.name || this.name.length < 2 || this.name.length > 100) { return { err: "Nome inválido" }; }
 
@@ -35,7 +35,7 @@ Product.findById = async (id) => {
 	return db(query, [id]);
 };
 
-Product.filter = (props, inners, params, strict_params, order_params) => {
+Product.filter = ({ props, inners, params, strict_params, order_params }) => {
 	let { query, values } = new lib.Query().select().props(props).table("cms_cotalogo.product product")
 		.inners(inners).params(params).strictParams(strict_params).order(order_params).build();
 	return db(query, values);

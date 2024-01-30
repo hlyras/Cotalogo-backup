@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const User = function () {
   this.id;
   this.email;
+  this.domain;
   this.business;
   this.password;
   this.name;
@@ -12,8 +13,9 @@ const User = function () {
   this.balance;
   this.token;
 
-  this.save = () => {
-    if (!this.business || this.business.length < 1 || lib.string.hasForbidden(this.business)) { return { err: "O nome da empresa é inválido!" }; }
+  this.create = () => {
+    if (!this.business) { return { err: "O Nome da empresa é inválido!" }; }
+    if (!this.domain || this.domain.length < 1 || lib.string.hasForbidden(this.domain)) { return { err: "O domínio é inválido!" }; }
     if (!lib.validateEmail(this.email)) { return { err: "Email inválido!" }; }
     if (!this.password) { return { err: "Senha inválida!" }; }
     if (this.password.length < 8) { return { err: "A senha deve conter mais de 8 caracteres." }; }
@@ -28,6 +30,7 @@ const User = function () {
 
   this.update = () => {
     if (!this.id) { return { err: "O id do usuário é inválido" }; }
+    if (this.token) { return { err: "Esta ação é inválida." }; }
 
     let obj = lib.convertTo.object(this);
     let { query, values } = lib.Query.update(obj, 'cms_cotalogo.user', 'id');
@@ -41,7 +44,7 @@ const User = function () {
   }
 };
 
-User.filter = (props, inners, params, strict_params, order_params) => {
+User.filter = ({ props, inners, params, strict_params, order_params }) => {
   let { query, values } = new lib.Query().select().props(props).table("cms_cotalogo.user user")
     .inners(inners).params(params).strictParams(strict_params).order(order_params).build();
   return db(query, values);
@@ -75,6 +78,11 @@ User.findByEmail = email => {
 User.findByBusiness = business => {
   let query = `SELECT * FROM cms_cotalogo.user WHERE business = ?`;
   return db(query, [business]);
+};
+
+User.findByDomain = domain => {
+  let query = `SELECT * FROM cms_cotalogo.user WHERE domain = ?`;
+  return db(query, [domain]);
 };
 
 module.exports = User;

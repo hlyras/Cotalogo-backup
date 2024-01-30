@@ -9,8 +9,10 @@ const accountController = {};
 accountController.index = async (req, res) => {
   let props = ["user.id", "user.name", "user.business", "user.email", "user.status", "user.balance"];
   let strict_params = { keys: [], values: [] };
+
   lib.Query.fillParam("user.id", req.user.id, strict_params);
-  let user = await User.filter(props, [], [], strict_params, []);
+
+  let user = await User.filter({ props, strict_params });
 
   res.render('user/account/index', { user: user[0] });
 };

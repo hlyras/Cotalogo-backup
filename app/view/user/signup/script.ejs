@@ -1,0 +1,61 @@
+<script>
+  document.getElementById("signup-form").domain.addEventListener("input", function (event) {
+    if (this.value.length === 1 && event.data === "/") {
+
+    } else if (this.value.length === 1 && event.data != "/") {
+      if (lib.hasForbiddenChar(event.data)) {
+        this.value = this.value.slice(0, this.value.length - 1);
+        return alert("Simbolo não permitido em uma URL.");
+      }
+    } else if (this.value.length > 1) {
+      if (lib.hasForbiddenChar(event.data)) {
+        this.value = this.value.slice(0, this.value.length - 1);
+        return alert("Simbolo não permitido em uma URL.");
+      }
+    }
+
+    if (this.value.length === 1 && event.data && event.data !== "/") {
+      this.value = "/" + this.value;
+    } else if (this.value.length === 1 && !event.data) {
+      this.value = "";
+    }
+
+    this.value = this.value.toLowerCase();
+  });
+
+  document.getElementById("signup-form").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const user = {
+      business: e.target.business.value,
+      domain: e.target.domain.value.slice(1),
+      email: e.target.email.value,
+      password: e.target.password.value
+    };
+
+    let response = await API.response(User.signup, user);
+
+    if (response.msg) {
+      document.getElementById("message").innerHTML = response.msg;
+      document.getElementById("message").style.display = "";
+      return;
+    }
+
+    if (response.done) {
+      lib.message(response.done, () => {
+        return window.location.href = "/";
+      });
+    }
+  });
+
+  function switchPasswordView(input) {
+    console.log(document.getElementById("signup-form").password.type);
+    if (document.getElementById("signup-form").password.type == "password") {
+      document.getElementById("signup-form").password.type = "text";
+      input.src = "/images/icon/eye-closed.png";
+    } else if (document.getElementById("signup-form").password.type == "text") {
+      document.getElementById("signup-form").password.type = "password";
+      input.src = "/images/icon/eye-open.png";
+    }
+  };
+</script>

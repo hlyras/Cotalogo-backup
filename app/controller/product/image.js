@@ -4,7 +4,7 @@ const { compressImage } = require("../../middleware/sharp");
 const fs = require("fs");
 
 const Product = require('../../model/product/main');
-Product.image = require('../../model/product/image');
+const ProductImage = require('../../model/product/image');
 
 const imageController = {};
 
@@ -16,13 +16,13 @@ imageController.upload = async (user_id, file, product_id) => {
     fs.promises.unlink(newPath);
     file.mimetype != 'image/png' && fs.promises.unlink(file.path);
 
-    let image = new Product.image();
+    let image = new ProductImage();
     image.user_id = user_id;
     image.product_id = product_id;
     image.etag = imageData.ETag.replaceAll(`"`, "");
     image.url = imageData.Location;
     image.keycode = imageData.Key;
-    await image.save();
+    await image.create();
 
     return true;
   } catch (err) {
@@ -33,10 +33,10 @@ imageController.upload = async (user_id, file, product_id) => {
 
 imageController.deleteByProductId = async (product_id) => {
   try {
-    const images = await Product.image.list(product_id);
+    const images = await ProductImage.list(product_id);
 
     for (let i in images) {
-      await Product.image.delete(images[i].id);
+      await ProductImage.delete(images[i].id);
       if (images[i].keycode) { await deleteFileS3(images[i].keycode); }
     };
 
@@ -48,15 +48,14 @@ imageController.deleteByProductId = async (product_id) => {
 };
 
 imageController.delete = async (req, res) => {
-
   try {
-    const image = (await Product.image.findById(req.params.id))[0];
+    const image = (await ProductImage.findById(req.params.id))[0];
 
     if (image.user_id != req.user.id) {
       return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
     }
 
-    await Product.image.delete(image.id);
+    await ProductImage.delete(image.id);
     if (image.keycode) { await deleteFileS3(image.keycode); }
 
     res.send({ done: 'Imagem deletada com sucesso!' });

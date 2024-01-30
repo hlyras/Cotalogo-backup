@@ -6,21 +6,19 @@
 
 <body>
   <%- include('./../partials/userHeader.ejs') %>
-  <%- include('./help/code.ejs') %>
   <%- include('./../partials/sidebar.ejs') %>
 
   <section class="container padding-10 h-center">
-    <div id="product-create-box" class="box"></div>
+    <%- include('./create/form.ejs') %>
   </section>
 </body>
 <footer>
   <%- include('./../partials/footer.ejs') %>
-  <script src="/scripts/product/main.js"></script>
-  <script src="/scripts/product/image.js"></script>
-
-  <script>
-    console.log(lib.sanitize('<img onerror="alert(`okok`)" src="x">'));
-  </script>
+  <script src="/js/product/main.js"></script>
+  <script src="/js/product/image.js"></script>
+  <%- include('./create/script.ejs') %>
+  <%- include('./create/image/script.ejs') %>
+  <%- include('./create/image/upload-script.ejs') %>
 </footer>
 
 </html>

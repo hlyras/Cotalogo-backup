@@ -2,9 +2,9 @@ const db = require('../../../config/connection');
 const lib = require('jarmlib');
 
 const Catalog = function () {
-  this.id = 0;
-  this.user_id = 0;
-  this.url = "";
+  this.id;
+  this.user_id;
+  this.url;
 
   this.create = () => {
     if (!this.user_id) { return { err: "Usuário inválido" }; }
@@ -28,15 +28,21 @@ const Catalog = function () {
   };
 };
 
-Catalog.filter = (props, inners, params, strict_params, order_params) => {
-  let { query, values } = new lib.Query().select().props(props).table("cms_cotalogo.catalog")
-    .inners(inners).params(params).strictParams(strict_params).order(order_params).build();
-  return db(query, values);
-};
-
 Catalog.findById = (id) => {
   let query = `SELECT * FROM cms_cotalogo.catalog WHERE id = ?`;
   return db(query, [id]);
+};
+
+Catalog.filter = (options) => {
+  let { query, values } = new lib.Query().select()
+    .props(options.props)
+    .table("cms_cotalogo.catalog")
+    .inners(options.inners)
+    .params(options.params)
+    .strictParams(options.strict_params)
+    .order(options.order_params)
+    .build();
+  return db(query, values);
 };
 
 module.exports = Catalog;

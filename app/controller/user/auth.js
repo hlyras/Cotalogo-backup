@@ -13,6 +13,7 @@ const authController = {};
 authController.signup = async (req, res) => {
   const user = new User();
   user.email = req.body.email;
+  user.domain = req.body.domain;
   user.business = req.body.business;
   user.password = req.body.password;
   user.access = "adm";
@@ -20,10 +21,10 @@ authController.signup = async (req, res) => {
   user.status = "Pending";
 
   if ((await User.findByEmail(user.email)).length) { return res.send({ msg: 'Este E-mail já está sendo utilizado.' }); }
-  if ((await User.findByBusiness(user.business)).length) { return res.send({ msg: 'Este nome de empresa já está sendo utilizado.' }); }
+  if ((await User.findByDomain(user.domain)).length) { return res.send({ msg: 'Este nome de empresa já está sendo utilizado.' }); }
 
   try {
-    let response = await user.save();
+    let response = await user.create();
     if (response.err) { return res.send({ msg: response.err }); }
 
     user.id = response.insertId;
@@ -61,14 +62,13 @@ authController.signup = async (req, res) => {
     Mailer.sendMail(option);
 
     req.logIn({ id: user.id, business: user.business }, err => {
-      if (err) { return res.send({ msg: "Sua conta foi criada com sucesso! Porém ocorreu um erro ao realizar seu login." }) }
+      if (err) { return res.send({ msg: "Sua conta foi criada com sucesso! Porém ocorreu um erro ao realizar seu login." }); }
       res.send({ done: `Parabéns, sua conta foi criada com sucesso!` });
     });
   } catch (err) {
     console.log(err);
     return res.send({ msg: "Ocorreu um erro ao realizar o cadastro, atualize a página, caso o problema persista por favor contate o suporte." });
   }
-
 };
 
 authController.authorize = (req, res, next) => {

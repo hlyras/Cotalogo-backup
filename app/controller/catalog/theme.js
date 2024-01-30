@@ -1,5 +1,5 @@
 const Category = require('../../model/category/main');
-Category.variation = require('../../model/category/variation');
+const CategoryVariation = require('../../model/category/variation');
 
 const lib = require('jarmlib');
 
@@ -7,15 +7,22 @@ const themeController = {};
 
 themeController.index = async (req, res) => {
   try {
-    let category_strict_params = { keys: [], values: [] };
-    lib.Query.fillParam("category.user_id", req.user.id, category_strict_params);
-    let categories = await Category.filter([], [], [], category_strict_params, []);
+    let category_options = {
+      strict_params: { keys: [], values: [] },
+    };
+
+    lib.Query.fillParam("category.user_id", req.user.id, category_options.strict_params);
+    let categories = await Category.filter(category_options);
 
     for (let i in categories) {
-      let variation_strict_params = { keys: [], values: [] };
-      lib.Query.fillParam("variation.category_id", categories[i].id, variation_strict_params);
-      lib.Query.fillParam("variation.user_id", req.user.id, variation_strict_params);
-      let variations = await Category.variation.filter([], [], [], variation_strict_params, []);
+      let variation_options = {
+        strict_params: { keys: [], values: [] },
+      };
+
+      lib.Query.fillParam("variation.category_id", categories[i].id, variation_options.strict_params);
+      lib.Query.fillParam("variation.user_id", req.user.id, variation_options.strict_params);
+
+      let variations = await CategoryVariation.filter(variation_options);
       if (variations.length) { categories[i].variations = variations; }
     };
 

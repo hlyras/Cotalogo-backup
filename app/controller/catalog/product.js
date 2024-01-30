@@ -25,7 +25,7 @@ productController.insert = async (req, res) => {
     let strict_params = { keys: [], values: [] };
     lib.Query.fillParam('catalog_product.product_id', product.product_id, strict_params);
     lib.Query.fillParam('catalog_product.catalog_id', product.catalog_id, strict_params);
-    let catalog_products = await Catalog.product.filter([], [], [], strict_params, []);
+    let catalog_products = await Catalog.product.filter({ strict_params });
     if (catalog_products.length) { return res.send({ msg: "Você já incluiu este produto neste catálogo." }); }
 
     let response = await product.insert();
@@ -55,7 +55,7 @@ productController.filter = async (req, res) => {
 
     let order = [["product.code", "ASC"]];
 
-    let products = await Catalog.product.filter(props, inners, params, strict_params, order);
+    let products = await Catalog.product.filter({ props, inners, params, strict_params, order });
 
     res.send({ products });
   } catch (err) {

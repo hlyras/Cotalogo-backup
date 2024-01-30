@@ -26,7 +26,7 @@ catalogController.create = async (req, res) => {
     let strict_params = { keys: [], values: [] };
     lib.Query.fillParam('catalog.user_id', req.user.id, strict_params);
     lib.Query.fillParam('catalog.url', req.body.url, strict_params);
-    let catalogs = await Catalog.filter([], [], [], strict_params, []);
+    let catalogs = await Catalog.filter({ strict_params });
 
     if (!catalog.id) {
       if (catalogs.length) { return res.send({ msg: "Você já utilizou essa URL em outro catálogo" }); }
@@ -62,7 +62,7 @@ catalogController.filter = async (req, res) => {
     let strict_params = { keys: [], values: [] };
     lib.Query.fillParam('catalog.user_id', req.user.id, strict_params);
     lib.Query.fillParam('catalog.url', req.body.url, params);
-    let catalogs = await Catalog.filter([], [], params, strict_params, []);
+    let catalogs = await Catalog.filter({ params, strict_params });
 
     res.send({ catalogs });
   } catch (err) {

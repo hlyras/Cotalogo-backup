@@ -2,14 +2,14 @@ const db = require('../../../config/connection');
 const lib = require('jarmlib');
 
 const Product = function () {
-  this.id = 0;
-  this.user_id = 0;
-  this.catalog_id = 0;
-  this.product_id = 0;
-  this.price = 0.00;
-  this.status = "";
+  this.id;
+  this.user_id;
+  this.catalog_id;
+  this.product_id;
+  this.price;
+  this.status;
 
-  this.insert = () => {
+  this.create = () => {
     if (!this.user_id) { return { err: "Usuário inválido" }; }
     if (!this.catalog_id) { return { err: "Catálogo inválido" }; }
     if (!this.product_id) { return { err: "Produto inválido" }; }
@@ -31,9 +31,15 @@ const Product = function () {
   };
 };
 
-Product.filter = (props, inners, params, strict_params, order_params) => {
-  let { query, values } = new lib.Query().select().props(props).table("cms_cotalogo.catalog_product")
-    .inners(inners).params(params).strictParams(strict_params).order(order_params).build();
+Product.filter = (options) => {
+  let { query, values } = new lib.Query().select()
+    .props(options.props)
+    .table("cms_cotalogo.catalog_product")
+    .inners(options.inners)
+    .params(options.params)
+    .strictParams(options.strict_params)
+    .order(options.order_params)
+    .build();
   return db(query, values);
 };
 

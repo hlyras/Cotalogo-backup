@@ -26,7 +26,7 @@ homeController.signup = async (req, res) => {
 	if (req.user) {
 		return res.redirect('/');
 	};
-	res.render('user/signup', { user: req.user, message: req.flash('signupMessage') });
+	res.render('user/signup/index', { user: req.user, message: req.flash('signupMessage') });
 };
 
 homeController.successfulSignup = (req, res) => {

@@ -1,35 +1,79 @@
-<form id="category-create-form" class="box a1 container">
-  <div class="mobile-box a10"></div>
-  <div class="mobile-box a4-5 lucida-grande bold center">Nova categoria</div>
-  <div class="mobile-box b10 container center">
-    <img id="variation-help" class='image-prop size-20 icon pointer noselect center' src="/images/icon/help.png">
-  </div>
-  <input type="hidden" name="id">
-  <input type="text" name="name" class="box b1 lucida-grande bold border padding-7 margin-top-10 center"
-    placeholder="Nome da Categoria (ex: Cor)" autocomplete="off">
-  <div class="box b1 tooltip center" data-tooltip="Escolha se a variação é um número ou não.">
-    <select name="type"
-      class="box b1 lucida-grande bold em09 hide-disabled border radius-5 padding-6 margin-top-5 center">
-      <option value="" selected disabled>Tipo de variação</option>
-      <% for(let i in category_types) { %>
-      <option value="<%= category_types[i].type %>"><%= category_types[i].name %></option>
-      <% } %>
-    </select>
-  </div>
-  <div id="scope_div" class="box b1 container" style="display: none;">
-    <input type="number" name="scope_min"
-      class="box b2 lucida-grande bold border radius-5 padding-7 margin-top-5 center" placeholder="min"
-      role="presentation" autocomplete="off">
-    <input type="number" name="scope_max"
-      class="box b2 lucida-grande bold border radius-5 padding-7 margin-top-5 center" placeholder="max"
-      role="presentation" autocomplete="off">
-  </div>
-  <div class="box b1 container">
-    <button type="submit" name="submit"
-      class="mobile-box b1 btn-act lucida-grande bold noborder radius-5 padding-8 margin-top-5 pointer">Cadastrar
-      categoria</button>
-    <div id="category-cancel-btn" onclick="categoryUpdateCancel()"
-      class="mobile-box b2 btn-cancel lucida-grande em09 bold noborder radius-5 padding-8 margin-top-5 pointer center"
-      style="display: none;">Cancelar</div>
-  </div>
-</form>
+<div id="category-create-box" class="box b1 container"></div>
+
+<script>
+  async function categoryCreateForm() {
+    const category_create_form = lib.element.create("form", {
+      id: "category-create-form",
+      class: "box a1 container"
+    });
+
+    category_create_form.append(lib.element.create("div", { class: "box b10" }));
+    category_create_form.append(lib.element.create("div", { class: "box a4-5 underline center" }, "Nova categoria"));
+    category_create_form.append(lib.element.create("div", { class: "box b10" }));
+
+    category_create_form.append(lib.element.create("input", {
+      type: "hidden",
+      name: "id"
+    }));
+
+    category_create_form.append(lib.element.create("input", {
+      type: "text",
+      name: "name",
+      class: "box b1 lucida-grande bold border padding-7 margin-top-10 center",
+      placeholder: "Nome da Categoria (ex: Cor)",
+      role: "presentation",
+      autocomplete: "off"
+    }));
+
+    category_create_form.append(lib.element.create("select", {
+      name: "type",
+      class: "box b1 lucida-grande bold em09 hide-disabled border radius-5 padding-6 margin-top-5 center"
+    }));
+
+    const scope_div = lib.element.create("div", {
+      id: "scope_div",
+      class: "box b1 container",
+      style: "display: none"
+    });
+    category_create_form.append(scope_div);
+
+    scope_div.append(lib.element.create("input", {
+      type: "number",
+      name: "scope_min",
+      class: "box b2 lucida-grande bold border radius-5 padding-7 margin-top-5 center",
+      placeholder: "min",
+      role: "presentation",
+      autocomplete: "off"
+    }));
+
+    scope_div.append(lib.element.create("input", {
+      type: "number",
+      name: "scope_max",
+      class: "box b2 lucida-grande bold border radius-5 padding-7 margin-top-5 center",
+      placeholder: "max",
+      role: "presentation",
+      autocomplete: "off"
+    }));
+
+    const submit_div = lib.element.create("div", { class: "box b1 container" });
+    category_create_form.append(submit_div);
+
+    submit_div.append(lib.element.create("button", {
+      type: "submit",
+      name: "submit",
+      class: "mobile-box b1 btn-act lucida-grande bold noborder radius-5 padding-8 margin-top-5 pointer",
+      style: "display: none;"
+    }, "Cadastrar categoria"));
+
+    const cancel_btn = lib.element.create("div", {
+      id: "category-cancel-btn",
+      class: "mobile-box b2 btn-cancel lucida-grande em09 bold noborder radius-5 padding-8 margin-top-5 pointer center",
+      style: "display: none;"
+    }, "Cancelar");
+    submit_div.append(cancel_btn);
+
+    cancel_btn.addEventListener("click", async e => { categoryUpdateCancel(); });
+
+    return category_create_form;
+  };
+</script>

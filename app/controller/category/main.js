@@ -1,6 +1,6 @@
 const Category = require('../../model/category/main');
-Category.type = require('../../model/category/type');
-Category.variation = require('../../model/category/variation');
+const CategoryType = require('../../model/category/type');
+const CategoryVariation = require('../../model/category/variation');
 
 const lib = require('jarmlib');
 
@@ -8,7 +8,7 @@ const categoryController = {};
 
 categoryController.index = async (req, res) => {
   try {
-    let category_types = await Category.type.filter([], [], [], [], []);
+    let category_types = await CategoryType.filter({});
     res.render("category/index", { user: req.user, category_types });
   } catch (err) {
     console.log(err);
@@ -16,7 +16,7 @@ categoryController.index = async (req, res) => {
   }
 };
 
-categoryController.save = async (req, res) => {
+categoryController.create = async (req, res) => {
   let category = new Category();
   category.id = req.body.id;
   category.name = req.body.name;
@@ -26,14 +26,14 @@ categoryController.save = async (req, res) => {
 
   try {
     if (!category.id) {
-      let response = await category.save();
+      let response = await category.create();
       if (response.err) { return res.send({ msg: response.err }); }
 
       res.send({ done: "Categoria cadastrada com sucesso!" });
     } else {
       let strict_params = { keys: [], values: [] };
       lib.Query.fillParam('category.id', category.id, strict_params);
-      let verifyCategory = await Category.filter([], [], [], strict_params, []);
+      let verifyCategory = await Category.filter({ strict_params });
 
       if (verifyCategory[0].user_id != req.user.id) { return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" }); }
 
@@ -59,7 +59,7 @@ categoryController.update = async (req, res) => {
   try {
     let strict_params = { keys: [], values: [] };
     lib.Query.fillParam('category.id', category.id, strict_params);
-    let verifyCategory = await Category.filter([], [], [], strict_params, []);
+    let verifyCategory = await Category.filter({ strict_params });
 
     if (verifyCategory[0].user_id != req.user.id) {
       return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
@@ -84,7 +84,7 @@ categoryController.filter = async (req, res) => {
   lib.Query.fillParam('category.name', req.body.name, params);
 
   try {
-    let categories = await Category.filter([], [], params, strict_params, []);
+    let categories = await Category.filter({ params, strict_params });
     res.send({ categories });
   } catch (err) {
     console.log(err);
@@ -95,13 +95,13 @@ categoryController.filter = async (req, res) => {
 categoryController.delete = async (req, res) => {
   let strict_params = { keys: [], values: [] };
   lib.Query.fillParam('category.id', req.params.id, strict_params);
-  let verifyCategory = await Category.filter([], [], [], strict_params, [])
+  let verifyCategory = await Category.filter({ strict_params })
 
   if (verifyCategory[0].user_id != req.user.id) { return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" }); }
 
   try {
     await Category.delete(req.params.id);
-    await Category.variation.deleteByCategoryId(req.params.id);
+    await CategoryVariation.deleteByCategoryId(req.params.id);
     // need delete all variations included in products
     res.send({ done: "Categoria excluída com sucesso!" });
   } catch (err) {
